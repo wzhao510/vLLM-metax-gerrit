@@ -1081,6 +1081,12 @@ mx_envs.maybe_override_vllm_env(
     "Disabling MoE shared_experts cuda stream on Maca",
 )
 
+mx_envs.maybe_override_vllm_env(
+    "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS",
+    False,
+    "disable CUDA graph memory estimate in the KV cache budget on Maca platform",
+)
+
 # --------------------------------------------------
 # Note: vllm_metax currently does not support third-party
 #       Triton kernels; Triton upgrade required.

@@ -2,6 +2,8 @@
 # 2026 - Modified by MetaX Integrated Circuits (Shanghai) Co., Ltd. All Rights Reserved.
 #
 # Note: MC3-15766: preserve the four-clamp insert workaround validated on MetaX.
+# Purpose: keep speculative-decoding resample insertion indices inside the
+#     allocated sampled/state/block buffers on MACA.
 # Affected versions: vLLM 0.30.1.dev0+gced6857af.d20261008 on MetaX.
 # Remove at: upstream provides equivalent insert bounds, or the MetaX backend
 #     illegal-access issue is resolved and the workaround is no longer needed.
@@ -10,11 +12,10 @@ from vllm.triton_utils import tl, triton
 
 from vllm_metax.patch.utils import patch
 
+_TARGET_MODULE = "vllm.v1.worker.gpu.spec_decode.rejection_sampler_utils"
 
-@patch(
-    "vllm.v1.worker.gpu.spec_decode.rejection_sampler_utils",
-    "_insert_resampled_kernel",
-)
+
+@patch(_TARGET_MODULE, "_insert_resampled_kernel")
 @triton.heuristics(
     {
         "num_logits": lambda args: args["expanded_idx_mapping_ptr"].numel(),

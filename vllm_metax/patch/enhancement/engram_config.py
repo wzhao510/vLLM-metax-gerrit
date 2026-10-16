@@ -7,6 +7,7 @@
 #       a non-empty --engram-config is rejected on MACA and the DeepSeek-V4.1
 #       n-gram tables cannot be configured.
 #
+# Purpose: accept Engram configuration for CUDA-like out-of-tree platforms.
 # Affected versions: vLLM 0.30.0, reviewed 2026-10-16.
 #
 # Remove at: Upstream Engram config accepts CUDA-like out-of-tree platforms.
