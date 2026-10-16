@@ -48,6 +48,7 @@ from vllm.v1.kv_cache_interface import (
     KVCacheSpec,
     MLAAttentionSpec,
 )
+import vllm_metax.envs as mx_envs
 
 logger = init_logger(__name__)
 
@@ -73,6 +74,23 @@ def dsa_indexer_uses_fp4(vllm_config: VllmConfig) -> bool:
         )
     return use_fp4
 
+def dsa_dsv41_indexer_use(vllm_config: VllmConfig) -> bool:
+    """Whether the DeepSeek sparse indexer should use the MXFP4 K cache."""
+    kv_dtype = vllm_config.attention_config.resolve_indexer_kv_dtype("fp8" if mx_envs.VLLM_METAX_SUPPORTS_FP8 else "int8")
+    if kv_dtype not in DSA_INDEXER_KV_DTYPES:
+        raise ValueError(
+            f"indexer_kv_dtype={kv_dtype!r} is not supported by the DeepSeek "
+            f"sparse indexer (expected one of {DSA_INDEXER_KV_DTYPES})."
+        )
+    use_fp4 = kv_dtype == "mxfp4"
+    use_int8 = kv_dtype == "int8"
+    if use_fp4 and not current_platform.is_device_capability_family(100):
+        raise ValueError(
+            "indexer_kv_dtype='mxfp4' requires Blackwell datacenter GPUs "
+            "(sm_10x, e.g. B200/GB200); sm_120 (consumer Blackwell) and "
+            "earlier architectures are not supported."
+        )
+    return use_fp4, use_int8
 
 class PrepareUniformDecodeKernel(
     VllmTritonJitKernel["PrepareUniformDecodeKernel.CompileKey"]
@@ -261,7 +279,7 @@ class MacaDeepseekV41IndexerBackend(MacaDeepseekV4IndexerBackend):
 
     @staticmethod
     def get_supported_kernel_block_sizes() -> list[int | MultipleOf]:
-        return [64 if current_platform.is_device_capability_family(90) else 128]
+        return [64]
 
 
 @dataclass(frozen=True)

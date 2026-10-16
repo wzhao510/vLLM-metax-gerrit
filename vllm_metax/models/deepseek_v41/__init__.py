@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 """DeepSeek V4.1 hardware-isolated model entry point."""
 
-from .quant_config import DeepseekV4FP8Config
+from vllm_metax.registry.quant_config.deepseek_fp8 import MacaDeepseekV41FP8Config as DeepseekV4FP8Config
 
 from .metax.dspark import DSparkDeepseekV4ForCausalLM
 from .metax.vl_model import DeepseekV41ForCausalLM

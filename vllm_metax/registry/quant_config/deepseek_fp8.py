@@ -40,21 +40,10 @@ class MacaDeepseekV41FP8Config(DeepseekV41FP8Config, MacaFp8Config):
             ):
                 return UnquantizedLinearMethod()
 
-            if prefix.rsplit(".", 1)[-1] != "wo_a":
-                from vllm_metax.registry.quant_config.fp8 import MctlassFp8LinearMethod
+            from vllm_metax.registry.quant_config.fp8 import MctlassFp8LinearMethod
 
-                return MctlassFp8LinearMethod(self)
+            return MctlassFp8LinearMethod(self)
 
-            from vllm.model_executor.layers.quantization.modelopt import (
-                CkptCtx,
-                ModelOptLinearMethod,
-            )
-
-            rows, cols = self.weight_block_size
-            return ModelOptLinearMethod(
-                QuantSpec(weight=kMxfp8Static, activation=kMxfp8Dynamic),
-                CkptCtx(scale_block_size=(rows, cols)),
-            )
         if isinstance(layer, RoutedExperts):
             if is_layer_skipped(
                 prefix=prefix,

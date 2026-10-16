@@ -63,7 +63,7 @@ from vllm.utils.multi_stream_utils import (
 from vllm.v1.attention.backend import AttentionBackend, AttentionMetadata
 from vllm_metax.v1.attention.backends.mla.indexer import (
     MacaDeepseekV41IndexerBackend as DeepseekV41IndexerBackend,
-    dsa_indexer_uses_fp4,
+    dsa_dsv41_indexer_use,
     get_max_prefill_buffer_size,
 )
 from vllm_metax.v1.attention.backends.mla.sparse_swa import DeepseekV4SWACache
@@ -415,7 +415,7 @@ class DeepseekV4Attention(nn.Module, AttentionLayerBase, ABC):
             # wk/k_norm); non-owning index sources share the K cache of the
             # latest kv source below them (its indexer produces the keys).
             if self.is_kv_source:
-                use_fp4, use_int8 = dsa_indexer_uses_fp4(vllm_config)
+                use_fp4, use_int8 = dsa_dsv41_indexer_use(vllm_config)
                 index_k_cache = DeepseekV4IndexerCache(
                     head_dim=_indexer_k_cache_head_dim(config.index_head_dim, use_fp4),
                     dtype=(torch.int8 if use_int8 else torch.uint8),
@@ -1136,7 +1136,7 @@ class DeepseekV4Indexer(nn.Module):
         self.q_lora_rank = q_lora_rank  # 1280
         self.compress_ratio = compress_ratio
         self.owns_k = owns_k
-        self.use_fp4_kv, self.use_int8_kv = dsa_indexer_uses_fp4(vllm_config)
+        self.use_fp4_kv, self.use_int8_kv = dsa_dsv41_indexer_use(vllm_config)
         logger.info_once(
             "Using %s indexer cache for Lightning Indexer.",
             "MXFP4" if self.use_fp4_kv else "INT8" if self.use_int8_kv else "FP8",
