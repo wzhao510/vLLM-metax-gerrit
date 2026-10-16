@@ -1,8 +1,10 @@
-#export CUDA_VISIBLE_DEVICES=2
-VLLM_USE_V2_MODEL_RUNNER=0 VLLM_METAX_USE_FP8_WO_A=0 \
-vllm serve ./temp/DeepSeek-V4-Flash-0731-smq-w8a8 \
-        --max-model-len 1024 \
-	--max-num-seqs 2 \
+vllm serve tools/batched_test/models/DeepSeek-V4-Flash-0731-smq-w8a8 \
+        --max-model-len 4096 \
         --load-format dummy \
-	--gpu-memory-utilization 0.85 \
-        --speculative-config '{"method":"dspark","num_speculative_tokens":2}'
+	--gpu-memory-utilization 0.9 \
+        --profiler-config '{"profiler": "torch", "torch_profiler_dir": "/tmp/vllm_profiler"}'
+
+# --speculative-config '{"method":"dspark","num_speculative_tokens":2}'
+
+vllm bench serve --backend vllm --model tools/batched_test/models/DeepSeek-V4-Flash-0731-smq-w8a8 \
+    --dataset-name random --profile --num-prompts 2

@@ -1089,6 +1089,12 @@ mx_envs.maybe_override_vllm_env(
     "Skip deep gemm warmup on Maca platform to avoid potential issues with some models",
 )
 
+mx_envs.maybe_override_vllm_env(
+    "VLLM_DISABLE_SHARED_EXPERTS_STREAM",
+    True,
+    "Disabling MoE shared_experts cuda stream on Maca",
+)
+
 # --------------------------------------------------
 # Note: vllm_metax currently does not support third-party
 #       Triton kernels; Triton upgrade required.
