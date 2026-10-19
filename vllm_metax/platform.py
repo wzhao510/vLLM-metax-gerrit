@@ -400,20 +400,6 @@ class MacaPlatformBase(Platform):
             model_config.model_arch_config.is_mm_prefix_lm = False
 
         # -------------------------------------------------------
-        # Note: Support joyai_llm_flash MTP
-        if model_config is not None and vllm_config.speculative_config is not None:
-            hf_config = model_config.hf_config
-            # logic copied from `SepculativeConfig.hf_config_override`
-            if hf_config.model_type in ("joyai_llm_flash",):
-                # Preserve JoyAI's dense-MTP identity across the model-type rewrite.
-                hf_config.joyai_dense_mtp = True
-                hf_config.model_type = "deepseek_mtp"
-                n_predict = getattr(hf_config, "num_nextn_predict_layers", None)
-                hf_config.update(
-                    {"n_predict": n_predict, "architectures": ["DeepSeekMTPModel"]}
-                )
-
-        # -------------------------------------------------------
         # NOTE(metax): Disable JIT warmup for Maca platform, as it may cause issues with some models
         if kernel_config := vllm_config.kernel_config:
             kernel_config.enable_jit_warmup = True

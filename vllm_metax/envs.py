@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     VLLM_METAX_ENABLE_FA_SPLIT_FORWARD: bool = True
     VLLM_METAX_SUPPORTS_FP8: bool = False
     VLLM_METAX_USE_FP8_WO_A: bool = True
+    VLLM_METAX_USE_QUANT_MAIN_PROJ: bool = True
     VLLM_METAX_USE_SGL_FUSED_MOE_GROUPED_TOPK: bool = False
     VLLM_METAX_USE_FLASHINFER_SAMPLER: bool = False
 
@@ -76,6 +77,10 @@ environment_variables: dict[str, Callable[[], Any]] = {
     # if set, use fp8 wo_a
     "VLLM_METAX_USE_FP8_WO_A": lambda: bool(
         int(os.environ.get("VLLM_METAX_USE_FP8_WO_A", "1"))
+    ),
+    # if set, quant config of main_proj is set to default
+    "VLLM_METAX_USE_QUANT_MAIN_PROJ": lambda: bool(
+        int(os.environ.get("VLLM_METAX_USE_QUANT_MAIN_PROJ", "1"))
     ),
     # if set, enable sglang fused grouped topk ops on deepseek and kimi model
     "VLLM_METAX_USE_SGL_FUSED_MOE_GROUPED_TOPK": lambda: bool(

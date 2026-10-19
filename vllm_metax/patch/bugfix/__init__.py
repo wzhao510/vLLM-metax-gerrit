@@ -17,8 +17,8 @@ from . import int8_w8a8  # noqa: F401
 from . import tokenizer  # noqa: F401
 from . import draft_config_overrides  # noqa: F401
 from . import minimax_m3  # noqa: F401
-from . import qwen3_5_moe_loading  # noqa: F401
 from . import telechat3  # noqa: F401
 from . import bytes_to_unicode  # noqa: F401
-from . import qwen4_exp  # noqa: F401
 from . import rejection_sampler  # noqa: F401
+from . import qwen  # noqa: F401
+from . import routed_experts_fused_weight_fix  # noqa: F401

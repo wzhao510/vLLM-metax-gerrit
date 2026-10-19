@@ -5,11 +5,14 @@
 # Note: Compose dictionary HF overrides with upstream draft-model rewrites. Upstream
 #     already composes callable overrides but deliberately leaves dictionaries target-
 #     only; MetaX checkpoints need dictionary inheritance.
+#     Recognize JoyAI draft configs while preserving joyai_dense_mtp so the
+#     decoder selects its dense MTP layer after the model-type rewrite.
 #
 # Affected versions: vLLM 0.30.0 (ced6857afa0e), reviewed 2026-10-12.
+#     JoyAI draft identity reviewed against vLLM 9eba576dde on 2026-10-19.
 #
 # Remove at: Upstream supports inheriting dictionary HF overrides when constructing
-#     draft model configs.
+#     draft model configs and preserves JoyAI's dense MTP identity.
 # -----------------------------------------------------------------------------
 
 """Propagate dictionary HF overrides to MetaX draft models.
@@ -29,6 +32,7 @@ from vllm.config.speculative import SpeculativeConfig
 from vllm_metax.patch.utils import patch
 
 _original_compose = SpeculativeConfig.compose_draft_hf_overrides
+_original_hf_config_override = SpeculativeConfig.hf_config_override
 
 
 def _update_nested_hf_config(target, updates: Mapping[str, Any]) -> None:
@@ -42,6 +46,17 @@ def _update_nested_hf_config(target, updates: Mapping[str, Any]) -> None:
             target[key] = copy.deepcopy(value)
         else:
             setattr(target, key, copy.deepcopy(value))
+
+
+@patch("vllm.config.speculative", "SpeculativeConfig.hf_config_override")
+def hf_config_override(hf_config: PretrainedConfig) -> PretrainedConfig:
+    """Recognize JoyAI's dense MTP while deriving the draft configuration."""
+    if hf_config.model_type == "joyai_llm_flash":
+        # The MACA decoder needs this identity after the upstream type rewrite
+        # to distinguish JoyAI's dense MTP layer from its routed backbone.
+        hf_config.joyai_dense_mtp = True
+        hf_config.model_type = "deepseek_mtp"
+    return _original_hf_config_override(hf_config)
 
 
 class _DraftHfOverrides:

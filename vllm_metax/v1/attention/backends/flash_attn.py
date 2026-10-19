@@ -185,6 +185,8 @@ class MacaFlashAttentionBackend(AttentionBackend):
 
     @classmethod
     def supports_mm_prefix(cls) -> bool:
+        # NOTE(MetaX): FA2 launches do not consume mm_prefix_query_range_tensor.
+        # Reject PrefixLM until its bidirectional mask is implemented here.
         return False
 
     @classmethod
@@ -225,15 +227,8 @@ class MacaFlashAttentionBackend(AttentionBackend):
             )
         ):
             return "FP8 KV cache requires FA3"
-        if (
-            use_mm_prefix
-            and get_flash_attn_version(head_size=head_size, has_sinks=has_sink) != 4
-        ):
-            return (
-                "mm_prefix (PrefixLM bidirectional attention) requires "
-                "FlashAttention v4, which does not resolve for this "
-                "head_size"
-            )
+        if use_mm_prefix:
+            return "MetaX FlashAttention does not support mm_prefix attention masks"
         return None
 
 

@@ -218,11 +218,12 @@ class TritonExperts(LoRAExpertsMixin, mk.FusedMoEExpertsModular):
         # SWIGLUSTEP limit (defaults to 7.0). Keep this local workaround until
         # upstream forwards activation_config.clamp_limit to the Triton kernel.
         if activation == MoEActivation.SWIGLUSTEP:
-            from vllm.model_executor.layers.activation import swiglustep_and_mul_triton
+            from vllm_metax._custom_ops import swiglustep_and_mul
 
-            limit = self.activation_config.clamp_limit
-            assert limit is not None, "SWIGLUSTEP requires swiglu_limit"
-            swiglustep_and_mul_triton(output, input, limit=limit)
+            limit = activation_config.clamp_limit
+            if limit is None:
+                limit = 7.0
+            swiglustep_and_mul(output, input, float(limit))
             return
 
         super().activation(
@@ -561,6 +562,27 @@ class TritonExperts(LoRAExpertsMixin, mk.FusedMoEExpertsModular):
                 intermediate_cache1.view(-1, N),
                 group_size=128,
                 quant_dtype=current_platform.fp8_dtype(),
+            )
+        elif (
+            activation == MoEActivation.SWIGLUSTEP
+            and self.quant_config.use_fp8_w8a8
+            and self.block_shape == [128, 128]
+            and lora_context is None
+            and not is_deep_gemm_e8m0_used()
+        ):
+            from vllm_metax._custom_ops import (
+                swiglu_step_and_mul_per_block_quant,
+            )
+
+            limit = self.activation_config.clamp_limit
+            if limit is None:
+                limit = 7.0
+
+            qintermediate_cache2, a2q_scale = swiglu_step_and_mul_per_block_quant(
+                intermediate_cache1.view(-1, N),
+                group_size=128,
+                quant_dtype=current_platform.fp8_dtype(),
+                clamp_limit=float(limit),
             )
         else:
             self.activation(

@@ -16,6 +16,10 @@ from vllm.model_executor.layers.fused_moe.oracle.fp8 import (
     Fp8MoeBackend,
     logger,
 )
+from vllm.model_executor.layers.fused_moe.routed_experts import RoutedExperts
+from vllm.model_executor.layers.quantization.utils.fp8_utils import (
+    prepare_fp8_moe_layer_for_deepgemm,
+)
 from vllm_metax.model_executor.layers.fused_moe.all2all_utils import (
     maybe_make_prepare_finalize,
 )
@@ -39,6 +43,37 @@ def _get_priority_backends(
         Fp8MoeBackend.BATCHED_TRITON,
     ]
     return _AVAILABLE_BACKENDS
+
+
+def convert_to_fp8_moe_kernel_format(
+    fp8_backend: Fp8MoeBackend,
+    # TODO(bnell): replace layer with weight_block_size
+    layer: RoutedExperts,
+    w13: torch.Tensor,
+    w2: torch.Tensor,
+    w13_scale: torch.Tensor,
+    w2_scale: torch.Tensor,
+    w13_input_scale: torch.Tensor | None,
+    w2_input_scale: torch.Tensor | None,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    block_quant = hasattr(layer, "weight_block_size")
+    if fp8_backend in [Fp8MoeBackend.DEEPGEMM, Fp8MoeBackend.BATCHED_DEEPGEMM]:
+        assert block_quant
+        w13, w2, w13_scale, w2_scale = prepare_fp8_moe_layer_for_deepgemm(
+            w13,
+            w2,
+            w13_scale,
+            w2_scale,
+            tuple(layer.weight_block_size),
+        )
+    else:
+        if fp8_backend not in [
+            Fp8MoeBackend.TRITON,
+            Fp8MoeBackend.BATCHED_TRITON,
+        ]:
+            raise ValueError(f"Unsupported FP8 MoE backend: {fp8_backend.value}")
+
+    return w13, w2, w13_scale, w2_scale
 
 
 def backend_to_kernel_cls(
