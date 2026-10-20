@@ -352,6 +352,7 @@ class MacaPlatformBase(Platform):
                 "vllm::mx_sparse_attn_indexer_int8"
             )
             compilation_config._attention_ops.append("vllm::mx_deepseek_v4_attention")
+            compilation_config._attention_ops.append("vllm::mx_sparse_attn_indexer_kpool")
 
         # -------------------------------------------------------
         # Disable cascade attention for Maca platform currently

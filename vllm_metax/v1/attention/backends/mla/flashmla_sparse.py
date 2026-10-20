@@ -949,12 +949,12 @@ class FlashMLASparseImpl(
         vllm_config = get_current_vllm_config()
         max_tokens = vllm_config.scheduler_config.max_num_batched_tokens
         q_concat_heads = num_heads
-        if not is_quantized_kv_cache(kv_cache_dtype):
-            q_concat_heads = (
-                (num_heads + self.prefill_padding - 1)
-                // self.prefill_padding
-                * self.prefill_padding
-            )
+        # if not is_quantized_kv_cache(kv_cache_dtype):
+        #     q_concat_heads = (
+        #         (num_heads + self.prefill_padding - 1)
+        #         // self.prefill_padding
+        #         * self.prefill_padding
+        #     )
         q_concat_shape = (max_tokens, q_concat_heads, head_size)
         if is_quantized_kv_cache(kv_cache_dtype):
             assert kv_cache_dtype in QUANTIZED_DS_MLA_CACHE_FORMATS, (
@@ -1836,7 +1836,12 @@ class FlashMLASparseImpl(
         if isinstance(q, tuple):
             ql_nope, q_pe = q
             q = self.q_concat_buffer[: ql_nope.shape[0]]
-            ops.concat_mla_q(ql_nope, q_pe, q)
+            if self.qk_rope_head_dim == 0:
+                # No RoPE component (d_qk == kv_lora_rank): q is the NoPE part
+                # alone. concat_mla_q requires rope_dim == 64, so copy directly.
+                q.copy_(ql_nope)
+            else:
+                ops.concat_mla_q(ql_nope, q_pe, q)
         else:
             actual_num_heads = q.shape[1]
 

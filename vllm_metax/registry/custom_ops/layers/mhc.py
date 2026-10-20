@@ -14,6 +14,7 @@ from vllm.model_executor.layers.mhc import (
     HCHeadOp as _vllm_HCHeadOp,
 )
 
+import vllm_metax.model_executor.kernels.mhc.tilelang  # noqa: F401
 
 # --8<-- [start:mhc_pre]
 @_vllm_MHCPreOp.register_oot

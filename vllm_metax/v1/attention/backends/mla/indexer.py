@@ -231,7 +231,7 @@ class MacaDeepseekV32IndexerBackend(AttentionBackend):
         return DeepseekV32IndexerMetadataBuilder
 
 
-class KpoolTailBackend(MacaDeepseekV32IndexerBackend):
+class MacaKpoolTailBackend(MacaDeepseekV32IndexerBackend):
     """Storage-only backend for the GLM-5.3-Flash kpool tail cache."""
 
     @classmethod
