@@ -714,9 +714,24 @@ class FlashMLASparseMetadataBuilder(
             )
             active_reqs = torch.nonzero(query_lens > 0).flatten()
             active_lens = query_lens[active_reqs]
-            assert int(active_lens.sum()) == num_decode_tokens
-            uniform = bool(torch.all(active_lens == active_lens[0]))
+            num_active_tokens = int(active_lens.sum())
+            num_padding_tokens = num_decode_tokens - num_active_tokens
+            assert num_padding_tokens >= 0, (
+                f"BF16 decode has {num_active_tokens} query tokens but "
+                f"metadata only describes {num_decode_tokens} tokens"
+            )
+            # FULL graphs include padding tokens in num_decode_tokens, while
+            # zero-length padding requests contribute no CPU query tokens.
+            assert num_padding_tokens == 0 or num_prefills == 0, (
+                "BF16 decode padding is only supported for pure decode batches"
+            )
+            uniform = active_lens.numel() > 0 and bool(
+                torch.all(active_lens == active_lens[0])
+            )
             decode_query_len = int(active_lens[0]) if uniform else 1
+            assert num_decode_tokens % decode_query_len == 0, (
+                "BF16 padded decode tokens must align with the uniform query length"
+            )
             active_num_decodes = num_decode_tokens // decode_query_len
             # These lengths are informational for sparse decode (the kernel
             # uses top-k slots), but keep them aligned with the flattened rows.
@@ -728,6 +743,14 @@ class FlashMLASparseMetadataBuilder(
             decode_seq_lens = common_attn_metadata.seq_lens.index_select(
                 0, row_reqs.to(device=self.device, non_blocking=True)
             )
+            num_padding_rows = active_num_decodes - row_reqs.numel()
+            if num_padding_rows:
+                decode_seq_lens = torch.cat(
+                    (
+                        decode_seq_lens,
+                        decode_seq_lens.new_zeros(num_padding_rows),
+                    )
+                )
 
         BF16Meta = FlashMLASparseBF16Metadata.BF16SeparatePrefillDecode
         bf16_metadata = BF16Meta(
