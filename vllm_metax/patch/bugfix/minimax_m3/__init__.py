@@ -2,7 +2,7 @@
 # 2026 - Modified by MetaX Integrated Circuits (Shanghai) Co., Ltd. All Rights Reserved.
 #
 # -----------------------------------------------------------------------------
-# Note: Load MiniMax-M3 index-score, sparse-attention and weight-loading compatibility
+# Note: Load MiniMax-M3 runtime, index-score, sparse-attention and weight-loading fixes
 #     at plugin initialization. This initializer applies the patches by importing the
 #     child modules.
 #
@@ -16,3 +16,5 @@ from . import index_topk  # noqa: F401
 from . import sparse_attn  # noqa: F401
 from . import load_weights  # noqa: F401
 from . import video_processor_preprocess  # noqa: F401
+from . import runtime  # noqa: F401
+from . import dspark  # noqa: F401
