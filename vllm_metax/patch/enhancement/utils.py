@@ -12,7 +12,11 @@
 #     used by MetaX MoE experts, including its string-valued dtype dispatch.
 # -----------------------------------------------------------------------------
 
+import sys
+from typing import Any
+
 import torch
+from vllm.logger import init_logger
 from vllm.model_executor.layers.quantization.utils.int8_utils import (
     per_token_group_quant_int8,
 )
@@ -22,6 +26,7 @@ from vllm import _custom_ops as ops
 import vllm.model_executor.layers.fused_moe.utils as moe_utils
 from vllm_metax.patch.utils import patch
 
+logger = init_logger(__name__)
 
 @patch("vllm.model_executor.layers.fused_moe.utils", "_int8_quantize")
 def _int8_quantize(
@@ -120,3 +125,41 @@ def moe_kernel_quantize_input(
         quantization_emulation,
         mx_alignment,
     )
+
+def _repoint_import_aliases(replacement: Any, original: Any) -> None:
+    """Re-point modules that already imported ``moe_kernel_quantize_input``.
+
+    ``from vllm.model_executor.layers.fused_moe.utils import
+    moe_kernel_quantize_input`` binds the function object while the importing
+    module is loaded, so a module loaded before this patch would keep calling
+    the original and still leave the activations unquantized. Modules loaded
+    after it resolve the patched module attribute on their own, so only the ones
+    already in ``sys.modules`` are re-pointed here; each one goes through the
+    shared decorator, which records the replaced object and rejects duplicates.
+    """
+    for module_name, module in list(sys.modules.items()):
+        if module is None or not module_name.startswith("vllm"):
+            continue
+        try:
+            aliased = getattr(module, "moe_kernel_quantize_input", None)
+        except Exception:
+            # Attribute lookup can run module-level hooks; never let that break
+            # plugin loading.
+            continue
+        if aliased is not original:
+            continue
+        try:
+            patch(module_name, "moe_kernel_quantize_input", allow_missing=True)(
+                replacement
+            )
+        except Exception:
+            logger.warning(
+                "Could not re-point moe_kernel_quantize_input in %s",
+                module_name,
+                exc_info=True,
+            )
+
+
+_repoint_import_aliases(
+    moe_kernel_quantize_input, _moe_kernel_quantize_input_original
+)
