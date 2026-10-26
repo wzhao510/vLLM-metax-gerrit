@@ -39,7 +39,7 @@ deep_gemm==0.4.0+maca3.9.0.2
 mcoplib==0.4.14+g5780a78.maca3.9.0.31.torch2.10
 
 lmcache==0.5.4+maca3.9.0.0
-nixl==1.0.0+maca3.9.0.0
+mixl==1.0.0+maca3.9.0.100
 mooncake-transfer-engine==0.3.12+g00951c.d20261012.maca3.9.0.0
 
 maca-python==0.0.1
