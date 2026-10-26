@@ -350,10 +350,15 @@ class DeepseekV4DecoderLayer(nn.Module):
             previous_post = mhc_post_tilelang(x, residual, post_mix, res_mix)
             if capture_previous_aux:
                 previous_aux = previous_post.mean(dim=1)
+            gate_input = None
+            rot_module = getattr(self.engram, "global_rotation", None)
+            if rot_module is not None:
+                gate_input = rot_module(previous_post)
             residual = self.engram(
                 previous_post,
                 engram_hashes[:, self.engram.layer_hash_index],
                 engram_mask,
+                gate_input = gate_input
             )
             post_mix, res_mix, x, attn_pre = mhc_pre_delayed_tilelang(
                 residual,

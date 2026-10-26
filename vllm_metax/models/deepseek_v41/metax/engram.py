@@ -41,6 +41,11 @@ from vllm.models.deepseek_v41.common.engram import (
 from vllm.triton_utils import tl, triton
 from vllm.utils.platform_utils import is_uva_available
 from vllm.utils.torch_utils import get_accelerator_view_from_cpu_tensor
+from vllm_metax.model_executor.layers.online_rotation import (
+    build_rotation,
+    get_online_rotation_module_config,
+)
+from vllm_metax.model_executor.kernels.online_rotate import fused_engram_gate
 import vllm_metax.envs as mx_envs
 
 logger = init_logger(__name__)
@@ -558,6 +563,29 @@ class Engram(BaseEngram):
 
     _prefetch_stream: torch.cuda.Stream | None = None
 
+    def __init__(
+        self, 
+        config, 
+        quant_config, 
+        layout, 
+        layer_hash_index, 
+        use_sequence_parallel, 
+        prefix
+    ):
+
+        super().__init__(
+            config, quant_config, layout, layer_hash_index, use_sequence_parallel, prefix
+        )
+        
+        layer_id = layout.layer_ids[layer_hash_index]
+        rotation_name = f"model.layers.{layer_id}.engram.global_rotation"
+        rotation_config = get_online_rotation_module_config(config, rotation_name)
+        
+        if rotation_config is not None:
+            self.global_rotation = build_rotation(rotation_config)
+        elif not hasattr(self, "global_rotation"):
+            self.global_rotation = None
+
     def _embedding_cls(self) -> type[ParallelEngramEmbedding]:
         """Block format of the checkpoint's n-gram tables.
 
@@ -627,3 +655,41 @@ class Engram(BaseEngram):
             staged = self.staged_rows[: slot * self.embed_tokens.dp_size]
             return _gather_engram_rows(staged, num_tokens)
         return super()._ready_rows(num_tokens)
+
+    def forward(
+        self, 
+        hidden_states: torch.Tensor, 
+        hash_ids: torch.Tensor, 
+        token_mask: torch.Tensor | None = None, 
+        gate_input: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        
+
+        if getattr(self, "global_rotation", None) is None and gate_input is None:
+            return super().forward(hidden_states, hash_ids, token_mask)
+
+        emb = self.embed_tokens(hash_ids)
+        wkv_out = self.wkv(emb.flatten(-2))
+        kv = wkv_out[0] if isinstance(wkv_out, tuple) else wkv_out
+        
+        if kv.dtype not in (torch.bfloat16, torch.float32):
+            kv = kv.to(torch.bfloat16)
+        kv = kv.contiguous()
+
+        if gate_input is not None:
+            gate_input = gate_input.contiguous()
+
+        out = fused_engram_gate(
+            hidden_states.contiguous(),
+            kv,
+            self.q_weight,
+            self.k_weight,
+            self.eps,
+            self.clamp_value,
+            gate_input=gate_input,
+        )
+        
+        if token_mask is not None:
+            out = torch.where(token_mask.view(-1, 1, 1), out, hidden_states)
+            
+        return out
