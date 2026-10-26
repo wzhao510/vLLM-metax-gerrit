@@ -136,6 +136,9 @@ class CompressedTensorsWNA16MoEMethod(vllm_ctm_wna16):
 
     def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
         # Process weights using the shared oracle infrastructure
+        # TODO(metax): Support vLLM versions that no longer create g_idx parameters.
+        # Added in V0.30.0.
+        # remove_at: after this adapter stops passing the optional g_idx arguments.
         converted = convert_to_wna16_moe_kernel_format(
             backend=self.wna16_backend,
             layer=layer,
@@ -145,8 +148,13 @@ class CompressedTensorsWNA16MoEMethod(vllm_ctm_wna16):
             w2=layer.w2_weight_packed,
             w13_scale=layer.w13_weight_scale,
             w2_scale=layer.w2_weight_scale,
-            w13_g_idx=layer.w13_weight_g_idx,
-            w2_g_idx=layer.w2_weight_g_idx,
+            # /-------------------- MetaX Modification --------------------\
+            # 上游: w13_g_idx=layer.w13_weight_g_idx,
+            # 上游: w2_g_idx=layer.w2_weight_g_idx,
+            # vLLM 0.30 no longer creates g_idx for non-actorder checkpoints.
+            w13_g_idx=getattr(layer, "w13_weight_g_idx", None),
+            w2_g_idx=getattr(layer, "w2_weight_g_idx", None),
+            # \-------------------- MetaX Modification --------------------/
             w13_qzeros=getattr(layer, "w13_weight_zero_point", None),
             w2_qzeros=getattr(layer, "w2_weight_zero_point", None),
         )
