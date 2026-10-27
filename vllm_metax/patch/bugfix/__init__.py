@@ -22,3 +22,4 @@ from . import bytes_to_unicode  # noqa: F401
 from . import rejection_sampler  # noqa: F401
 from . import qwen  # noqa: F401
 from . import routed_experts_fused_weight_fix  # noqa: F401
+from . import post_capture_warmup  # noqa: F401
