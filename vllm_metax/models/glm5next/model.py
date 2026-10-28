@@ -40,9 +40,16 @@ from vllm.model_executor.models.utils import (
     maybe_prefix,
 )
 
+from vllm.models.common.ops.sequence_parallel import sp_all_gather, sp_shard
 from vllm.multimodal import MULTIMODAL_REGISTRY
 from vllm.platforms import current_platform
+from vllm.sequence import IntermediateTensors
 from vllm.transformers_utils.configs.glm5_next import Glm5NextConfig
+
+from vllm_metax.model_executor.layers.online_rotation import (
+    build_rotation,
+    get_online_rotation_module_config,
+)
 
 from vllm.models.glm5next.nvidia.kda import Glm5NextLinearAttention
 from vllm.models.glm5next.nvidia.multimodal import (
@@ -312,9 +319,24 @@ class MacaGlm5NextModel(Glm5NextModel):
         # doesn't rebuild the slice (a fresh list) every step.
         self._active_layers = self.layers[self.start_layer : self.end_layer]
 
+        rotation_module_name = maybe_prefix(prefix, "prenorm_hadamard_rotation")
+        rotation_config = get_online_rotation_module_config(
+            config,
+            rotation_module_name,
+        )
+        self.use_hadamard_rotation = rotation_config is not None
+
         if get_pp_group().is_last_rank:
+            self.prenorm_hadamard_rotation = (
+                build_rotation(rotation_config)
+                if rotation_config is not None
+                else None
+            )
             self.norm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
         else:
+            self.prenorm_hadamard_rotation = (
+                PPMissingLayer() if self.use_hadamard_rotation else None
+            )
             self.norm = PPMissingLayer()
 
         self.is_sequence_parallel = (
@@ -325,6 +347,55 @@ class MacaGlm5NextModel(Glm5NextModel):
         assert config.num_attention_heads % world_size == 0, (
             "num_attention_heads must be divisible by world_size"
         )
+
+    def forward(
+        self,
+        input_ids: torch.Tensor | None,
+        positions: torch.Tensor,
+        intermediate_tensors: IntermediateTensors | None,
+        inputs_embeds: torch.Tensor | None = None,
+        **kwargs,
+    ) -> torch.Tensor:
+        if get_pp_group().is_first_rank:
+            if inputs_embeds is not None:
+                hidden_states = inputs_embeds
+            else:
+                hidden_states = self.embed_input_ids(input_ids)
+            residual = None
+            post = None
+            comb = None
+        else:
+            assert intermediate_tensors is not None
+            hidden_states = intermediate_tensors["hidden_states"]
+            residual = intermediate_tensors["residual"]
+            # post/comb (deferred mHC hc_post state) are not propagated across
+            # PP ranks; the receiving rank's first mHC layer uses standalone pre.
+            post = None
+            comb = None
+
+        full_num_tokens = positions.shape[0]
+        if self.is_sequence_parallel:
+            hidden_states = sp_shard(hidden_states)
+
+        for layer in self._active_layers:
+            hidden_states, residual, post, comb = layer(
+                positions, hidden_states, residual, post, comb
+            )
+
+        if not get_pp_group().is_last_rank:
+            return IntermediateTensors(
+                {"hidden_states": hidden_states, "residual": residual}
+            )
+
+        if self.is_sequence_parallel:
+            hidden_states = sp_all_gather(hidden_states)[:full_num_tokens]
+
+        # The last mHC layer already materialized the final residual sum into
+        # ``hidden_states``; rotate it back to the original basis before norm.
+        if self.use_hadamard_rotation:
+            hidden_states = self.prenorm_hadamard_rotation(hidden_states)
+        hidden_states = self.norm(hidden_states)
+        return hidden_states
 
     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
 

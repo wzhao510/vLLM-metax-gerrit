@@ -88,6 +88,11 @@ def register_model():
         "vllm_metax.models.glm5next:MacaGlm5NextForCausalLM",
     )
 
+    ModelRegistry.register_model(
+        "Glm5NextMTPModel",
+        "vllm_metax.models.glm5next.mtp:MacaGlm5NextMTP",
+    )
+
     # ModelRegistry.register_model(
     #     "Glm5NextForConditionalGeneration",
     #     "vllm_metax.models.glm5next:MacaGlm5NextForConditionalGeneration",
