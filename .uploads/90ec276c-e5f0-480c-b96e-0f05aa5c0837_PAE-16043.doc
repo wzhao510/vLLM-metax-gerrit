@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>[#PAE-16043] [VLLM] QuaRot W4A8 场景下 Online Rotation 方案的评估和支持</title>
+    <meta http-equiv="Content-Type" Content="application/vnd.ms-word; charset=UTF-8">
+        <style type="text/css">
+
+.tableBorder, .grid
+{
+    background-color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableBorder td, .grid td
+{
+    vertical-align: top;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+.noPadding
+{
+    padding: 0 !important;
+}
+
+h3 .subText
+{
+    font-size: 60%;
+    font-weight: normal;
+}
+
+.tabLabel
+{
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-bottom:none;
+    padding: 2px;
+    display: inline;
+}
+
+td.blank
+{
+    padding: 0;
+    margin: 0;
+}
+
+.blank td
+{
+    border: none;
+}
+
+#descriptionArea
+{
+    margin: 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+hr
+{
+    border-top:1px solid #aaa;
+}
+
+hr.fullcontent
+{
+  height: 15px;
+  padding: 10px 0;
+  background: #fff url('https://jira.metax-tech.com/images/icons/hr.gif') no-repeat scroll center;
+}
+
+</style>
+
+</head>
+<body>
+
+<table class="tableBorder" cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td bgcolor="#f0f0f0" width="100%" colspan="2" valign="top">
+                            <b><a id="parent_issue_summary" href="https://jira.metax-tech.com/browse/PAE-16111">AI0021-B-o: LLM量化-2610</a></b>
+                <span style="font-size: 9px">(<a id="parent_issue_key" href="https://jira.metax-tech.com/browse/PAE-16111">PAE-16111</a>)</span>
+                <h3 class="formtitle"><img src="https://jira.metax-tech.com/images/icons/link_out_bot.gif" width="16" height="16" />
+                        [PAE-16043]&nbsp;<a href="https://jira.metax-tech.com/browse/PAE-16043">[VLLM] QuaRot W4A8 场景下 Online Rotation 方案的评估和支持</a>
+            <span class="subText">
+               Created: 24/Sep/26                   &nbsp;Updated: 09/Oct/26
+
+                                            </span>
+            </h3>
+        </td>
+    </tr>
+    <tr>
+        <td width="20%"><b>Status:</b></td>
+        <td width="80%">Feedback</td>
+    </tr>
+    <tr>
+        <td width="20%"><b>Project:</b></td>
+        <td width="80%"><a href="https://jira.metax-tech.com/secure/BrowseProject.jspa?id=10311">PDE AI Execution</a></td>
+    </tr>
+
+        <tr>
+            <td><b>Component/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+
+        <tr>
+            <td><b>Affects Version/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+
+        <tr>
+            <td><b>Fix Version/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+    </table>
+
+<br />
+<table class="grid" cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td bgcolor="#f0f0f0" valign="top" width="20%">
+            <b>Type:</b>
+        </td>
+        <td bgcolor="#ffffff" valign="top"  width="30%" >
+            Sub-task
+        </td>
+
+                    <td bgcolor="#f0f0f0">
+                <b>Priority:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" nowrap>
+                Normal
+            </td>
+            </tr>
+    <tr>
+                        <td bgcolor="#f0f0f0" valign="top" width="20%">
+                <b>Reporter:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top"  width="30%" >
+                                            <a class="user-hover" rel="m01672" id="word_reporter_m01672" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01672">Tao Jiang (m01672)</a>
+                            </td>
+        
+                    <td bgcolor="#f0f0f0" width="20%">
+                <b>Assignee:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" nowrap  width="30%" >
+                                            <a class="user-hover" rel="m01672" id="word_assignee_m01672" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01672">Tao Jiang (m01672)</a>
+                            </td>
+            </tr>
+    	<tr>
+		<td bgcolor="#f0f0f0" width="20%">
+			<b>Resolution:</b>
+		</td>
+		<td bgcolor="#ffffff" valign="top" width="30%" nowrap>
+            				Unresolved
+                    </td>
+                    <td bgcolor="#f0f0f0" width="20%">
+                <b>Votes:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" width="30%" nowrap>
+                0
+            </td>
+        
+    </tr>
+    
+        <tr>
+        <td bgcolor="#f0f0f0" width="20%">
+            <b>Labels:</b>
+        </td>
+        <td id="labels-201135-value" class="value" bgcolor="#ffffff" valign="top" colspan="3" nowrap>
+                            None
+                    </td>
+    </tr>
+    
+    	<tr>
+        		<td bgcolor="#f0f0f0" width="20%"><b>Remaining Estimate:</b></td>
+        <td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+    </tr>
+    <tr>
+                <td bgcolor="#f0f0f0" width="20%"><b>Time Spent:</b></td>
+		<td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+	</tr>
+    <tr>
+                <td bgcolor="#f0f0f0" width="20%"><b>Original Estimate:</b></td>
+		<td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+    </tr>
+    
+    </table>
+
+
+
+    <br />
+
+    	<table class="grid" cellpadding="0" cellspacing="0" border="0" width="100%">
+            
+
+                <tr>
+            <td bgcolor="#f0f0f0" width=20% valign=top>
+                <b>Attachments:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top">
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-14-09-674.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-17-56-980.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-19-11-521.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-21-29-058.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-23-30-604.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/image.gif" height="16" width="16" border="0" alt="PNG File" role="presentation">
+                    image-2026-09-30-16-26-49-754.png &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/text.gif" height="16" width="16" border="0" alt="Text File" role="presentation">
+                    online_rotation_changes.patch &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/text.gif" height="16" width="16" border="0" alt="Text File" role="presentation">
+                    online_rotation_changes2.patch &nbsp;&nbsp;&nbsp;
+                                    <img src="https://jira.metax-tech.com/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File" role="presentation">
+                    quarot_online_patch_intro.md &nbsp;&nbsp;&nbsp;
+                            </td>
+        </tr>
+        
+            <tr>
+            <td bgcolor="#f0f0f0" width="20%" valign="top">
+                <b>Issue Links:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" class="noPadding">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" class="blank">
+                                            <tr>
+                            <td colspan="4" bgcolor="#f0f0f0">
+                                <b>Relates</b><br/>
+                            </td>
+                        </tr>
+                                                                <tr>
+            <td>
+                relates to
+            </td>
+            <td>
+                <a href="https://jira.metax-tech.com/browse/PAE-15986">
+                     PAE-15986                 </a>
+            </td>
+            <td>
+                vLLM Issue List
+            </td>
+            <td>
+                Open
+            </td>
+        </tr>
+                                        </table>
+            </td>
+        </tr>
+    
+
+
+
+</table>
+
+    <br/>
+
+    <table cellpadding="2" cellspacing="0" border="0" width="100%" align="center">
+    <tr>
+        <td bgcolor="#bbbbbb" width="1%" nowrap align="center">
+            &nbsp;<font color="#ffffff"><b>Description</b></font>&nbsp;
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td id="descriptionArea">
+            <h2><a name="%E8%83%8C%E6%99%AF"></a>背景</h2>
+
+<p>当前实现主要用于解决带 MTP 模型的 Final Norm 路径问题。QuaRot 会将 Transformer 主干的 residual stream 旋转到新的正交坐标系：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+X -&gt; XQ
+</pre>
+</div></div>
+
+<p>对于带 MTP 的模型，Final Norm 的输出不仅进入 <tt>lm_head</tt>，还可能继续作为 MTP hidden state：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+main decoder output
+        ↓
+    <span class="code-keyword">final</span> norm
+     ├── lm_head
+     └── MTP hidden / hnorm
+</pre>
+</div></div>
+
+<p>如果只通过修改 Head 权重补偿 rotation，只能保证 logits 路径等价，MTP 接收到的 hidden state 仍处于旋转后的坐标系。</p>
+
+<p>因此，我们的参考实现选择在 Final Norm 前增加 online inverse rotation：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+rotated hidden XQ
+        ↓
+online Q^-1
+        ↓
+original hidden X
+        ↓
+original Final Norm
+     ├── lm_head
+     └── MTP hidden
+</pre>
+</div></div>
+
+<p>这样可以让 Final Norm、LM Head 和后续 MTP 路径继续保持原模型语义，也不需要仅为 QuaRot 拆分 Main/MTP Head。</p>
+
+<h2><a name="%E5%BD%93%E5%89%8D%E5%8F%82%E8%80%83%E5%AE%9E%E7%8E%B0"></a>当前参考实现</h2>
+
+<p>我们已经在 vLLM-MetaX 中完成以下内容：</p>
+
+<ol>
+	<li>提供可在模型 <tt>forward</tt> 中独立调用的 online rotation，并通过 <tt>build_rotation</tt> 根据 module 配置创建具体实现；</li>
+	<li>支持标准 power-of-two Hadamard，以及 <tt>N = K × 2^m</tt> 的非 power-of-two 维度；</li>
+	<li>在 Main Model 的 Final Norm 前接入可选 inverse rotation；</li>
+	<li>在 MTP <tt>SharedHead</tt> 的 norm 前接入可选 inverse rotation；</li>
+	<li>支持通过 module path 配置是否挂载 rotation；</li>
+	<li>支持从 checkpoint 加载离线 QuaRot 生成的 <tt>sign</tt> 和 <tt>hk</tt>。</li>
+</ol>
+
+
+<p>当前 Main Final Norm 的处理逻辑为：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+<span class="code-keyword">if</span> self.use_hadamard_rotation:
+    hidden_states = self.prenorm_hadamard_rotation(
+        hidden_states + residual,
+    )
+    hidden_states = self.norm(hidden_states)
+<span class="code-keyword">else</span>:
+    hidden_states, _ = self.norm(hidden_states, residual)
+</pre>
+</div></div>
+
+<p>MTP <tt>SharedHead</tt> 的处理逻辑为：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+<span class="code-keyword">if</span> self.prenorm_hadamard_rotation is not None:
+    hidden_states = self.prenorm_hadamard_rotation(hidden_states)
+<span class="code-keyword">return</span> self.norm(hidden_states)
+</pre>
+</div></div>
+
+<p>当前参考 patch 涉及：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+models/deepseek_v2.py
+models/deepseek_mtp.py
+</pre>
+</div></div>
+
+<p>目前主要面向 GLM-5.2、GLM-5.3 的 Main Final Norm 和 MTP SharedHead 路径。</p>
+
+<h2><a name="CompositeHadamard%E8%AF%B4%E6%98%8E"></a>Composite Hadamard 说明</h2>
+
+<p>当前 rotation 支持：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+N = K × P, P = 2^m
+Q = D(H_K^T ⊗ H_P) / sqrt(N)
+</pre>
+</div></div>
+
+<p>其中 <tt>sign</tt> 和 <tt>hk</tt> 与离线 QuaRot 使用的具体 rotation 绑定，需要随 checkpoint 保存和加载。</p>
+
+<p>这套实现除标准 Hadamard 外，还可以处理例如：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+6144  = 12 × 512
+7168  = 28 × 256
+14336 = 28 × 512
+</pre>
+</div></div>
+
+<p>等非 power-of-two hidden size。</p>
+
+<h2><a name="%E5%BD%93%E5%89%8D%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%9D%83%E9%87%8D%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F"></a>当前配置与权重组织方式</h2>
+
+<p>当前参考实现采用 module-path-based 配置，例如：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+{
+  <span class="code-quote">"online_rotation"</span>: {
+    <span class="code-quote">"modules"</span>: {
+      <span class="code-quote">"model.prenorm_hadamard_rotation"</span>: {
+        <span class="code-quote">"type"</span>: <span class="code-quote">"composite_hadamard"</span>,
+        <span class="code-quote">"hidden_size"</span>: 6144,
+        <span class="code-quote">"K"</span>: 12,
+        <span class="code-quote">"inverse"</span>: <span class="code-keyword">true</span>
+      },
+      <span class="code-quote">"model.layers.78.shared_head.prenorm_hadamard_rotation"</span>: {
+        <span class="code-quote">"type"</span>: <span class="code-quote">"composite_hadamard"</span>,
+        <span class="code-quote">"hidden_size"</span>: 6144,
+        <span class="code-quote">"K"</span>: 12,
+        <span class="code-quote">"inverse"</span>: <span class="code-keyword">true</span>
+      }
+    }
+  }
+}
+</pre>
+</div></div>
+
+<p>对应的 checkpoint key 示例：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+model.prenorm_hadamard_rotation.sign
+model.prenorm_hadamard_rotation.hk
+
+model.layers.78.shared_head.prenorm_hadamard_rotation.sign
+model.layers.78.shared_head.prenorm_hadamard_rotation.hk
+</pre>
+</div></div>
+
+<p>这只是当前参考实现采用的组织方式，后续具体的配置形式、module 命名以及权重加载方式，可以按照 vLLM 框架现有规范调整。</p>
+
+<h2><a name="%E5%B8%8C%E6%9C%9B%E5%8D%8F%E5%8A%A9%E8%AF%84%E4%BC%B0%E7%9A%84%E9%97%AE%E9%A2%98"></a>希望协助评估的问题</h2>
+
+<ol>
+	<li>想请 vLLM 组帮忙评估这部分能力是否适合接入框架，以及比较合适的集成方式。当前 vLLM-MetaX 实现可以作为设计和代码参考，不要求最终接入方式与当前 patch 保持一致。</li>
+	<li>帮忙评估引入 online rotation 后的运行开销，以及 PP、<tt>torch.compile</tt>、CUDA Graph 等不同运行方式下的兼容性。</li>
+	<li>接入后希望同时支持以下两类 rotation：</li>
+</ol>
+
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+CompositeHadamardRotation：H_K ⊗ H_P + sign 的结构化快速旋转
+DenseOrthogonalRotation：显式保存完整正交矩阵 Q，运行时直接执行 xQ
+</pre>
+</div></div>
+
+<p><tt>online_rotation</tt> 作为统一配置入口，每个 module 通过 <tt>type</tt> 区分具体算法，例如 <tt>composite_hadamard</tt> 或 <tt>dense_orthogonal</tt>。具体类名和配置命名可以按照框架规范调整。</p>
+
+<h2><a name="%E6%9C%9F%E6%9C%9B%E7%BB%93%E6%9E%9C"></a>期望结果</h2>
+
+<p>本单主要希望完成方案评估和接入方式讨论，暂不限定最终实现必须沿用当前 patch 的代码结构。</p>
+
+<p>我们可以提供现有 vLLM-MetaX patch 作为参考，并配合补充数值正确性、性能及运行兼容性测试。</p>
+
+<h2><a name="%E9%99%84%E4%BB%B6"></a>附件</h2>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+onlinerotation_changes.patch
+online_rotation_changes2.patch
+quarot_online_patch_intro.md
+</pre>
+</div></div>
+
+<ul>
+	<li><tt>onlinerotation_changes.patch</tt>：vLLM-MetaX 中已完成的参考实现，采用标准 unified diff 格式；</li>
+	<li><tt>online_rotation_changes2.patch</tt>：vLLM-MetaX 中的 TileLang Composite Hadamard kernel 参考实现；</li>
+	<li><tt>quarot_online_patch_intro.md</tt>：实现背景、数学定义、配置和数据流说明。</li>
+</ul>
+
+            <br/>
+        </td>
+    </tr>
+    </table>
+
+    <br/>
+
+    <table cellpadding="2" cellspacing="0" border="0" width="100%" align="center">
+    <tr>
+        <td bgcolor="#bbbbbb" width="1%" nowrap align="center">
+            &nbsp;<font color="#ffffff"><b>Comments</b></font>&nbsp;
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="grid" style="margin: 0;">
+                <tr id="comment-header-468231"><td bgcolor="#f0f0f0">
+            Comment by  
+                                                        <a class="user-hover" rel="m01683" id="word_commented_m01683" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01683">Zhennan Cai (m01683)</a>
+                                        <font size="-2">
+            [
+                <font color="#336699">29/Sep/26</font>
+
+                            ]
+            </font>
+
+        </td></tr>
+        <tr id="comment-body-468231"><td bgcolor="#ffffff">
+            <p>用ceval测试模型精度</p>
+        </td></tr>
+                <tr id="comment-header-468581"><td bgcolor="#f0f0f0">
+            Comment by  
+                                                        <a class="user-hover" rel="m01683" id="word_commented_m01683" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01683">Zhennan Cai (m01683)</a>
+                                        <font size="-2">
+            [
+                <font color="#336699">30/Sep/26</font>
+
+                            ]
+            </font>
+
+        </td></tr>
+        <tr id="comment-body-468581"><td bgcolor="#ffffff">
+            <h2><a name="1.%E7%89%88%E6%9C%AC1"></a>1. 版本1</h2>
+<h3><a name="1.1%E7%B2%BE%E5%BA%A6%E6%B5%8B%E8%AF%95%21image20260930161409674.png%21"></a>1.1 精度测试  <span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264971/264971_image-2026-09-30-16-14-09-674.png" style="border: 0px solid black" /></span></h3>
+<h3><a name="1.2.bench"></a>1.2. bench</h3>
+<h4><a name=""></a></h4>
+<p>1.2.1 使用Q^{-1}</p>
+
+<p><span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264970/264970_image-2026-09-30-16-17-56-980.png" style="border: 0px solid black" /></span></p>
+<h4><a name="1.2.2%E4%B8%8D%E9%80%82%E7%94%A8Q%5C"></a>1.2.2 不适用Q^{-1}</h4>
+
+<p><span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264969/264969_image-2026-09-30-16-19-11-521.png" style="border: 0px solid black" /></span></p>
+<h2><a name="2.%E7%89%88%E6%9C%AC2"></a>2. 版本2</h2>
+<h3><a name="2.1%E8%BF%9B%E5%BA%A6%E6%B5%8B%E8%AF%95"></a>2.1 进度测试</h3>
+
+<p><span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264968/264968_image-2026-09-30-16-21-29-058.png" style="border: 0px solid black" /></span></p>
+<h3><a name="2.2bench"></a>2.2 bench</h3>
+<h4><a name="2.2.1%E4%BD%BF%E7%94%A8Q%5C"></a>2.2.1 使用Q^{-1}</h4>
+
+<p><span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264967/264967_image-2026-09-30-16-23-30-604.png" style="border: 0px solid black" /></span></p>
+<h4><a name="2.2.2%E6%9C%AA%E4%BD%BF%E7%94%A8Q%5C"></a>2.2.2 未使用Q^{-1}</h4>
+
+<p><span class="image-wrap" style=""><img src="https://jira.metax-tech.com/secure/attachment/264973/264973_image-2026-09-30-16-26-49-754.png" style="border: 0px solid black" /></span></p>
+
+<p> </p>
+
+<p> </p>
+        </td></tr>
+                <tr id="comment-header-469898"><td bgcolor="#f0f0f0">
+            Comment by  
+                                                        <a class="user-hover" rel="m01683" id="word_commented_m01683" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01683">Zhennan Cai (m01683)</a>
+                                        <font size="-2">
+            [
+                <font color="#336699">09/Oct/26</font>
+
+                            ]
+            </font>
+
+        </td></tr>
+        <tr id="comment-body-469898"><td bgcolor="#ffffff">
+            <p>测试通过</p>
+        </td></tr>
+            </table>
+Generated at Tue Oct 13 11:17:32 CST 2026 by Zhenghao Wang (i26440) using Jira 8.20.8#820008-sha1:881997c1ee10089dd24f9500963434332e60bc5b.
+
+</body>
+</html>
