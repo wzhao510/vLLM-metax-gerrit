@@ -1,0 +1,504 @@
+INFO 10-29 17:08:32 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:08:32 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:08:32 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:08:32 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+INFO 10-29 17:08:32 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:08:45 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347] 
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:347] 
+(APIServer pid=67) INFO 10-29 17:08:47 [api_utils.py:286] non-default args: {'model_tag': '/external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model', 'model': '/external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model', 'trust_remote_code': True, 'dtype': 'bfloat16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'gpu_memory_utilization': 0.8}
+(APIServer pid=67) INFO 10-29 17:09:16 [model.py:692] Resolved architecture: Glm5NextForConditionalGeneration
+(APIServer pid=67) INFO 10-29 17:09:16 [model.py:2030] Using max model len 4096
+(APIServer pid=67) INFO 10-29 17:09:20 [config.py:625] Mamba cache mode is set to 'align' for Glm5NextForConditionalGeneration by default when prefix caching is enabled
+(APIServer pid=67) /opt/conda/lib/python3.10/site-packages/compressed_tensors/quantization/quant_args.py:380: UserWarning: No observer is used for dynamic quant., setting to None
+(APIServer pid=67)   warnings.warn(
+(APIServer pid=67) INFO 10-29 17:09:20 [vllm.py:762] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=67) INFO 10-29 17:09:20 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=67) INFO 10-29 17:09:20 [platform.py:339] Switching sleep_mode_backend from 'cumem' to 'macamem' for Maca platform
+(APIServer pid=67) INFO 10-29 17:09:20 [envs.py:136] vllm-metax would try to sets VLLM_TUNED_CONFIG_FOLDER default to /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096. Reason: set FusedMoE tuned config dir by hidden_size=4096
+(APIServer pid=67) INFO 10-29 17:09:20 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(APIServer pid=67) [transformers] The following generation flags are not valid and may be ignored: ['top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+INFO 10-29 17:09:31 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:31 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:31 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:31 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:31 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:31 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:31 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+(APIServer pid=67) INFO 10-29 17:09:34 [base.py:261] Multi-modal warmup completed in 4.663s
+(APIServer pid=67) INFO 10-29 17:09:39 [base.py:261] Readonly multi-modal warmup completed in 4.878s
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:09:44 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+(EngineCore pid=695) INFO 10-29 17:09:46 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='/external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model', speculative_config=None, tokenizer='/external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=compressed-tensors, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/external/ai/models/LLM-Quant/taojiang/GLM/GLM-53-Flash-QuarotV2-FlexSMQ-W48A8/vllm_quant_model, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': True, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=False, enable_cutedsl_warmup=False, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=695) INFO 10-29 17:09:46 [multiproc_executor.py:153] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=10.0.96.31 (local), world_size=8, local_world_size=8
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [__init__.py:52] Available plugins for group vllm.platform_plugins:
+INFO 10-29 17:09:48 [__init__.py:54] - metax -> vllm_metax:register
+INFO 10-29 17:09:48 [__init__.py:57] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-29 17:09:48 [__init__.py:272] Platform plugin metax is activated
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_FLASHINFER_SAMPLER default to False. Reason: controlled by VLLM_METAX_USE_FLASHINFER_SAMPLER; disabled by default
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_FLASHINFER_SAMPLER was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_FLASHINFER_SAMPLER to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_ENGINE_READY_TIMEOUT_S default to 7200. Reason: set timeout to 7200s for model loading
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_ENGINE_READY_TIMEOUT_S was manually set to 7200.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_ENGINE_READY_TIMEOUT_S to 7200 because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_FLOAT32_MATMUL_PRECISION default to high. Reason: set float32 matmul precision to high for better performance on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_FLOAT32_MATMUL_PRECISION was manually set to high.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_FLOAT32_MATMUL_PRECISION to high because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_USE_DEEP_GEMM_E8M0 default to False. Reason: USE_DEEP_GEMM_E8M0 default to false on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_USE_DEEP_GEMM_E8M0 was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_USE_DEEP_GEMM_E8M0 to False because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DEEP_GEMM_WARMUP default to skip. Reason: Skip deep gemm warmup on Maca platform to avoid potential issues with some models
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DEEP_GEMM_WARMUP was manually set to skip.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DEEP_GEMM_WARMUP to skip because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_DISABLE_SHARED_EXPERTS_STREAM default to True. Reason: Disabling MoE shared_experts cuda stream on Maca
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_DISABLE_SHARED_EXPERTS_STREAM was manually set to 1.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_DISABLE_SHARED_EXPERTS_STREAM to True because it was manually set. If you want to override it, set `forced=True`.
+INFO 10-29 17:09:48 [envs.py:136] vllm-metax would try to sets VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS default to False. Reason: disable CUDA graph memory estimate in the KV cache budget on Maca platform
+WARNING 10-29 17:09:48 [envs.py:145] Detected VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS was manually set to 0.
+WARNING 10-29 17:09:48 [envs.py:151] Not overriding VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS to False because it was manually set. If you want to override it, set `forced=True`.
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:01 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:01 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+Version info:Mcoplib_Version = '0.4.15'
+Build_Maca_Version = '3.9.0.31'
+Build_Torch_Version = '2.10.0+metax3.9.0.8'
+Min_Compatibility_Maca_Version = '3.7.0'
+GIT_BRANCH = 'HEAD'
+GIT_COMMIT = '369cd71'
+Vllm Op Version = 0.30.0
+SGlang Op Version  = 0.5.21 
+
+INFO mcoplib version: None
+
+INFO: Torch version compatibility check passed: build=2.10.0+metax3.9.0.8, runtime=2.10.0+metax3.9.0.8.
+
+INFO: Release major.minor matching,  successful:3.9. 
+
+INFO: MACA minimum compatibility check passed: 3.9.0 >= 3.7.0.
+
+WARNING 10-29 17:10:02 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): libcudart.so.13: cannot open shared object file: No such file or directory
+(Worker pid=967) INFO 10-29 17:10:06 [parallel_state.py:1827] world_size=8 rank=2 local_rank=2 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=966) INFO 10-29 17:10:06 [parallel_state.py:1827] world_size=8 rank=1 local_rank=1 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=968) INFO 10-29 17:10:06 [parallel_state.py:1827] world_size=8 rank=3 local_rank=3 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=969) INFO 10-29 17:10:06 [parallel_state.py:1827] world_size=8 rank=4 local_rank=4 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=971) INFO 10-29 17:10:06 [parallel_state.py:1827] world_size=8 rank=6 local_rank=6 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=965) INFO 10-29 17:10:07 [parallel_state.py:1827] world_size=8 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=970) INFO 10-29 17:10:07 [parallel_state.py:1827] world_size=8 rank=5 local_rank=5 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=972) INFO 10-29 17:10:07 [parallel_state.py:1827] world_size=8 rank=7 local_rank=7 distributed_init_method=file:///tmp/vllm_dist_64e5a5adfc11440699bfaf0b6a223c57 backend=nccl
+(Worker pid=965) INFO 10-29 17:10:07 [mccl.py:27] Found mccl from library libmccl.so
+(Worker pid=965) INFO 10-29 17:10:07 [pynccl.py:148] vLLM is using nccl==2.30.4
+[17:10:19.348][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:10:19.348][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:10:19.348][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:10:19.348][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:10:19.348][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:10:19.349][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:10:19.349][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:10:19.349][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:10:29.588][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:10:29.589][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:10:39.828][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:10:39.828][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:10:39.828][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:10:39.828][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:10:39.829][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:10:39.829][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:10:39.829][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:10:39.829][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:10:50.068][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:10:50.068][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:10:50.068][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:10:50.068][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:10:50.069][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:10:50.069][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:10:50.069][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:10:50.069][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:11:00.308][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:11:00.309][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:11:10.548][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:11:10.549][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:11:10.549][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
+[17:11:20.788][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:7142 type:21. Retrying.
+[17:11:20.788][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:18469 type:21. Retrying.
+[17:11:20.788][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:51083 type:21. Retrying.
+[17:11:20.788][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:37960 type:21. Retrying.
+[17:11:20.789][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:35623 type:21. Retrying.
+[17:11:20.789][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:22346 type:21. Retrying.
+[17:11:20.789][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:34137 type:21. Retrying.
+[17:11:20.789][MXKW][E]queues.c                :844 : [mxkwCreateQueueBlock][Hint]ioctl create queue block timeout, gpu_id:55524 type:21. Retrying.
