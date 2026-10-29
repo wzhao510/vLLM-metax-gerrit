@@ -1,6 +1,7 @@
 """Final fused TileLang Hadamard implementation for wave64 GPUs."""
 
 import math
+import os
 from typing import Dict, Tuple
 
 import torch
@@ -16,17 +17,12 @@ from .utils import (
 )
 
 
-@tilelang.autotune(
-    configs=get_hadamard_configs,
-    supply_prog=supply_hadamard_inputs,
-    skip_check=True,
-)
 @tilelang.jit(
     pass_configs={
         tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True,
     }
 )
-def make_hadamard_kernel(
+def _compile_hadamard_kernel(
     hidden_size: int,
     base_order: int,
     inverse: bool,
@@ -191,7 +187,46 @@ def make_hadamard_kernel(
     return kernel
 
 
+make_hadamard_kernel = tilelang.autotune(
+    configs=get_hadamard_configs,
+    supply_prog=supply_hadamard_inputs,
+    skip_check=True,
+)(_compile_hadamard_kernel)
+
+
 _KERNEL_CACHE: Dict[Tuple[int, int, bool, str, int], object] = {}
+
+
+def _build_kernel(
+    hidden_size: int,
+    base_order: int,
+    inverse: bool,
+    dtype: str,
+    gemm_order: int,
+):
+    """Compile the Hadamard kernel, optionally skipping the autotuner.
+
+    ``VLLM_METAX_HADAMARD_AUTOTUNE=0`` skips the benchmark entirely: every
+    vLLM worker would otherwise benchmark the same kernel on its own device at
+    the same time, which wedges MACA queue blocks
+    (``mxkwCreateQueueBlock ioctl timeout``). It then pins the head
+    configuration and only compiles.
+    """
+    if os.getenv("VLLM_METAX_HADAMARD_AUTOTUNE", "1") == "0":
+        mma_rows = max(16, (hidden_size // gemm_order // 32) * 32)
+        return _compile_hadamard_kernel(
+            hidden_size,
+            base_order,
+            inverse,
+            dtype,
+            num_threads=256,
+            gemm_order=gemm_order,
+            mma_rows=mma_rows,
+            gemm_policy="square",
+        )
+    return make_hadamard_kernel.compile(
+        hidden_size, base_order, inverse, dtype, gemm_order=gemm_order
+    )
 
 
 def hadamard(
@@ -238,12 +273,8 @@ def hadamard(
         gemm_order,
     )
     if key not in _KERNEL_CACHE:
-        _KERNEL_CACHE[key] = make_hadamard_kernel.compile(
-            hidden_size,
-            base_order,
-            inverse,
-            tilelang_dtype,
-            gemm_order=gemm_order,
+        _KERNEL_CACHE[key] = _build_kernel(
+            hidden_size, base_order, inverse, tilelang_dtype, gemm_order
         )
 
     input_2d = x.reshape(-1, hidden_size).contiguous()
