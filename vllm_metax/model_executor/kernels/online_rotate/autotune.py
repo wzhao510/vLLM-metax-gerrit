@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from tilelang.engine.param import KernelParam
@@ -22,7 +23,7 @@ def get_hadamard_configs(
     gemm_policy: str = "square",
 ) -> list[dict[str, int | str]]:
     """Build ``threads x neighboring M tiles x policies`` candidates."""
-    del base_order, inverse, dtype, num_threads, mma_rows, gemm_policy
+    del base_order, inverse, dtype, mma_rows, gemm_policy
 
     rows_per_token = hidden_size // gemm_order
     floor_rows = (rows_per_token // 32) * 32
@@ -31,6 +32,18 @@ def get_hadamard_configs(
     for rows in (floor_rows, ceil_rows):
         if rows > 0 and rows not in row_candidates:
             row_candidates.append(rows)
+
+    # Bring-up switch: every vLLM worker autotunes on its own device, and the
+    # 4-way benchmark can exhaust MACA queue blocks (mxkwCreateQueueBlock
+    # ioctl timeout). Pinning one configuration avoids the extra launches.
+    if os.getenv("VLLM_METAX_HADAMARD_AUTOTUNE", "1") == "0":
+        return [
+            {
+                "num_threads": num_threads,
+                "mma_rows": row_candidates[0] if row_candidates else 0,
+                "gemm_policy": "square",
+            }
+        ]
 
     return [
         {
