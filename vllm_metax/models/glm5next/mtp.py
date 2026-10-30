@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 
 from vllm.config import VllmConfig
+from vllm.model_executor.layers.layernorm import RMSNorm
 from vllm.model_executor.layers.logits_processor import LogitsProcessor
 from vllm.model_executor.layers.vocab_parallel_embedding import (
     VocabParallelEmbedding,
@@ -17,8 +18,12 @@ from vllm.models.glm5next.nvidia.mtp import (
     Glm5NextMTP,
     Glm5NextMultiTokenPredictor,
     Glm5NextMultiTokenPredictorLayer,
+    SharedHead,
 )
 from vllm.models.glm5next.nvidia.ops.fused_eh_norm import fused_eh_norm
+from vllm.platforms import current_platform
+
+from .model import MacaGlm5NextDecoderLayer
 
 from vllm_metax.model_executor.layers.online_rotation import (
     build_rotation,
@@ -28,7 +33,52 @@ from vllm_metax.model_executor.layers.online_rotation import (
 
 class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
     def __init__(self, vllm_config: VllmConfig, prefix: str) -> None:
-        super().__init__(vllm_config, prefix)
+        # Do not delegate to the upstream layer: it builds the MTP block with
+        # the nvidia decoder, which hard-codes ``quant_config=None`` for MLA
+        # projections. That drops the W8A8 ``kv_a_proj_with_mqa.weight_scale``
+        # this checkpoint stores for layer 45, so draft weight loading fails.
+        # Building the block with ``MacaGlm5NextDecoderLayer`` reuses our MLA
+        # that upgrades itself to compressed-tensors W8A8.
+        nn.Module.__init__(self)
+        assert vllm_config.speculative_config is not None
+        config = vllm_config.speculative_config.draft_model_config.hf_config
+        self.config = config
+        quant_config = vllm_config.quant_config
+
+        self.enorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
+        self.hnorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
+        self.eh_proj = nn.Linear(
+            config.hidden_size * 2, config.hidden_size, bias=False
+        )
+
+        topk_tokens = config.index_topk
+        assert topk_tokens is not None
+        kpool = config.index_kpool
+        assert kpool is not None
+        buffer_width = topk_tokens + (kpool - 1 if kpool > 1 else 0)
+        sparse_topk_block_n = 128
+        buffer_width = (
+            (buffer_width + sparse_topk_block_n - 1) // sparse_topk_block_n
+        ) * sparse_topk_block_n
+        topk_indices_buffer = torch.empty(
+            vllm_config.scheduler_config.max_num_batched_tokens,
+            buffer_width,
+            dtype=torch.int32,
+            device=current_platform.device_type,
+        )
+        self.shared_head = SharedHead(
+            config=config, prefix=prefix, quant_config=quant_config
+        )
+
+        layer_idx = int(prefix.rsplit(".", 1)[-1])
+        self.mtp_block = MacaGlm5NextDecoderLayer(
+            vllm_config=vllm_config,
+            config=config,
+            layer_idx=layer_idx,
+            prefix=prefix,
+            topk_indices_buffer=topk_indices_buffer,
+            is_mtp_layer=True,
+        )
 
         rotation_module_name = maybe_prefix(
             prefix,
