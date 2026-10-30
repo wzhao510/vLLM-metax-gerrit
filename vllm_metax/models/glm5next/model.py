@@ -393,7 +393,15 @@ class MacaGlm5NextModel(Glm5NextModel):
         # The last mHC layer already materialized the final residual sum into
         # ``hidden_states``; rotate it back to the original basis before norm.
         if self.use_hadamard_rotation:
+            import os
+            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+                print(f"[ROTATION-DEBUG] use_hadamard_rotation={self.use_hadamard_rotation} "
+                      f"before mean={hidden_states.float().mean().item():.6f} "
+                      f"std={hidden_states.float().std().item():.6f}", flush=True)
             hidden_states = self.prenorm_hadamard_rotation(hidden_states)
+            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+                print(f"[ROTATION-DEBUG] after  mean={hidden_states.float().mean().item():.6f} "
+                      f"std={hidden_states.float().std().item():.6f}", flush=True)
         hidden_states = self.norm(hidden_states)
         return hidden_states
 

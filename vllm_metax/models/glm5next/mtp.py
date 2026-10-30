@@ -71,9 +71,15 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
         )
         if self.use_hadamard_rotation:
             # Rotate the summed residual stream back before shared_head norm.
-            hidden_states = self.shared_head.prenorm_hadamard_rotation(
-                hidden_states + residual
-            )
+            import os
+            _x = hidden_states + residual
+            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+                print(f"[ROTATION-DEBUG-MTP] before mean={_x.float().mean().item():.6f} "
+                      f"std={_x.float().std().item():.6f}", flush=True)
+            hidden_states = self.shared_head.prenorm_hadamard_rotation(_x)
+            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+                print(f"[ROTATION-DEBUG-MTP] after  mean={hidden_states.float().mean().item():.6f} "
+                      f"std={hidden_states.float().std().item():.6f}", flush=True)
             hidden_states = self.shared_head.norm(hidden_states)
         else:
             hidden_states, _ = self.shared_head.norm(
