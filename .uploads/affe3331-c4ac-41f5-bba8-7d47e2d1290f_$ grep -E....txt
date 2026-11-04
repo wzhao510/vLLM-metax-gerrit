@@ -1,0 +1,465 @@
+$ grep -E "\[MTP-WEIGHT\]|\[MTP-FWD\]|\[ROTATION-DEBUG-MTP\]" /tmp/serve_mtp5.log
+(Worker_TP3 pid=237358) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP3 pid=237358) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP3 pid=237358) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP4 pid=237444) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP4 pid=237444) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP4 pid=237444) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP7 pid=237621) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP7 pid=237621) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP7 pid=237621) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP1 pid=237245) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP1 pid=237245) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP1 pid=237245) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP5 pid=237503) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP5 pid=237503) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP5 pid=237503) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP0 pid=237202) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP0 pid=237202) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP0 pid=237202) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP2 pid=237299) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP2 pid=237299) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP2 pid=237299) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP6 pid=237562) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP6 pid=237562) [MTP-WEIGHT] eh_proj                             mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] enorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] hnorm                               mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] mtp_block.input_layernorm           mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] mtp_block.post_attention_layernorm  mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] shared_head.norm                    mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] shared_head.head                    mean=2.8026e-45 std=0.0000e+00 absmax=1.2214e-38 finite=True -> OK
+(Worker_TP6 pid=237562) [MTP-WEIGHT] loaded 33/36 params; missing=['shared_head.head.weight', 'mtp_block.self_attn.kv_b_proj.weight_scale', 'mtp_block.self_attn.indexer.wq_b.weight_scale']
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=3.0092e-05 std=4.9363e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=nan std=nan finite=False
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=nan std=nan finite=False
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=nan std=nan finite=False
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=nan std=nan
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=nan std=nan
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=5.3756e-05 std=6.1295e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=3.0981e-03 std=1.2415e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=4.3939e-03 std=8.7449e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.7836e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-178357064849070284079104.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-47844157274556676964352.000000 std=inf
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=5.5298e-05 std=6.4674e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=-7.0430e-04 std=1.2568e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=3.5991e-03 std=9.3015e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.5061e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-150606109125194656251904.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-40371717218829139443712.000000 std=inf
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=2.9746e-04 std=6.4341e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=-1.8764e-02 std=1.2869e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=1.3353e-02 std=9.4978e-01 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.4811e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-148110061089318596771840.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-39559961400394117021696.000000 std=inf
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=4.3277e-05 std=5.2869e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=-9.5206e-03 std=1.3117e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=-1.3039e-04 std=9.3181e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.4513e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-145128173732841062924288.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-38565976430236802220032.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=5.8987e-05 std=5.3678e-03 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=1.2570e-03 std=1.2804e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=5.2388e-03 std=9.3344e-01 finite=True
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.4143e+23 std=inf finite=True
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-141434429404862838996992.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-38058776536602709590016.000000 std=inf
+(Worker_TP1 pid=237245) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] inputs_embeds      mean=1.4851e-04 std=1.0496e-02 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP3 pid=237358) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP4 pid=237444) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP6 pid=237562) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP1 pid=237245) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP4 pid=237444) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP0 pid=237202) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP3 pid=237358) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP5 pid=237503) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP6 pid=237562) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP1 pid=237245) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] prev_hidden        mean=-4.4123e-03 std=1.3495e+00 finite=True
+(Worker_TP2 pid=237299) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP4 pid=237444) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] eh_input           mean=5.1309e-03 std=9.7901e-01 finite=True
+(Worker_TP0 pid=237202) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP3 pid=237358) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf
+(Worker_TP7 pid=237621) [MTP-FWD] post_eh_proj       mean=0.0000e+00 std=0.0000e+00 finite=True
+(Worker_TP7 pid=237621) [MTP-FWD] post_mtp_residual  mean=-1.3959e+23 std=inf finite=True
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] before mean=-139588530018393239060480.000000 std=inf
+(Worker_TP7 pid=237621) [ROTATION-DEBUG-MTP] after  mean=-37658622702511586279424.000000 std=inf

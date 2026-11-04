@@ -154,27 +154,29 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
                 self.enorm.variance_epsilon,
             )
         hidden_states = self.eh_proj(eh_input)
+        _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
+        if _dbg:
+            def _stats(tag, t):
+                tf = t.float()
+                print(f"[MTP-FWD] {tag:18s} mean={tf.mean().item():.4e} "
+                      f"std={tf.std().item():.4e} "
+                      f"finite={bool(torch.isfinite(tf).all().item())}",
+                      flush=True)
+            _stats("inputs_embeds", inputs_embeds)
+            _stats("prev_hidden", previous_hidden_states)
+            _stats("eh_input", eh_input)
+            _stats("post_eh_proj", hidden_states)
         # Fuse the residual add and final RMSNorm. Glm5NextMoE already performs
         # its all-reduce, so no collective is needed here. The post-norm result
         # feeds both draft logits and the next recycled hidden state.
         hidden_states, residual, _, _ = self.mtp_block(
             positions=positions, hidden_states=hidden_states, residual=None
         )
+        if _dbg:
+            _stats("mtp_hidden_out", hidden_states)
+            _stats("mtp_residual", residual)
         if self.use_hadamard_rotation:
             # Rotate the summed residual stream back before shared_head norm.
-            _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
-            if _dbg:
-                def _stats(tag, t):
-                    tf = t.float()
-                    print(f"[MTP-FWD] {tag:18s} mean={tf.mean().item():.4e} "
-                          f"std={tf.std().item():.4e} "
-                          f"finite={bool(torch.isfinite(tf).all().item())}",
-                          flush=True)
-                _stats("inputs_embeds", inputs_embeds)
-                _stats("prev_hidden", previous_hidden_states)
-                _stats("eh_input", eh_input)
-                _stats("post_eh_proj", hidden_states)
-                _stats("post_mtp_residual", residual)
             _x = hidden_states + residual
             if _dbg:
                 print(f"[ROTATION-DEBUG-MTP] before mean={_x.float().mean().item():.6f} "
@@ -235,7 +237,23 @@ class MacaGlm5NextMTP(Glm5NextMTP):
         self.set_moe_parameters()
 
     def load_weights(self, weights):
-        loaded = super().load_weights(weights)
+        # The GLM-5.3 checkpoint stores the MTP language-model head at the
+        # top-level ``lm_head.weight`` key (shared with the base model), not
+        # under the spec layer.  The inherited Glm5NextMTP.load_weights only
+        # accepts spec-layer keys (it skips anything get_spec_layer_idx...
+        # returns None for), so without this remap shared_head.head stays at
+        # its torch.empty initial value and draft logits are garbage.
+        spec_layer = self.config.num_hidden_layers
+        head_target = f"model.layers.{spec_layer}.shared_head.head.weight"
+
+        def _remap_head(iterable):
+            for name, w in iterable:
+                if name == "lm_head.weight":
+                    yield head_target, w
+                else:
+                    yield name, w
+
+        loaded = super().load_weights(_remap_head(weights))
         self._probe_mtp_weights(loaded)
         return loaded
 
@@ -262,7 +280,21 @@ class MacaGlm5NextMTP(Glm5NextMTP):
                  layer.mtp_block.post_attention_layernorm.weight),
                 ("shared_head.norm", layer.shared_head.norm.weight),
                 ("shared_head.head", layer.shared_head.head.weight),
+                ("mtp_block.self_attn.fused_qkv_a_proj",
+                 layer.mtp_block.self_attn.fused_qkv_a_proj.weight),
+                ("mtp_block.self_attn.kv_b_proj",
+                 layer.mtp_block.self_attn.kv_b_proj.weight),
             ]
+            # W4A8 MoE: spot-check the first routed expert's gate weight.
+            moe = layer.mtp_block.mlp
+            if hasattr(moe, "experts") and len(moe.experts) > 0:
+                exp0 = moe.experts[0]
+                for pname in ("gate_proj", "up_proj", "down_proj"):
+                    if hasattr(exp0, pname):
+                        probe_targets.append(
+                            (f"mtp_block.mlp.exp0.{pname}",
+                             getattr(exp0, pname).weight)
+                        )
             for tag, w in probe_targets:
                 wf = w.float()
                 finite = bool(torch.isfinite(wf).all().item())
