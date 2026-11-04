@@ -3,6 +3,8 @@
 
 """MetaX GLM-5.3 MTP with QuaRot online rotation support."""
 
+import os
+
 import torch
 import torch.nn as nn
 
@@ -29,6 +31,35 @@ from vllm_metax.model_executor.layers.online_rotation import (
     build_rotation,
     get_online_rotation_module_config,
 )
+
+
+def _fused_eh_norm_unfused(
+    positions: torch.Tensor,
+    inputs_embeds: torch.Tensor,
+    previous_hidden_states: torch.Tensor,
+    enorm_weight: torch.Tensor,
+    hnorm_weight: torch.Tensor,
+    eps: float,
+) -> torch.Tensor:
+    """Pure-PyTorch fallback for the nvidia ``fused_eh_norm`` op.
+
+    The upstream op is a fused CUDA kernel with no MetaX backend; if it
+    produces garbage on MACA this bit-exact equivalent (zero pos-0 embeds +
+    enorm(embeds) + hnorm(prev) + cat -> [N, 2H]) can be enabled via
+    ``VLLM_METAX_MTP_UNFUSED_EH_NORM=1``.
+    """
+    # Zero position-0 embeddings (the draft's first slot has no real embed).
+    mask = (positions != 0).to(inputs_embeds.dtype).unsqueeze(-1)
+    embeds = inputs_embeds * mask
+    # enorm(embeds) -- RMSNorm
+    embeds_norm = embeds * torch.rsqrt(
+        embeds.pow(2).mean(dim=-1, keepdim=True) + eps
+    ) * enorm_weight
+    # hnorm(prev) -- RMSNorm
+    prev_norm = previous_hidden_states * torch.rsqrt(
+        previous_hidden_states.pow(2).mean(dim=-1, keepdim=True) + eps
+    ) * hnorm_weight
+    return torch.cat([embeds_norm, prev_norm], dim=-1)
 
 
 class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
@@ -104,14 +135,24 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
     ) -> torch.Tensor:
         assert inputs_embeds is not None
         # Fused: zero pos-0 embeds + enorm(embeds) + hnorm(prev) + cat -> [N, 2H].
-        eh_input = fused_eh_norm(
-            positions,
-            inputs_embeds,
-            previous_hidden_states,
-            self.enorm.weight,
-            self.hnorm.weight,
-            self.enorm.variance_epsilon,
-        )
+        if os.getenv("VLLM_METAX_MTP_UNFUSED_EH_NORM"):
+            eh_input = _fused_eh_norm_unfused(
+                positions,
+                inputs_embeds,
+                previous_hidden_states,
+                self.enorm.weight,
+                self.hnorm.weight,
+                self.enorm.variance_epsilon,
+            )
+        else:
+            eh_input = fused_eh_norm(
+                positions,
+                inputs_embeds,
+                previous_hidden_states,
+                self.enorm.weight,
+                self.hnorm.weight,
+                self.enorm.variance_epsilon,
+            )
         hidden_states = self.eh_proj(eh_input)
         # Fuse the residual add and final RMSNorm. Glm5NextMoE already performs
         # its all-reduce, so no collective is needed here. The post-norm result
@@ -121,7 +162,6 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
         )
         if self.use_hadamard_rotation:
             # Rotate the summed residual stream back before shared_head norm.
-            import os
             _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
             if _dbg:
                 def _stats(tag, t):
@@ -207,8 +247,6 @@ class MacaGlm5NextMTP(Glm5NextMTP):
         across TP ranks, so unloaded ones produce identical inf output on
         every rank -- the symptom we are chasing.
         """
-        import os
-
         if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
             return
 
@@ -223,6 +261,7 @@ class MacaGlm5NextMTP(Glm5NextMTP):
                 ("mtp_block.post_attention_layernorm",
                  layer.mtp_block.post_attention_layernorm.weight),
                 ("shared_head.norm", layer.shared_head.norm.weight),
+                ("shared_head.head", layer.shared_head.head.weight),
             ]
             for tag, w in probe_targets:
                 wf = w.float()
