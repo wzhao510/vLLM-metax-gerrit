@@ -286,15 +286,22 @@ class MacaGlm5NextMTP(Glm5NextMTP):
                  layer.mtp_block.self_attn.kv_b_proj.weight),
             ]
             # W4A8 MoE: spot-check the first routed expert's gate weight.
-            moe = layer.mtp_block.mlp
-            if hasattr(moe, "experts") and len(moe.experts) > 0:
-                exp0 = moe.experts[0]
-                for pname in ("gate_proj", "up_proj", "down_proj"):
-                    if hasattr(exp0, pname):
-                        probe_targets.append(
-                            (f"mtp_block.mlp.exp0.{pname}",
-                             getattr(exp0, pname).weight)
-                        )
+            # moe.experts may be a MoERunner (not len()-able), so guard it.
+            try:
+                moe = layer.mtp_block.mlp
+                if hasattr(moe, "experts"):
+                    experts = moe.experts
+                    # experts is nn.ModuleList in FusedMoE, MoERunner otherwise.
+                    if isinstance(experts, torch.nn.ModuleList) and len(experts) > 0:
+                        exp0 = experts[0]
+                        for pname in ("gate_proj", "up_proj", "down_proj"):
+                            if hasattr(exp0, pname):
+                                probe_targets.append(
+                                    (f"mtp_block.mlp.exp0.{pname}",
+                                     getattr(exp0, pname).weight)
+                                )
+            except Exception as exc:
+                print(f"[MTP-WEIGHT] moe probe skipped: {exc}", flush=True)
             for tag, w in probe_targets:
                 wf = w.float()
                 finite = bool(torch.isfinite(wf).all().item())

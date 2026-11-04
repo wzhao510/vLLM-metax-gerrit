@@ -1,0 +1,375 @@
+(Worker_TP0 pid=243121) INFO 11-04 21:06:02 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(Worker_TP0 pid=243121) INFO 11-04 21:06:02 [__init__.py:794] Selected MctlassScaledMMLinearKernel for CompressedTensorsW8A8Int8
+(Worker_TP7 pid=243540) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP5 pid=243395) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP6 pid=243481) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP2 pid=243218) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP1 pid=243164) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP0 pid=243121) INFO 11-04 21:06:03 [platform.py:519] Some attention backends are not valid for maca with AttentionSelectorConfig(head_size=512, dtype=torch.bfloat16, kv_cache_dtype=auto, block_size=None, use_mla=True, has_sink=False, use_sparse=True, use_mm_prefix=False, use_per_head_quant_scales=False, attn_type=decoder, has_sliding_window=False, use_non_causal=False, use_batch_invariant=False, use_kv_connector=False, use_adaptive_verification=False, use_pcp=False, use_dcp=False, use_rswa=False). Reasons: {FLASHMLA: [sparse not supported], TRITON_MLA: [sparse not supported]}.
+(Worker_TP0 pid=243121) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP0 pid=243121) INFO 11-04 21:06:03 [platform.py:562] Using FLASHMLA_SPARSE attention backend out of potential backends: ('FLASHMLA_SPARSE',)
+(Worker_TP0 pid=243121) INFO 11-04 21:06:03 [selector.py:154] Using FLASH_ATTN MLA prefill backend.
+(Worker_TP0 pid=243121) INFO 11-04 21:06:03 [deep_gemm.py:139] DeepGEMM E8M0 disabled on current configuration.
+(Worker_TP3 pid=243277) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP4 pid=243336) INFO 11-04 21:06:03 [platform.py:531] Valid backends: ['FLASHMLA_SPARSE']
+(Worker_TP0 pid=243121) INFO 11-04 21:06:04 [weight_utils.py:895] Filesystem type for checkpoints: AUTOFS. Checkpoint size: 160.79 GiB. Available RAM: 1615.54 GiB.
+(Worker_TP0 pid=243121) INFO 11-04 21:06:04 [weight_utils.py:918] Auto-prefetch is disabled because the filesystem (AUTOFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:   0% Completed | 0/48 [00:00<?, ?it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:   4% Completed | 2/48 [00:00<00:02, 18.67it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:   8% Completed | 4/48 [00:01<00:19,  2.29it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  10% Completed | 5/48 [00:03<00:44,  1.03s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  12% Completed | 6/48 [00:05<00:47,  1.12s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  15% Completed | 7/48 [00:06<00:48,  1.17s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  17% Completed | 8/48 [00:08<00:53,  1.35s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  19% Completed | 9/48 [00:10<01:07,  1.73s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  21% Completed | 10/48 [00:12<01:07,  1.78s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  23% Completed | 11/48 [00:14<01:04,  1.73s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  25% Completed | 12/48 [00:16<01:00,  1.67s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  27% Completed | 13/48 [00:17<01:01,  1.76s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  29% Completed | 14/48 [00:19<00:56,  1.66s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  31% Completed | 15/48 [00:20<00:52,  1.58s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  33% Completed | 16/48 [00:21<00:43,  1.35s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  35% Completed | 17/48 [00:23<00:48,  1.55s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  38% Completed | 18/48 [00:25<00:48,  1.63s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  40% Completed | 19/48 [00:27<00:47,  1.65s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  42% Completed | 20/48 [00:29<00:50,  1.80s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  44% Completed | 21/48 [00:31<00:49,  1.85s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  46% Completed | 22/48 [00:33<00:50,  1.93s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  48% Completed | 23/48 [00:35<00:52,  2.08s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  50% Completed | 24/48 [00:38<00:52,  2.19s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  52% Completed | 25/48 [00:40<00:51,  2.25s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  54% Completed | 26/48 [00:42<00:49,  2.26s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  56% Completed | 27/48 [00:45<00:47,  2.24s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  58% Completed | 28/48 [00:47<00:44,  2.21s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  60% Completed | 29/48 [00:49<00:42,  2.21s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  62% Completed | 30/48 [00:52<00:42,  2.37s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  65% Completed | 31/48 [00:54<00:40,  2.40s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  67% Completed | 32/48 [00:56<00:34,  2.18s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  69% Completed | 33/48 [00:59<00:35,  2.34s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  71% Completed | 34/48 [01:01<00:31,  2.24s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  73% Completed | 35/48 [01:02<00:26,  2.05s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  75% Completed | 36/48 [01:04<00:24,  2.06s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  77% Completed | 37/48 [01:06<00:22,  2.06s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  79% Completed | 38/48 [01:08<00:18,  1.88s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  81% Completed | 39/48 [01:10<00:17,  1.92s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  83% Completed | 40/48 [01:11<00:13,  1.72s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  85% Completed | 41/48 [01:13<00:11,  1.64s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  88% Completed | 42/48 [01:14<00:08,  1.46s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  90% Completed | 43/48 [01:15<00:07,  1.56s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  92% Completed | 44/48 [01:17<00:06,  1.72s/it]
+(Worker_TP4 pid=243336) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  94% Completed | 45/48 [01:18<00:04,  1.49s/it]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  96% Completed | 46/48 [01:19<00:02,  1.09s/it]
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944] WorkerProc failed to start.
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944] Traceback (most recent call last):
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 911, in worker_main
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     worker = WorkerProc(*args, **kwargs)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 680, in __init__
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self.worker.load_model()
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 507, in load_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/model_runner.py", line 421, in load_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self.speculator.load_model(self.model)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py", line 51, in load_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     super().load_model(target_model)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/speculator.py", line 218, in load_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self.model = self.load_draft_model(target_model, target_attn_layer_names)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/mtp/speculator.py", line 20, in load_draft_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     draft_model = load_eagle_model(target_model, self.vllm_config)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/eagle/utils.py", line 111, in load_eagle_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     eagle_model = get_model(
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     return loader.load_model(
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/base_loader.py", line 75, in load_model
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self.load_weights(model, model_config)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/default_loader.py", line 427, in load_weights
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     loaded_weights = model.load_weights(self.get_all_weights(model_config, model))
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 257, in load_weights
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     self._probe_mtp_weights(loaded)
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 290, in _probe_mtp_weights
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944]     if hasattr(moe, "experts") and len(moe.experts) > 0:
+(Worker_TP4 pid=243336) ERROR 11-04 21:07:23 [multiproc_executor.py:944] TypeError: object of type 'MoERunner' has no len()
+(EngineCore pid=242851) INFO 11-04 21:07:23 [multiproc_executor.py:472] [shutdown] Executor: waiting for worker exit count=8
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  98% Completed | 47/48 [01:19<00:00,  1.17it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [01:19<00:00,  1.66s/it]
+(Worker_TP0 pid=243121) 
+(Worker_TP0 pid=243121) INFO 11-04 21:07:23 [default_loader.py:430] Loading weights took 79.48 seconds
+(Worker_TP0 pid=243121) INFO 11-04 21:07:24 [int8.py:289] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0 pid=243121) INFO 11-04 21:07:24 [weight_utils.py:895] Filesystem type for checkpoints: AUTOFS. Checkpoint size: 160.79 GiB. Available RAM: 1613.60 GiB.
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:   0% Completed | 0/48 [00:00<?, ?it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  10% Completed | 5/48 [00:00<00:01, 31.06it/s]
+[rank4]:[W1104 21:07:24.079687979 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  19% Completed | 9/48 [00:00<00:02, 17.72it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  25% Completed | 12/48 [00:00<00:02, 15.50it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  29% Completed | 14/48 [00:00<00:02, 14.67it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  33% Completed | 16/48 [00:01<00:02, 14.05it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  38% Completed | 18/48 [00:01<00:02, 13.59it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  42% Completed | 20/48 [00:01<00:02, 13.28it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  46% Completed | 22/48 [00:01<00:01, 13.11it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  50% Completed | 24/48 [00:01<00:01, 12.98it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  54% Completed | 26/48 [00:01<00:01, 12.91it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  58% Completed | 28/48 [00:01<00:01, 12.81it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  62% Completed | 30/48 [00:02<00:01, 12.78it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  67% Completed | 32/48 [00:02<00:01, 12.76it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  71% Completed | 34/48 [00:02<00:01, 12.75it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  75% Completed | 36/48 [00:02<00:00, 12.74it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  79% Completed | 38/48 [00:02<00:00, 12.76it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  83% Completed | 40/48 [00:02<00:00, 11.88it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  88% Completed | 42/48 [00:03<00:00, 11.13it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  92% Completed | 44/48 [00:03<00:00, 11.19it/s]
+(Worker_TP2 pid=243218) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP5 pid=243395) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  96% Completed | 46/48 [00:03<00:00,  7.13it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards:  98% Completed | 47/48 [00:04<00:00,  7.08it/s]
+(Worker_TP0 pid=243121) 
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [00:04<00:00, 11.94it/s]
+(Worker_TP0 pid=243121) 
+(Worker_TP0 pid=243121) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944] WorkerProc failed to start.
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944] Traceback (most recent call last):
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 911, in worker_main
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     worker = WorkerProc(*args, **kwargs)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 680, in __init__
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.worker.load_model()
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 507, in load_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/model_runner.py", line 421, in load_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.speculator.load_model(self.model)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py", line 51, in load_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     super().load_model(target_model)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/speculator.py", line 218, in load_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.model = self.load_draft_model(target_model, target_attn_layer_names)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/mtp/speculator.py", line 20, in load_draft_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     draft_model = load_eagle_model(target_model, self.vllm_config)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/eagle/utils.py", line 111, in load_eagle_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     eagle_model = get_model(
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return loader.load_model(
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/base_loader.py", line 75, in load_model
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.load_weights(model, model_config)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/default_loader.py", line 427, in load_weights
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     loaded_weights = model.load_weights(self.get_all_weights(model_config, model))
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 257, in load_weights
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self._probe_mtp_weights(loaded)
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 290, in _probe_mtp_weights
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     if hasattr(moe, "experts") and len(moe.experts) > 0:
+(Worker_TP2 pid=243218) ERROR 11-04 21:07:28 [multiproc_executor.py:944] TypeError: object of type 'MoERunner' has no len()
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944] WorkerProc failed to start.
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944] Traceback (most recent call last):
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 911, in worker_main
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     worker = WorkerProc(*args, **kwargs)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 680, in __init__
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.worker.load_model()
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu_worker.py", line 507, in load_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/model_runner.py", line 421, in load_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.speculator.load_model(self.model)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py", line 51, in load_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     super().load_model(target_model)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/speculator.py", line 218, in load_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.model = self.load_draft_model(target_model, target_attn_layer_names)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/mtp/speculator.py", line 20, in load_draft_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     draft_model = load_eagle_model(target_model, self.vllm_config)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/worker/gpu/spec_decode/eagle/utils.py", line 111, in load_eagle_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     eagle_model = get_model(
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return loader.load_model(
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/base_loader.py", line 75, in load_model
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self.load_weights(model, model_config)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     return func(*args, **kwargs)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm/model_executor/model_loader/default_loader.py", line 427, in load_weights
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     loaded_weights = model.load_weights(self.get_all_weights(model_config, model))
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 257, in load_weights
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     self._probe_mtp_weights(loaded)
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]   File "/opt/conda/lib/python3.10/site-packages/vllm_metax/models/glm5next/mtp.py", line 290, in _probe_mtp_weights
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944]     if hasattr(moe, "experts") and len(moe.experts) > 0:
+(Worker_TP5 pid=243395) ERROR 11-04 21:07:28 [multiproc_executor.py:944] TypeError: object of type 'MoERunner' has no len()
+(Worker_TP3 pid=243277) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP7 pid=243540) [MTP-WEIGHT] === layer 45 ===
+(EngineCore pid=242851) WARNING 11-04 21:07:28 [multiproc_executor.py:484] [shutdown] Executor: workers still running after grace period; sending SIGTERM count=8
+[rank0]:[W1104 21:07:29.991973496 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank3]:[W1104 21:07:29.224033026 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank7]:[W1104 21:07:29.334784858 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank6]:[W1104 21:07:30.556034336 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank1]:[W1104 21:07:30.586250530 ProcessGroupNCCL.cpp:1559] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(EngineCore pid=242851) WARNING 11-04 21:07:32 [multiproc_executor.py:494] [shutdown] Executor: workers still running after SIGTERM; sending SIGKILL count=5
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366] EngineCore failed to start.
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366] Traceback (most recent call last):
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     super().__init__(
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 134, in __init__
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 116, in __init__
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     super().__init__(vllm_config)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/abstract.py", line 110, in __init__
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     self._init_executor()
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 214, in _init_executor
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     self.workers = WorkerProc.wait_for_ready(unready_workers)
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 808, in wait_for_ready
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366]     raise e from None
+(EngineCore pid=242851) ERROR 11-04 21:07:32 [core.py:1366] Exception: WorkerProc initialization failed due to an exception in a background process. See stack trace for root cause.
+(EngineCore pid=242851) Process EngineCore:
+(EngineCore pid=242851) Traceback (most recent call last):
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+(EngineCore pid=242851)     self.run()
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/multiprocessing/process.py", line 108, in run
+(EngineCore pid=242851)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 1370, in run_engine_core
+(EngineCore pid=242851)     raise e
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=242851)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=242851)     return func(*args, **kwargs)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=242851)     super().__init__(
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core.py", line 134, in __init__
+(EngineCore pid=242851)     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 116, in __init__
+(EngineCore pid=242851)     super().__init__(vllm_config)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=242851)     return func(*args, **kwargs)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/abstract.py", line 110, in __init__
+(EngineCore pid=242851)     self._init_executor()
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 214, in _init_executor
+(EngineCore pid=242851)     self.workers = WorkerProc.wait_for_ready(unready_workers)
+(EngineCore pid=242851)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/executor/multiproc_executor.py", line 808, in wait_for_ready
+(EngineCore pid=242851)     raise e from None
+(EngineCore pid=242851) Exception: WorkerProc initialization failed due to an exception in a background process. See stack trace for root cause.
+(APIServer pid=242201) INFO 11-04 21:07:43 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=242201) Traceback (most recent call last):
+(APIServer pid=242201)   File "/opt/conda/bin/vllm", line 8, in <module>
+(APIServer pid=242201)     sys.exit(main())
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=242201)     args.dispatch_function(args)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+(APIServer pid=242201)     uvloop.run(run_server(args))
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/uvloop/__init__.py", line 69, in run
+(APIServer pid=242201)     return loop.run_until_complete(wrapper())
+(APIServer pid=242201)   File "uvloop/loop.pyx", line 1515, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=242201)     return await main
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=242201)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=242201)     async with build_async_engine_client(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/contextlib.py", line 199, in __aenter__
+(APIServer pid=242201)     return await anext(self.gen)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=242201)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/contextlib.py", line 199, in __aenter__
+(APIServer pid=242201)     return await anext(self.gen)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=242201)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=242201)     return cls(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=242201)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=242201)     return func(*args, **kwargs)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=242201)     return AsyncMPClient(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=242201)     return func(*args, **kwargs)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 1060, in __init__
+(APIServer pid=242201)     super().__init__(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/core_client.py", line 656, in __init__
+(APIServer pid=242201)     with launch_core_engines(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/contextlib.py", line 142, in __exit__
+(APIServer pid=242201)     next(self.gen)
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=242201)     wait_for_engine_startup(
+(APIServer pid=242201)   File "/opt/conda/lib/python3.10/site-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=242201)     raise RuntimeError(
+(APIServer pid=242201) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
