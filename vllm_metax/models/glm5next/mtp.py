@@ -122,12 +122,25 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
         if self.use_hadamard_rotation:
             # Rotate the summed residual stream back before shared_head norm.
             import os
+            _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
+            if _dbg:
+                def _stats(tag, t):
+                    tf = t.float()
+                    print(f"[MTP-FWD] {tag:18s} mean={tf.mean().item():.4e} "
+                          f"std={tf.std().item():.4e} "
+                          f"finite={bool(torch.isfinite(tf).all().item())}",
+                          flush=True)
+                _stats("inputs_embeds", inputs_embeds)
+                _stats("prev_hidden", previous_hidden_states)
+                _stats("eh_input", eh_input)
+                _stats("post_eh_proj", hidden_states)
+                _stats("post_mtp_residual", residual)
             _x = hidden_states + residual
-            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+            if _dbg:
                 print(f"[ROTATION-DEBUG-MTP] before mean={_x.float().mean().item():.6f} "
                       f"std={_x.float().std().item():.6f}", flush=True)
             hidden_states = self.shared_head.prenorm_hadamard_rotation(_x)
-            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
+            if _dbg:
                 print(f"[ROTATION-DEBUG-MTP] after  mean={hidden_states.float().mean().item():.6f} "
                       f"std={hidden_states.float().std().item():.6f}", flush=True)
             hidden_states = self.shared_head.norm(hidden_states)
@@ -180,6 +193,60 @@ class MacaGlm5NextMTP(Glm5NextMTP):
             vllm_config=vllm_config, prefix=maybe_prefix(prefix, "model")
         )
         self.set_moe_parameters()
+
+    def load_weights(self, weights):
+        loaded = super().load_weights(weights)
+        self._probe_mtp_weights(loaded)
+        return loaded
+
+    def _probe_mtp_weights(self, loaded_params: set) -> None:
+        """Post-load diagnostic (VLLM_METAX_MTP_WEIGHT_PROBE).
+
+        Prints which layer-45 params actually loaded vs. which stay at
+        torch.empty. Non-sharded params (layernorms, eh_proj) are replicated
+        across TP ranks, so unloaded ones produce identical inf output on
+        every rank -- the symptom we are chasing.
+        """
+        import os
+
+        if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
+            return
+
+        for layer_idx, layer in self.model.layers.items():
+            print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
+            probe_targets = [
+                ("eh_proj", layer.eh_proj.weight),
+                ("enorm", layer.enorm.weight),
+                ("hnorm", layer.hnorm.weight),
+                ("mtp_block.input_layernorm",
+                 layer.mtp_block.input_layernorm.weight),
+                ("mtp_block.post_attention_layernorm",
+                 layer.mtp_block.post_attention_layernorm.weight),
+                ("shared_head.norm", layer.shared_head.norm.weight),
+            ]
+            for tag, w in probe_targets:
+                wf = w.float()
+                finite = bool(torch.isfinite(wf).all().item())
+                absmax = wf.abs().max().item()
+                status = "OK" if (finite and absmax < 1e3) else "GARBAGE"
+                print(
+                    f"[MTP-WEIGHT] {tag:35s} "
+                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
+                    f"absmax={absmax:.4e} finite={finite} -> {status}",
+                    flush=True,
+                )
+            # Which layer params were NOT loaded?
+            all_names = [n for n, _ in layer.named_parameters()]
+            loaded_layer = [
+                n for n in all_names
+                if any(n in lp or lp.endswith(n) for lp in loaded_params)
+            ]
+            missing = [n for n in all_names if n not in loaded_layer]
+            print(
+                f"[MTP-WEIGHT] loaded {len(loaded_layer)}/{len(all_names)} "
+                f"params; missing={missing[:20]}",
+                flush=True,
+            )
 
 
 __all__ = [
