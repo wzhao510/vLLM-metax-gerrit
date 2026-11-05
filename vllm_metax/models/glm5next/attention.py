@@ -448,6 +448,7 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
         topk_indices_buffer: torch.Tensor | None = None,
         input_size: int | None = None,
         skip_rope: bool | None = False,
+        mtp_keep_bf16_projs: bool = False,
     ) -> None:
         
         super(Glm5NextMLAAttention, self).__init__()
@@ -461,6 +462,14 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
                 "Enabling compressed-tensors W8A8 for GLM-5.3 MLA projections."
             )
         #-------------metax modification
+
+        # kv_b_proj and the sparse indexer are stored as BF16 in the checkpoint
+        # (no weight_scale), and compression_config.ignore only lists the base
+        # MLA layers. The spec (MTP) layer is missing from that list, so the
+        # generic W8A8 lookup quantizes these two anyway: their bf16 weights get
+        # truncated into int8 (-> ~0) and weight_scale stays torch.empty, which
+        # blows the draft attention output up to ~1e29. Keep them BF16 instead.
+        proj_quant_config = None if mtp_keep_bf16_projs else quant_config
 
         self.hidden_size = hidden_size
         self.qk_nope_head_dim = qk_nope_head_dim
@@ -521,7 +530,7 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
             self.kv_lora_rank,
             self.num_heads * (self.qk_nope_head_dim + self.v_head_dim),
             bias=False,
-            quant_config=quant_config,
+            quant_config=proj_quant_config,
             prefix=f"{prefix}.kv_b_proj",
         )
         self.o_proj = RowParallelLinear(
@@ -576,7 +585,7 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
                 config,
                 hidden_size,
                 q_lora_rank,
-                quant_config,
+                proj_quant_config,
                 cache_config,
                 topk_indices_buffer,
                 f"{prefix}.indexer",

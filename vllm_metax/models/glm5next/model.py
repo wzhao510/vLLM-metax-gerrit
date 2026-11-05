@@ -99,22 +99,6 @@ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
         self.layer_kind = "kda" if is_kda_layer else "mla"
         self.is_sequence_parallel = parallel_config.use_sequence_parallel_moe
 
-        # The quant config's ``ignore`` list uses the checkpoint naming for
-        # spec layers (e.g. ``model.language_model.layers.45.self_attn.kv_b_proj``
-        # -- no ``.mtp_block.`` hop, text tower prefix kept). vLLM mounts the
-        # MTP block as ``model.layers.45.mtp_block.``, so a lookup with this
-        # prefix misses ``ignore`` and silently forces BF16-kept modules
-        # (kv_b_proj, indexer.wq_b, mlp.gate) into W8A8/U4. Their bf16 weights
-        # then get truncated into int8 (-> ~0/+-1) and weight_scale stays
-        # torch.empty, which makes the draft attention output ~1e29 and
-        # acceptance 0%. Only the prefix used for quant lookups is rewritten;
-        # parameter names still come from the module tree.
-        quant_prefix = prefix
-        if is_mtp_layer:
-            quant_prefix = prefix.replace(
-                "model.layers.", "model.language_model.layers.", 1
-            )
-
         if is_kda_layer:
             self.self_attn = Glm5NextLinearAttention(
                 config=config,
@@ -142,9 +126,14 @@ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
                 #[TODO] test with quant_config=vllm_config.quant_config, and remove .attention.MacaGlm5NextMLAAttention
                 quant_config=None,  # MLA projections are BF16 in checkpoint
                 #\-------------------MetaX-------------------/#
-                prefix=f"{quant_prefix}.self_attn",
+                prefix=f"{prefix}.self_attn",
                 topk_indices_buffer=topk_indices_buffer,
                 skip_rope=config.mla_nope,
+                # kv_b_proj / indexer are BF16 in the checkpoint, but the spec
+                # (MTP) layer is absent from compression_config.ignore, so the
+                # W8A8 lookup would quantize them and truncate their bf16
+                # weights into int8 (~0). Force BF16 for the MTP block.
+                mtp_keep_bf16_projs=is_mtp_layer,
             )
 
         # MTP layers sit past the base model's hidden layers (layer_idx >=
@@ -161,7 +150,7 @@ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
                 config=config,
                 parallel_config=parallel_config,
                 quant_config=quant_config,
-                prefix=f"{quant_prefix}.mlp",
+                prefix=f"{prefix}.mlp",
             )
         else:
             self.mlp = Glm5NextMLP(
@@ -169,7 +158,7 @@ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
                 intermediate_size=config.intermediate_size,
                 hidden_act=config.hidden_act,
                 quant_config=quant_config,
-                prefix=f"{quant_prefix}.mlp",
+                prefix=f"{prefix}.mlp",
                 swiglu_limit=config.swiglu_limit,
             )
         self.input_layernorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
