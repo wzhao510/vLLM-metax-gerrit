@@ -270,6 +270,13 @@ class MacaGlm5NextMTP(Glm5NextMTP):
 
         for layer_idx, layer in self.model.layers.items():
             print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
+            kv_b = layer.mtp_block.self_attn.kv_b_proj
+            print(
+                f"[MTP-WEIGHT] kv_b_proj quant_method="
+                f"{type(getattr(kv_b, 'quant_method', None)).__name__} "
+                f"prefix={getattr(kv_b, 'prefix', '?')!r}",
+                flush=True,
+            )
             probe_targets = [
                 ("eh_proj", layer.eh_proj.weight),
                 ("enorm", layer.enorm.weight),
