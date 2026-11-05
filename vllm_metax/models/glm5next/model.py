@@ -1,4 +1,3 @@
-import os
 from collections.abc import Iterable
 
 import torch
@@ -70,104 +69,6 @@ from vllm.models.glm5next.nvidia.model import (
 )
 
 from .attention import MacaGlm5NextMLAAttention
-
-
-def _probe_base_mla_layers(layers, loaded_params: set[str]) -> None:
-    """Dump a handful of base MLA layers to check whether kv_b_proj / indexer
-    got empty-quantized (int8 dtype + no weight_scale) because
-    ``compression_config.ignore`` uses the HF prefix
-    (``model.language_model.layers.N.xxx``) but runtime Linear prefixes are
-    ``model.layers.N.xxx`` and vLLM doesn't remap them for GLM.
-    """
-    if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
-        return
-    # Unconditional banner: proves this code path actually runs. If you don't
-    # see it after setting VLLM_METAX_MTP_WEIGHT_PROBE=1, the patched file was
-    # not copied into /opt/conda/.../site-packages/vllm_metax/ (or a stale
-    # __pycache__ is being imported).
-    print(
-        f"[BASE-WEIGHT] probe start: layers_type={type(layers).__name__} "
-        f"len={len(layers) if hasattr(layers, '__len__') else '?'} "
-        f"loaded_params={len(loaded_params)}",
-        flush=True,
-    )
-    # Pick representative MLA base layers: first_k_dense_replace=3, plus a
-    # middle one and the last MLA layer.
-    probe_indices = [3, 11, 43]
-    for idx in probe_indices:
-        # ``self.layers`` is an nn.ModuleList (from make_layers), NOT a dict.
-        layer = None
-        if hasattr(layers, "get"):
-            layer = layers.get(str(idx)) if layers.get(str(idx)) else layers.get(idx)
-        else:
-            try:
-                layer = layers[idx]
-            except Exception as e:
-                print(f"[BASE-WEIGHT] layer {idx} inaccessible: {e}", flush=True)
-                continue
-        if layer is None or isinstance(layer, PPMissingLayer):
-            print(f"[BASE-WEIGHT] layer {idx} missing on this PP rank", flush=True)
-            continue
-        attn = getattr(layer, "self_attn", None)
-        if not isinstance(attn, MacaGlm5NextMLAAttention):
-            print(
-                f"[BASE-WEIGHT] === layer {idx}: not MLA "
-                f"({type(attn).__name__}), skip ===",
-                flush=True,
-            )
-            continue
-        print(f"[BASE-WEIGHT] === base MLA layer {idx} ===", flush=True)
-
-        def _show(module, tag):
-            if module is None:
-                print(f"[BASE-WEIGHT] {tag:45s} None", flush=True)
-                return
-            qm = type(getattr(module, "quant_method", None)).__name__
-            prefix = getattr(module, "prefix", "?")
-            w = getattr(module, "weight", None)
-            print(f"[BASE-WEIGHT] {tag:45s} quant_method={qm} prefix={prefix!r}",
-                  flush=True)
-            if w is not None:
-                wf = w.float()
-                print(
-                    f"[BASE-WEIGHT]   -> dtype={str(w.dtype):12s} "
-                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
-                    f"absmax={wf.abs().max().item():.4e} "
-                    f"finite={bool(torch.isfinite(wf).all().item())}",
-                    flush=True,
-                )
-            # For quantized layers: an uninitialised (torch.empty) scale means
-            # the ckpt had no weight_scale and the layer was "empty-quantized".
-            for sname in ("weight_scale", "input_scale", "scale"):
-                s = getattr(module, sname, None)
-                if isinstance(s, torch.Tensor):
-                    sf = s.float()
-                    print(
-                        f"[BASE-WEIGHT]   -> {sname}={str(s.dtype):10s} "
-                        f"std={sf.std().item():.4e} "
-                        f"absmax={sf.abs().max().item():.4e} "
-                        f"finite={bool(torch.isfinite(sf).all().item())}",
-                        flush=True,
-                    )
-
-        _show(getattr(attn, "kv_b_proj", None), "kv_b_proj")
-        _show(getattr(attn, "fused_qkv_a_proj", None), "fused_qkv_a_proj")
-        q_b = getattr(attn, "q_b_proj", None) or getattr(attn, "q_proj", None)
-        _show(q_b, "q_b_proj")
-        _show(getattr(attn, "o_proj", None), "o_proj")
-        idxr = getattr(attn, "indexer", None)
-        if idxr is not None:
-            _show(getattr(idxr, "wq_b", None), "indexer.wq_b")
-
-        # Did weight_scale params load?
-        expected_scale_names = [
-            f"model.layers.{idx}.self_attn.kv_b_proj.weight_scale",
-            f"model.layers.{idx}.self_attn.indexer.wq_b.weight_scale",
-        ]
-        missing = [n for n in expected_scale_names if n not in loaded_params]
-        if missing:
-            print(f"[BASE-WEIGHT]   missing scales: {missing}", flush=True)
-
 
 class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
     def __init__(
@@ -447,16 +348,6 @@ class MacaGlm5NextModel(Glm5NextModel):
             "num_attention_heads must be divisible by world_size"
         )
 
-        # Used by the diagnostics below to prove the patched vllm_metax module
-        # is actually the one being imported at runtime.
-        if os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
-            print(
-                f"[BASE-WEIGHT] MacaGlm5NextModel.__init__ "
-                f"start_layer={self.start_layer} end_layer={self.end_layer} "
-                f"num_layers={config.num_hidden_layers}",
-                flush=True,
-            )
-
     def forward(
         self,
         input_ids: torch.Tensor | None,
@@ -695,13 +586,6 @@ class MacaGlm5NextModel(Glm5NextModel):
                     )
                     weight_loader(param, loaded_weight, **kwargs)
             loaded_params.add(name)
-
-        # Optional post-load probe (VLLM_METAX_MTP_WEIGHT_PROBE=1): dump a few
-        # base MLA layers to see whether kv_b_proj / indexer.wq_b get
-        # "empty-quantized" (int8 + no weight_scale) because compression_config
-        # ignore doesn't match their runtime prefix.
-        _probe_base_mla_layers(self.layers, loaded_params)
-
         return loaded_params
 
 

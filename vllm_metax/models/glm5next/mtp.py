@@ -3,8 +3,6 @@
 
 """MetaX GLM-5.3 MTP with QuaRot online rotation support."""
 
-import os
-
 import torch
 import torch.nn as nn
 
@@ -31,35 +29,6 @@ from vllm_metax.model_executor.layers.online_rotation import (
     build_rotation,
     get_online_rotation_module_config,
 )
-
-
-def _fused_eh_norm_unfused(
-    positions: torch.Tensor,
-    inputs_embeds: torch.Tensor,
-    previous_hidden_states: torch.Tensor,
-    enorm_weight: torch.Tensor,
-    hnorm_weight: torch.Tensor,
-    eps: float,
-) -> torch.Tensor:
-    """Pure-PyTorch fallback for the nvidia ``fused_eh_norm`` op.
-
-    The upstream op is a fused CUDA kernel with no MetaX backend; if it
-    produces garbage on MACA this bit-exact equivalent (zero pos-0 embeds +
-    enorm(embeds) + hnorm(prev) + cat -> [N, 2H]) can be enabled via
-    ``VLLM_METAX_MTP_UNFUSED_EH_NORM=1``.
-    """
-    # Zero position-0 embeddings (the draft's first slot has no real embed).
-    mask = (positions != 0).to(inputs_embeds.dtype).unsqueeze(-1)
-    embeds = inputs_embeds * mask
-    # enorm(embeds) -- RMSNorm
-    embeds_norm = embeds * torch.rsqrt(
-        embeds.pow(2).mean(dim=-1, keepdim=True) + eps
-    ) * enorm_weight
-    # hnorm(prev) -- RMSNorm
-    prev_norm = previous_hidden_states * torch.rsqrt(
-        previous_hidden_states.pow(2).mean(dim=-1, keepdim=True) + eps
-    ) * hnorm_weight
-    return torch.cat([embeds_norm, prev_norm], dim=-1)
 
 
 class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
@@ -135,56 +104,26 @@ class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
     ) -> torch.Tensor:
         assert inputs_embeds is not None
         # Fused: zero pos-0 embeds + enorm(embeds) + hnorm(prev) + cat -> [N, 2H].
-        if os.getenv("VLLM_METAX_MTP_UNFUSED_EH_NORM"):
-            eh_input = _fused_eh_norm_unfused(
-                positions,
-                inputs_embeds,
-                previous_hidden_states,
-                self.enorm.weight,
-                self.hnorm.weight,
-                self.enorm.variance_epsilon,
-            )
-        else:
-            eh_input = fused_eh_norm(
-                positions,
-                inputs_embeds,
-                previous_hidden_states,
-                self.enorm.weight,
-                self.hnorm.weight,
-                self.enorm.variance_epsilon,
-            )
+        eh_input = fused_eh_norm(
+            positions,
+            inputs_embeds,
+            previous_hidden_states,
+            self.enorm.weight,
+            self.hnorm.weight,
+            self.enorm.variance_epsilon,
+        )
         hidden_states = self.eh_proj(eh_input)
-        _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
-        if _dbg:
-            def _stats(tag, t):
-                tf = t.float()
-                print(f"[MTP-FWD] {tag:18s} mean={tf.mean().item():.4e} "
-                      f"std={tf.std().item():.4e} "
-                      f"finite={bool(torch.isfinite(tf).all().item())}",
-                      flush=True)
-            _stats("inputs_embeds", inputs_embeds)
-            _stats("prev_hidden", previous_hidden_states)
-            _stats("eh_input", eh_input)
-            _stats("post_eh_proj", hidden_states)
         # Fuse the residual add and final RMSNorm. Glm5NextMoE already performs
         # its all-reduce, so no collective is needed here. The post-norm result
         # feeds both draft logits and the next recycled hidden state.
         hidden_states, residual, _, _ = self.mtp_block(
             positions=positions, hidden_states=hidden_states, residual=None
         )
-        if _dbg:
-            _stats("mtp_hidden_out", hidden_states)
-            _stats("mtp_residual", residual)
         if self.use_hadamard_rotation:
             # Rotate the summed residual stream back before shared_head norm.
-            _x = hidden_states + residual
-            if _dbg:
-                print(f"[ROTATION-DEBUG-MTP] before mean={_x.float().mean().item():.6f} "
-                      f"std={_x.float().std().item():.6f}", flush=True)
-            hidden_states = self.shared_head.prenorm_hadamard_rotation(_x)
-            if _dbg:
-                print(f"[ROTATION-DEBUG-MTP] after  mean={hidden_states.float().mean().item():.6f} "
-                      f"std={hidden_states.float().std().item():.6f}", flush=True)
+            hidden_states = self.shared_head.prenorm_hadamard_rotation(
+                hidden_states + residual
+            )
             hidden_states = self.shared_head.norm(hidden_states)
         else:
             hidden_states, _ = self.shared_head.norm(
@@ -299,105 +238,7 @@ class MacaGlm5NextMTP(Glm5NextMTP):
                 else:
                     yield name, w
 
-        loaded = super().load_weights(_remap_head(weights))
-        self._probe_mtp_weights(loaded)
-        return loaded
-
-    def _probe_mtp_weights(self, loaded_params: set) -> None:
-        """Post-load diagnostic (VLLM_METAX_MTP_WEIGHT_PROBE).
-
-        Prints which layer-45 params actually loaded vs. which stay at
-        torch.empty. Non-sharded params (layernorms, eh_proj) are replicated
-        across TP ranks, so unloaded ones produce identical inf output on
-        every rank -- the symptom we are chasing.
-        """
-        if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
-            return
-
-        # Proves the ignore aliases landed: the draft's runtime prefix
-        # ``model.layers.45.*`` must be present, not just the HF spelling.
-        ignore = getattr(self.quant_config, "ignore", None) or []
-        spec = f"layers.{self.config.num_hidden_layers}."
-        hits = [x for x in ignore if spec in str(x) and "self_attn" in str(x)]
-        runtime_hits = [x for x in hits if str(x).startswith("model.layers.")]
-        print(
-            f"[MTP-WEIGHT] ignore spec-layer entries: {len(hits)} "
-            f"(runtime-prefixed: {len(runtime_hits)}) {runtime_hits}",
-            flush=True,
-        )
-
-        for layer_idx, layer in self.model.layers.items():
-            print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
-            kv_b = layer.mtp_block.self_attn.kv_b_proj
-            print(
-                f"[MTP-WEIGHT] kv_b_proj quant_method="
-                f"{type(getattr(kv_b, 'quant_method', None)).__name__} "
-                f"prefix={getattr(kv_b, 'prefix', '?')!r}",
-                flush=True,
-            )
-            probe_targets = [
-                ("eh_proj", layer.eh_proj.weight),
-                ("enorm", layer.enorm.weight),
-                ("hnorm", layer.hnorm.weight),
-                ("mtp_block.input_layernorm",
-                 layer.mtp_block.input_layernorm.weight),
-                ("mtp_block.post_attention_layernorm",
-                 layer.mtp_block.post_attention_layernorm.weight),
-                ("shared_head.norm", layer.shared_head.norm.weight),
-                ("shared_head.head", layer.shared_head.head.weight),
-                ("mtp_block.self_attn.fused_qkv_a_proj",
-                 layer.mtp_block.self_attn.fused_qkv_a_proj.weight),
-                ("mtp_block.self_attn.kv_b_proj",
-                 layer.mtp_block.self_attn.kv_b_proj.weight),
-            ]
-            # W4A8 MoE: spot-check the first routed expert's gate weight.
-            # moe.experts may be a MoERunner (not len()-able), so guard it.
-            try:
-                moe = layer.mtp_block.mlp
-                if hasattr(moe, "experts"):
-                    experts = moe.experts
-                    # experts is nn.ModuleList in FusedMoE, MoERunner otherwise.
-                    if isinstance(experts, torch.nn.ModuleList) and len(experts) > 0:
-                        exp0 = experts[0]
-                        for pname in ("gate_proj", "up_proj", "down_proj"):
-                            if hasattr(exp0, pname):
-                                probe_targets.append(
-                                    (f"mtp_block.mlp.exp0.{pname}",
-                                     getattr(exp0, pname).weight)
-                                )
-            except Exception as exc:
-                print(f"[MTP-WEIGHT] moe probe skipped: {exc}", flush=True)
-            moe_gate = getattr(getattr(layer.mtp_block, "mlp", None), "gate", None)
-            if moe_gate is not None:
-                probe_targets.append(("mtp_block.mlp.gate", moe_gate.weight))
-            indexer = getattr(layer.mtp_block.self_attn, "indexer", None)
-            if indexer is not None:
-                probe_targets.append(
-                    ("mtp_block.self_attn.indexer.wq_b", indexer.wq_b.weight)
-                )
-            for tag, w in probe_targets:
-                wf = w.float()
-                finite = bool(torch.isfinite(wf).all().item())
-                absmax = wf.abs().max().item()
-                status = "OK" if (finite and absmax < 1e3) else "GARBAGE"
-                print(
-                    f"[MTP-WEIGHT] {tag:35s} dtype={str(w.dtype):12s} "
-                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
-                    f"absmax={absmax:.4e} finite={finite} -> {status}",
-                    flush=True,
-                )
-            # Which layer params were NOT loaded?
-            all_names = [n for n, _ in layer.named_parameters()]
-            loaded_layer = [
-                n for n in all_names
-                if any(n in lp or lp.endswith(n) for lp in loaded_params)
-            ]
-            missing = [n for n in all_names if n not in loaded_layer]
-            print(
-                f"[MTP-WEIGHT] loaded {len(loaded_layer)}/{len(all_names)} "
-                f"params; missing={missing[:20]}",
-                flush=True,
-            )
+        return super().load_weights(_remap_head(weights))
 
 
 __all__ = [
