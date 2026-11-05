@@ -228,11 +228,6 @@ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
                 prefix=f"{prefix}.self_attn",
                 topk_indices_buffer=topk_indices_buffer,
                 skip_rope=config.mla_nope,
-                # kv_b_proj / indexer are BF16 in the checkpoint, but the spec
-                # (MTP) layer is absent from compression_config.ignore, so the
-                # W8A8 lookup would quantize them and truncate their bf16
-                # weights into int8 (~0). Force BF16 for the MTP block.
-                mtp_keep_bf16_projs=is_mtp_layer,
             )
 
         # MTP layers sit past the base model's hidden layers (layer_idx >=

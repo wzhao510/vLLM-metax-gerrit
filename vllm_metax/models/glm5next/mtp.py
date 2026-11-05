@@ -14,7 +14,7 @@ from vllm.model_executor.layers.logits_processor import LogitsProcessor
 from vllm.model_executor.layers.vocab_parallel_embedding import (
     VocabParallelEmbedding,
 )
-from vllm.model_executor.models.utils import maybe_prefix
+from vllm.model_executor.models.utils import WeightsMapper, maybe_prefix
 from vllm.models.glm5next.nvidia.model import Glm5NextMLAAttention
 from vllm.models.glm5next.nvidia.mtp import (
     Glm5NextMTP,
@@ -227,6 +227,17 @@ class MacaGlm5NextMultiTokenPredictor(Glm5NextMultiTokenPredictor):
 
 
 class MacaGlm5NextMTP(Glm5NextMTP):
+    # config.json's compression_config.ignore uses the HF prefix
+    # ``model.language_model.layers.45.xxx``, while this draft model's runtime
+    # prefixes are ``model.layers.45.xxx``. Declaring the mapper makes
+    # configure_quant_config rewrite the ignore list at load time, so
+    # should_ignore_layer() matches and kv_b_proj / indexer.wq_b stay BF16
+    # instead of being truncated into int8. The base model gets the same
+    # rewrite from Glm4vForConditionalGeneration's hf_to_vllm_mapper.
+    hf_to_vllm_mapper = WeightsMapper(
+        orig_to_new_prefix={"model.language_model.": "model."}
+    )
+
     def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
         super(Glm5NextMTP, self).__init__()
         self.config = vllm_config.model_config.hf_config
@@ -267,6 +278,14 @@ class MacaGlm5NextMTP(Glm5NextMTP):
         """
         if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
             return
+
+        # Proves hf_to_vllm_mapper actually rewrote compression_config.ignore
+        # for the draft model: the entries should now use the runtime prefix
+        # ``model.layers.45.*`` (not the HF ``model.language_model.layers.45.*``).
+        ignore = getattr(self.quant_config, "ignore", None) or []
+        hits = [x for x in ignore if f"layers.{self.config.num_hidden_layers}" in str(x)
+                and "self_attn" in str(x)]
+        print(f"[MTP-WEIGHT] ignore spec-layer entries: {hits}", flush=True)
 
         for layer_idx, layer in self.model.layers.items():
             print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
