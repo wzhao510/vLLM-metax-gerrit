@@ -1,3 +1,4 @@
+import os
 from collections.abc import Iterable
 
 import torch
@@ -69,6 +70,66 @@ from vllm.models.glm5next.nvidia.model import (
 )
 
 from .attention import MacaGlm5NextMLAAttention
+
+
+def _probe_base_mla_layers(layers, loaded_params: set[str]) -> None:
+    """Dump a handful of base MLA layers to check whether kv_b_proj / indexer
+    got empty-quantized (int8 dtype + no weight_scale) because
+    ``compression_config.ignore`` uses the HF prefix
+    (``model.language_model.layers.N.xxx``) but runtime Linear prefixes are
+    ``model.layers.N.xxx`` and vLLM doesn't remap them for GLM.
+    """
+    if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
+        return
+    # Pick representative MLA base layers: first_k_dense_replace=3, plus a
+    # middle one and the last MLA layer.
+    probe_indices = [3, 11, 43]
+    for idx in probe_indices:
+        layer = layers.get(str(idx)) if hasattr(layers, "get") else None
+        if layer is None:
+            continue
+        attn = getattr(layer, "self_attn", None)
+        if attn is None or getattr(attn, "layer_kind", "mla") != "mla":
+            continue  # KDA layer, skip
+        print(f"[BASE-WEIGHT] === base MLA layer {idx} ===", flush=True)
+
+        def _show(module, tag):
+            if module is None:
+                print(f"[BASE-WEIGHT] {tag:45s} None", flush=True)
+                return
+            qm = type(getattr(module, "quant_method", None)).__name__
+            prefix = getattr(module, "prefix", "?")
+            w = getattr(module, "weight", None)
+            print(f"[BASE-WEIGHT] {tag:45s} quant_method={qm} prefix={prefix!r}",
+                  flush=True)
+            if w is not None:
+                wf = w.float()
+                print(
+                    f"[BASE-WEIGHT]   -> dtype={str(w.dtype):12s} "
+                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
+                    f"absmax={wf.abs().max().item():.4e} "
+                    f"finite={bool(torch.isfinite(wf).all().item())}",
+                    flush=True,
+                )
+
+        _show(attn.kv_b_proj, "kv_b_proj")
+        _show(attn.fused_qkv_a_proj, "fused_qkv_a_proj")
+        _show(attn.q_b_proj if hasattr(attn, "q_b_proj") else attn.q_proj,
+              "q_b_proj")
+        _show(attn.o_proj, "o_proj")
+        idxr = getattr(attn, "indexer", None)
+        if idxr is not None:
+            _show(getattr(idxr, "wq_b", None), "indexer.wq_b")
+
+        # Did weight_scale params load?
+        expected_scale_names = [
+            f"model.layers.{idx}.self_attn.kv_b_proj.weight_scale",
+            f"model.layers.{idx}.self_attn.indexer.wq_b.weight_scale",
+        ]
+        missing = [n for n in expected_scale_names if n not in loaded_params]
+        if missing:
+            print(f"[BASE-WEIGHT]   missing scales: {missing}", flush=True)
+
 
 class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
     def __init__(
@@ -591,6 +652,13 @@ class MacaGlm5NextModel(Glm5NextModel):
                     )
                     weight_loader(param, loaded_weight, **kwargs)
             loaded_params.add(name)
+
+        # Optional post-load probe (VLLM_METAX_MTP_WEIGHT_PROBE=1): dump a few
+        # base MLA layers to see whether kv_b_proj / indexer.wq_b get
+        # "empty-quantized" (int8 + no weight_scale) because compression_config
+        # ignore doesn't match their runtime prefix.
+        _probe_base_mla_layers(self.layers, loaded_params)
+
         return loaded_params
 
 
