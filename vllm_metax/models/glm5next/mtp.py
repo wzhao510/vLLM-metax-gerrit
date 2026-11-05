@@ -302,13 +302,21 @@ class MacaGlm5NextMTP(Glm5NextMTP):
                                 )
             except Exception as exc:
                 print(f"[MTP-WEIGHT] moe probe skipped: {exc}", flush=True)
+            moe_gate = getattr(getattr(layer.mtp_block, "mlp", None), "gate", None)
+            if moe_gate is not None:
+                probe_targets.append(("mtp_block.mlp.gate", moe_gate.weight))
+            indexer = getattr(layer.mtp_block.self_attn, "indexer", None)
+            if indexer is not None:
+                probe_targets.append(
+                    ("mtp_block.self_attn.indexer.wq_b", indexer.wq_b.weight)
+                )
             for tag, w in probe_targets:
                 wf = w.float()
                 finite = bool(torch.isfinite(wf).all().item())
                 absmax = wf.abs().max().item()
                 status = "OK" if (finite and absmax < 1e3) else "GARBAGE"
                 print(
-                    f"[MTP-WEIGHT] {tag:35s} "
+                    f"[MTP-WEIGHT] {tag:35s} dtype={str(w.dtype):12s} "
                     f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
                     f"absmax={absmax:.4e} finite={finite} -> {status}",
                     flush=True,
