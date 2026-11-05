@@ -1,0 +1,880 @@
+diff --git a/vllm_metax/model_executor/kernels/online_rotate/tilelang_kernels.py b/vllm_metax/model_executor/kernels/online_rotate/tilelang_kernels.py
+index 074be5f..29658c0 100644
+--- a/vllm_metax/model_executor/kernels/online_rotate/tilelang_kernels.py
++++ b/vllm_metax/model_executor/kernels/online_rotate/tilelang_kernels.py
+@@ -1,6 +1,7 @@
+ """Final fused TileLang Hadamard implementation for wave64 GPUs."""
+ 
+ import math
++import os
+ from typing import Dict, Tuple
+ 
+ import torch
+@@ -16,17 +17,12 @@ from .utils import (
+ )
+ 
+ 
+-@tilelang.autotune(
+-    configs=get_hadamard_configs,
+-    supply_prog=supply_hadamard_inputs,
+-    skip_check=True,
+-)
+ @tilelang.jit(
+     pass_configs={
+         tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True,
+     }
+ )
+-def make_hadamard_kernel(
++def _compile_hadamard_kernel(
+     hidden_size: int,
+     base_order: int,
+     inverse: bool,
+@@ -191,9 +187,48 @@ def make_hadamard_kernel(
+     return kernel
+ 
+ 
++make_hadamard_kernel = tilelang.autotune(
++    configs=get_hadamard_configs,
++    supply_prog=supply_hadamard_inputs,
++    skip_check=True,
++)(_compile_hadamard_kernel)
++
++
+ _KERNEL_CACHE: Dict[Tuple[int, int, bool, str, int], object] = {}
+ 
+ 
++def _build_kernel(
++    hidden_size: int,
++    base_order: int,
++    inverse: bool,
++    dtype: str,
++    gemm_order: int,
++):
++    """Compile the Hadamard kernel, optionally skipping the autotuner.
++
++    ``VLLM_METAX_HADAMARD_AUTOTUNE=0`` skips the benchmark entirely: every
++    vLLM worker would otherwise benchmark the same kernel on its own device at
++    the same time, which wedges MACA queue blocks
++    (``mxkwCreateQueueBlock ioctl timeout``). It then pins the head
++    configuration and only compiles.
++    """
++    if os.getenv("VLLM_METAX_HADAMARD_AUTOTUNE", "1") == "0":
++        mma_rows = max(16, (hidden_size // gemm_order // 32) * 32)
++        return _compile_hadamard_kernel(
++            hidden_size,
++            base_order,
++            inverse,
++            dtype,
++            num_threads=256,
++            gemm_order=gemm_order,
++            mma_rows=mma_rows,
++            gemm_policy="square",
++        )
++    return make_hadamard_kernel.compile(
++        hidden_size, base_order, inverse, dtype, gemm_order=gemm_order
++    )
++
++
+ def hadamard(
+     x: torch.Tensor,
+     sign: torch.Tensor,
+@@ -238,12 +273,8 @@ def hadamard(
+         gemm_order,
+     )
+     if key not in _KERNEL_CACHE:
+-        _KERNEL_CACHE[key] = make_hadamard_kernel.compile(
+-            hidden_size,
+-            base_order,
+-            inverse,
+-            tilelang_dtype,
+-            gemm_order=gemm_order,
++        _KERNEL_CACHE[key] = _build_kernel(
++            hidden_size, base_order, inverse, tilelang_dtype, gemm_order
+         )
+ 
+     input_2d = x.reshape(-1, hidden_size).contiguous()
+diff --git a/vllm_metax/model_executor/layers/online_rotation.py b/vllm_metax/model_executor/layers/online_rotation.py
+index b5e07df..688f272 100644
+--- a/vllm_metax/model_executor/layers/online_rotation.py
++++ b/vllm_metax/model_executor/layers/online_rotation.py
+@@ -20,6 +20,42 @@ from vllm_metax.model_executor.kernels.online_rotate import (
+ )
+ 
+ 
++_TEXT_TOWER_PREFIXES = (
++    "model.language_model.model.",
++    "model.language_model.",
++    "language_model.model.",
++    "model.",
++)
++
++
++def _rotation_module_aliases(module_name: str) -> list[str]:
++    """Return equivalent module paths for multimodal GLM checkpoints.
++
++    GLM-5.3 checkpoints serialize the text tower under ``model.language_model.``
++    while vLLM mounts it at ``language_model.model.``; the MTP head is mounted
++    at ``model.``. The config keeps the checkpoint naming, so accept both.
++    """
++    aliases = [module_name]
++    if module_name.startswith("language_model.model."):
++        rest = module_name[len("language_model.model.") :]
++        aliases.extend((f"model.language_model.{rest}", f"model.{rest}"))
++    elif module_name.startswith("model.language_model."):
++        rest = module_name[len("model.language_model.") :]
++        aliases.extend((f"language_model.model.{rest}", f"model.{rest}"))
++    elif module_name.startswith("model."):
++        rest = module_name[len("model.") :]
++        aliases.append(f"model.language_model.{rest}")
++    return aliases
++
++
++def _canonical_rotation_module_name(module_name: str) -> str:
++    """Strip the text-tower wrapper prefix so all namings compare equal."""
++    for tower_prefix in _TEXT_TOWER_PREFIXES:
++        if module_name.startswith(tower_prefix):
++            return module_name[len(tower_prefix) :]
++    return module_name
++
++
+ def get_online_rotation_module_config(
+     config: Any,
+     module_name: str,
+@@ -37,12 +73,27 @@ def get_online_rotation_module_config(
+     if not isinstance(modules, Mapping):
+         raise TypeError("online_rotation.modules must be a mapping")
+ 
+-    module_config = modules.get(module_name)
++    module_config = None
++    matched_name = module_name
++    for candidate in _rotation_module_aliases(module_name):
++        module_config = modules.get(candidate)
++        if module_config is not None:
++            matched_name = candidate
++            break
++    if module_config is None:
++        canonical_name = _canonical_rotation_module_name(module_name)
++        for candidate, candidate_config in modules.items():
++            if (
++                _canonical_rotation_module_name(candidate) == canonical_name
++            ):
++                module_config = candidate_config
++                matched_name = candidate
++                break
+     if module_config is None:
+         return None
+     if not isinstance(module_config, Mapping):
+         raise TypeError(
+-            f"online_rotation.modules[{module_name!r}] must be a mapping"
++            f"online_rotation.modules[{matched_name!r}] must be a mapping"
+         )
+     return module_config
+ 
+diff --git a/vllm_metax/models/__init__.py b/vllm_metax/models/__init__.py
+index 5f4f67f..e67b51d 100644
+--- a/vllm_metax/models/__init__.py
++++ b/vllm_metax/models/__init__.py
+@@ -88,6 +88,11 @@ def register_model():
+         "vllm_metax.models.glm5next:MacaGlm5NextForCausalLM",
+     )
+ 
++    ModelRegistry.register_model(
++        "Glm5NextMTPModel",
++        "vllm_metax.models.glm5next.mtp:MacaGlm5NextMTP",
++    )
++
+     # ModelRegistry.register_model(
+     #     "Glm5NextForConditionalGeneration",
+     #     "vllm_metax.models.glm5next:MacaGlm5NextForConditionalGeneration",
+diff --git a/vllm_metax/models/glm5next/__init__.py b/vllm_metax/models/glm5next/__init__.py
+index 0d1e675..0001e0a 100644
+--- a/vllm_metax/models/glm5next/__init__.py
++++ b/vllm_metax/models/glm5next/__init__.py
+@@ -1,8 +1,6 @@
+ from .model import MacaGlm5NextForCausalLM, MacaGlm5NextForConditionalGeneration
+-# from .mtp import Glm5NextMTP
+ 
+ __all__ = [
+     "MacaGlm5NextForCausalLM",
+     "MacaGlm5NextForConditionalGeneration",
+-    # "Glm5NextMTP",
+-]
+\ No newline at end of file
++]
+diff --git a/vllm_metax/models/glm5next/attention.py b/vllm_metax/models/glm5next/attention.py
+index 0ac44e7..2ca6077 100644
+--- a/vllm_metax/models/glm5next/attention.py
++++ b/vllm_metax/models/glm5next/attention.py
+@@ -462,6 +462,14 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
+             )
+         #-------------metax modification
+ 
++        # kv_b_proj / indexer are BF16 in the checkpoint (no weight_scale) and
++        # are excluded via compression_config.ignore. That list uses the
++        # checkpoint (HF) spelling ``model.language_model.layers.N.xxx``, so
++        # MacaGlm5NextMTP expands it to every runtime prefix spelling before
++        # the draft layers are built; without that the W8A8 lookup quantizes
++        # them, truncating bf16 weights into int8 and leaving weight_scale at
++        # torch.empty (~1e29 activations).
++
+         self.hidden_size = hidden_size
+         self.qk_nope_head_dim = qk_nope_head_dim
+         self.qk_rope_head_dim = qk_rope_head_dim
+diff --git a/vllm_metax/models/glm5next/model.py b/vllm_metax/models/glm5next/model.py
+index 172ef76..4cc9206 100644
+--- a/vllm_metax/models/glm5next/model.py
++++ b/vllm_metax/models/glm5next/model.py
+@@ -1,3 +1,4 @@
++import os
+ from collections.abc import Iterable
+ 
+ import torch
+@@ -40,10 +41,17 @@ from vllm.model_executor.models.utils import (
+     maybe_prefix,
+ )
+ 
++from vllm.models.common.ops.sequence_parallel import sp_all_gather, sp_shard
+ from vllm.multimodal import MULTIMODAL_REGISTRY
+ from vllm.platforms import current_platform
++from vllm.sequence import IntermediateTensors
+ from vllm.transformers_utils.configs.glm5_next import Glm5NextConfig
+ 
++from vllm_metax.model_executor.layers.online_rotation import (
++    build_rotation,
++    get_online_rotation_module_config,
++)
++
+ from vllm.models.glm5next.nvidia.kda import Glm5NextLinearAttention
+ from vllm.models.glm5next.nvidia.multimodal import (
+     Glm5NextMultiModalProcessor,
+@@ -63,6 +71,104 @@ from vllm.models.glm5next.nvidia.model import (
+ 
+ from .attention import MacaGlm5NextMLAAttention
+ 
++
++def _probe_base_mla_layers(layers, loaded_params: set[str]) -> None:
++    """Dump a handful of base MLA layers to check whether kv_b_proj / indexer
++    got empty-quantized (int8 dtype + no weight_scale) because
++    ``compression_config.ignore`` uses the HF prefix
++    (``model.language_model.layers.N.xxx``) but runtime Linear prefixes are
++    ``model.layers.N.xxx`` and vLLM doesn't remap them for GLM.
++    """
++    if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
++        return
++    # Unconditional banner: proves this code path actually runs. If you don't
++    # see it after setting VLLM_METAX_MTP_WEIGHT_PROBE=1, the patched file was
++    # not copied into /opt/conda/.../site-packages/vllm_metax/ (or a stale
++    # __pycache__ is being imported).
++    print(
++        f"[BASE-WEIGHT] probe start: layers_type={type(layers).__name__} "
++        f"len={len(layers) if hasattr(layers, '__len__') else '?'} "
++        f"loaded_params={len(loaded_params)}",
++        flush=True,
++    )
++    # Pick representative MLA base layers: first_k_dense_replace=3, plus a
++    # middle one and the last MLA layer.
++    probe_indices = [3, 11, 43]
++    for idx in probe_indices:
++        # ``self.layers`` is an nn.ModuleList (from make_layers), NOT a dict.
++        layer = None
++        if hasattr(layers, "get"):
++            layer = layers.get(str(idx)) if layers.get(str(idx)) else layers.get(idx)
++        else:
++            try:
++                layer = layers[idx]
++            except Exception as e:
++                print(f"[BASE-WEIGHT] layer {idx} inaccessible: {e}", flush=True)
++                continue
++        if layer is None or isinstance(layer, PPMissingLayer):
++            print(f"[BASE-WEIGHT] layer {idx} missing on this PP rank", flush=True)
++            continue
++        attn = getattr(layer, "self_attn", None)
++        if not isinstance(attn, MacaGlm5NextMLAAttention):
++            print(
++                f"[BASE-WEIGHT] === layer {idx}: not MLA "
++                f"({type(attn).__name__}), skip ===",
++                flush=True,
++            )
++            continue
++        print(f"[BASE-WEIGHT] === base MLA layer {idx} ===", flush=True)
++
++        def _show(module, tag):
++            if module is None:
++                print(f"[BASE-WEIGHT] {tag:45s} None", flush=True)
++                return
++            qm = type(getattr(module, "quant_method", None)).__name__
++            prefix = getattr(module, "prefix", "?")
++            w = getattr(module, "weight", None)
++            print(f"[BASE-WEIGHT] {tag:45s} quant_method={qm} prefix={prefix!r}",
++                  flush=True)
++            if w is not None:
++                wf = w.float()
++                print(
++                    f"[BASE-WEIGHT]   -> dtype={str(w.dtype):12s} "
++                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
++                    f"absmax={wf.abs().max().item():.4e} "
++                    f"finite={bool(torch.isfinite(wf).all().item())}",
++                    flush=True,
++                )
++            # For quantized layers: an uninitialised (torch.empty) scale means
++            # the ckpt had no weight_scale and the layer was "empty-quantized".
++            for sname in ("weight_scale", "input_scale", "scale"):
++                s = getattr(module, sname, None)
++                if isinstance(s, torch.Tensor):
++                    sf = s.float()
++                    print(
++                        f"[BASE-WEIGHT]   -> {sname}={str(s.dtype):10s} "
++                        f"std={sf.std().item():.4e} "
++                        f"absmax={sf.abs().max().item():.4e} "
++                        f"finite={bool(torch.isfinite(sf).all().item())}",
++                        flush=True,
++                    )
++
++        _show(getattr(attn, "kv_b_proj", None), "kv_b_proj")
++        _show(getattr(attn, "fused_qkv_a_proj", None), "fused_qkv_a_proj")
++        q_b = getattr(attn, "q_b_proj", None) or getattr(attn, "q_proj", None)
++        _show(q_b, "q_b_proj")
++        _show(getattr(attn, "o_proj", None), "o_proj")
++        idxr = getattr(attn, "indexer", None)
++        if idxr is not None:
++            _show(getattr(idxr, "wq_b", None), "indexer.wq_b")
++
++        # Did weight_scale params load?
++        expected_scale_names = [
++            f"model.layers.{idx}.self_attn.kv_b_proj.weight_scale",
++            f"model.layers.{idx}.self_attn.indexer.wq_b.weight_scale",
++        ]
++        missing = [n for n in expected_scale_names if n not in loaded_params]
++        if missing:
++            print(f"[BASE-WEIGHT]   missing scales: {missing}", flush=True)
++
++
+ class MacaGlm5NextDecoderLayer(Glm5NextDecoderLayer):
+     def __init__(
+         self,
+@@ -312,9 +418,24 @@ class MacaGlm5NextModel(Glm5NextModel):
+         # doesn't rebuild the slice (a fresh list) every step.
+         self._active_layers = self.layers[self.start_layer : self.end_layer]
+ 
++        rotation_module_name = maybe_prefix(prefix, "prenorm_hadamard_rotation")
++        rotation_config = get_online_rotation_module_config(
++            config,
++            rotation_module_name,
++        )
++        self.use_hadamard_rotation = rotation_config is not None
++
+         if get_pp_group().is_last_rank:
++            self.prenorm_hadamard_rotation = (
++                build_rotation(rotation_config)
++                if rotation_config is not None
++                else None
++            )
+             self.norm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
+         else:
++            self.prenorm_hadamard_rotation = (
++                PPMissingLayer() if self.use_hadamard_rotation else None
++            )
+             self.norm = PPMissingLayer()
+ 
+         self.is_sequence_parallel = (
+@@ -326,6 +447,73 @@ class MacaGlm5NextModel(Glm5NextModel):
+             "num_attention_heads must be divisible by world_size"
+         )
+ 
++        # Used by the diagnostics below to prove the patched vllm_metax module
++        # is actually the one being imported at runtime.
++        if os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
++            print(
++                f"[BASE-WEIGHT] MacaGlm5NextModel.__init__ "
++                f"start_layer={self.start_layer} end_layer={self.end_layer} "
++                f"num_layers={config.num_hidden_layers}",
++                flush=True,
++            )
++
++    def forward(
++        self,
++        input_ids: torch.Tensor | None,
++        positions: torch.Tensor,
++        intermediate_tensors: IntermediateTensors | None,
++        inputs_embeds: torch.Tensor | None = None,
++        **kwargs,
++    ) -> torch.Tensor:
++        if get_pp_group().is_first_rank:
++            if inputs_embeds is not None:
++                hidden_states = inputs_embeds
++            else:
++                hidden_states = self.embed_input_ids(input_ids)
++            residual = None
++            post = None
++            comb = None
++        else:
++            assert intermediate_tensors is not None
++            hidden_states = intermediate_tensors["hidden_states"]
++            residual = intermediate_tensors["residual"]
++            # post/comb (deferred mHC hc_post state) are not propagated across
++            # PP ranks; the receiving rank's first mHC layer uses standalone pre.
++            post = None
++            comb = None
++
++        full_num_tokens = positions.shape[0]
++        if self.is_sequence_parallel:
++            hidden_states = sp_shard(hidden_states)
++
++        for layer in self._active_layers:
++            hidden_states, residual, post, comb = layer(
++                positions, hidden_states, residual, post, comb
++            )
++
++        if not get_pp_group().is_last_rank:
++            return IntermediateTensors(
++                {"hidden_states": hidden_states, "residual": residual}
++            )
++
++        if self.is_sequence_parallel:
++            hidden_states = sp_all_gather(hidden_states)[:full_num_tokens]
++
++        # The last mHC layer already materialized the final residual sum into
++        # ``hidden_states``; rotate it back to the original basis before norm.
++        if self.use_hadamard_rotation:
++            import os
++            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
++                print(f"[ROTATION-DEBUG] use_hadamard_rotation={self.use_hadamard_rotation} "
++                      f"before mean={hidden_states.float().mean().item():.6f} "
++                      f"std={hidden_states.float().std().item():.6f}", flush=True)
++            hidden_states = self.prenorm_hadamard_rotation(hidden_states)
++            if os.getenv("VLLM_METAX_HADAMARD_DEBUG"):
++                print(f"[ROTATION-DEBUG] after  mean={hidden_states.float().mean().item():.6f} "
++                      f"std={hidden_states.float().std().item():.6f}", flush=True)
++        hidden_states = self.norm(hidden_states)
++        return hidden_states
++
+     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+ 
+         stacked_params_mapping = [
+@@ -507,6 +695,13 @@ class MacaGlm5NextModel(Glm5NextModel):
+                     )
+                     weight_loader(param, loaded_weight, **kwargs)
+             loaded_params.add(name)
++
++        # Optional post-load probe (VLLM_METAX_MTP_WEIGHT_PROBE=1): dump a few
++        # base MLA layers to see whether kv_b_proj / indexer.wq_b get
++        # "empty-quantized" (int8 + no weight_scale) because compression_config
++        # ignore doesn't match their runtime prefix.
++        _probe_base_mla_layers(self.layers, loaded_params)
++
+         return loaded_params
+ 
+ 
+diff --git a/vllm_metax/models/glm5next/mtp.py b/vllm_metax/models/glm5next/mtp.py
+new file mode 100644
+index 0000000..19cfd46
+--- /dev/null
++++ b/vllm_metax/models/glm5next/mtp.py
+@@ -0,0 +1,407 @@
++# SPDX-License-Identifier: Apache-2.0
++# 2026 - Modified by MetaX Integrated Circuits (Shanghai) Co., Ltd. All Rights Reserved.
++
++"""MetaX GLM-5.3 MTP with QuaRot online rotation support."""
++
++import os
++
++import torch
++import torch.nn as nn
++
++from vllm.config import VllmConfig
++from vllm.model_executor.layers.layernorm import RMSNorm
++from vllm.model_executor.layers.logits_processor import LogitsProcessor
++from vllm.model_executor.layers.vocab_parallel_embedding import (
++    VocabParallelEmbedding,
++)
++from vllm.model_executor.models.utils import maybe_prefix
++from vllm.models.glm5next.nvidia.model import Glm5NextMLAAttention
++from vllm.models.glm5next.nvidia.mtp import (
++    Glm5NextMTP,
++    Glm5NextMultiTokenPredictor,
++    Glm5NextMultiTokenPredictorLayer,
++    SharedHead,
++)
++from vllm.models.glm5next.nvidia.ops.fused_eh_norm import fused_eh_norm
++from vllm.platforms import current_platform
++
++from .model import MacaGlm5NextDecoderLayer
++
++from vllm_metax.model_executor.layers.online_rotation import (
++    build_rotation,
++    get_online_rotation_module_config,
++)
++
++
++def _fused_eh_norm_unfused(
++    positions: torch.Tensor,
++    inputs_embeds: torch.Tensor,
++    previous_hidden_states: torch.Tensor,
++    enorm_weight: torch.Tensor,
++    hnorm_weight: torch.Tensor,
++    eps: float,
++) -> torch.Tensor:
++    """Pure-PyTorch fallback for the nvidia ``fused_eh_norm`` op.
++
++    The upstream op is a fused CUDA kernel with no MetaX backend; if it
++    produces garbage on MACA this bit-exact equivalent (zero pos-0 embeds +
++    enorm(embeds) + hnorm(prev) + cat -> [N, 2H]) can be enabled via
++    ``VLLM_METAX_MTP_UNFUSED_EH_NORM=1``.
++    """
++    # Zero position-0 embeddings (the draft's first slot has no real embed).
++    mask = (positions != 0).to(inputs_embeds.dtype).unsqueeze(-1)
++    embeds = inputs_embeds * mask
++    # enorm(embeds) -- RMSNorm
++    embeds_norm = embeds * torch.rsqrt(
++        embeds.pow(2).mean(dim=-1, keepdim=True) + eps
++    ) * enorm_weight
++    # hnorm(prev) -- RMSNorm
++    prev_norm = previous_hidden_states * torch.rsqrt(
++        previous_hidden_states.pow(2).mean(dim=-1, keepdim=True) + eps
++    ) * hnorm_weight
++    return torch.cat([embeds_norm, prev_norm], dim=-1)
++
++
++class MacaGlm5NextMultiTokenPredictorLayer(Glm5NextMultiTokenPredictorLayer):
++    def __init__(self, vllm_config: VllmConfig, prefix: str) -> None:
++        # Do not delegate to the upstream layer: it builds the MTP block with
++        # the nvidia decoder, which hard-codes ``quant_config=None`` for MLA
++        # projections. That drops the W8A8 ``kv_a_proj_with_mqa.weight_scale``
++        # this checkpoint stores for layer 45, so draft weight loading fails.
++        # Building the block with ``MacaGlm5NextDecoderLayer`` reuses our MLA
++        # that upgrades itself to compressed-tensors W8A8.
++        nn.Module.__init__(self)
++        assert vllm_config.speculative_config is not None
++        config = vllm_config.speculative_config.draft_model_config.hf_config
++        self.config = config
++        quant_config = vllm_config.quant_config
++
++        self.enorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
++        self.hnorm = RMSNorm(config.hidden_size, eps=config.rms_norm_eps)
++        self.eh_proj = nn.Linear(
++            config.hidden_size * 2, config.hidden_size, bias=False
++        )
++
++        topk_tokens = config.index_topk
++        assert topk_tokens is not None
++        kpool = config.index_kpool
++        assert kpool is not None
++        buffer_width = topk_tokens + (kpool - 1 if kpool > 1 else 0)
++        sparse_topk_block_n = 128
++        buffer_width = (
++            (buffer_width + sparse_topk_block_n - 1) // sparse_topk_block_n
++        ) * sparse_topk_block_n
++        topk_indices_buffer = torch.empty(
++            vllm_config.scheduler_config.max_num_batched_tokens,
++            buffer_width,
++            dtype=torch.int32,
++            device=current_platform.device_type,
++        )
++        self.shared_head = SharedHead(
++            config=config, prefix=prefix, quant_config=quant_config
++        )
++
++        layer_idx = int(prefix.rsplit(".", 1)[-1])
++        self.mtp_block = MacaGlm5NextDecoderLayer(
++            vllm_config=vllm_config,
++            config=config,
++            layer_idx=layer_idx,
++            prefix=prefix,
++            topk_indices_buffer=topk_indices_buffer,
++            is_mtp_layer=True,
++        )
++
++        rotation_module_name = maybe_prefix(
++            prefix,
++            "shared_head.prenorm_hadamard_rotation",
++        )
++        rotation_config = get_online_rotation_module_config(
++            self.config,
++            rotation_module_name,
++        )
++        self.use_hadamard_rotation = rotation_config is not None
++        if rotation_config is not None:
++            self.shared_head.prenorm_hadamard_rotation = build_rotation(
++                rotation_config
++            )
++
++    def forward(
++        self,
++        input_ids: torch.Tensor,
++        positions: torch.Tensor,
++        previous_hidden_states: torch.Tensor,
++        inputs_embeds: torch.Tensor | None = None,
++        spec_step_index: int = 0,
++    ) -> torch.Tensor:
++        assert inputs_embeds is not None
++        # Fused: zero pos-0 embeds + enorm(embeds) + hnorm(prev) + cat -> [N, 2H].
++        if os.getenv("VLLM_METAX_MTP_UNFUSED_EH_NORM"):
++            eh_input = _fused_eh_norm_unfused(
++                positions,
++                inputs_embeds,
++                previous_hidden_states,
++                self.enorm.weight,
++                self.hnorm.weight,
++                self.enorm.variance_epsilon,
++            )
++        else:
++            eh_input = fused_eh_norm(
++                positions,
++                inputs_embeds,
++                previous_hidden_states,
++                self.enorm.weight,
++                self.hnorm.weight,
++                self.enorm.variance_epsilon,
++            )
++        hidden_states = self.eh_proj(eh_input)
++        _dbg = os.getenv("VLLM_METAX_HADAMARD_DEBUG")
++        if _dbg:
++            def _stats(tag, t):
++                tf = t.float()
++                print(f"[MTP-FWD] {tag:18s} mean={tf.mean().item():.4e} "
++                      f"std={tf.std().item():.4e} "
++                      f"finite={bool(torch.isfinite(tf).all().item())}",
++                      flush=True)
++            _stats("inputs_embeds", inputs_embeds)
++            _stats("prev_hidden", previous_hidden_states)
++            _stats("eh_input", eh_input)
++            _stats("post_eh_proj", hidden_states)
++        # Fuse the residual add and final RMSNorm. Glm5NextMoE already performs
++        # its all-reduce, so no collective is needed here. The post-norm result
++        # feeds both draft logits and the next recycled hidden state.
++        hidden_states, residual, _, _ = self.mtp_block(
++            positions=positions, hidden_states=hidden_states, residual=None
++        )
++        if _dbg:
++            _stats("mtp_hidden_out", hidden_states)
++            _stats("mtp_residual", residual)
++        if self.use_hadamard_rotation:
++            # Rotate the summed residual stream back before shared_head norm.
++            _x = hidden_states + residual
++            if _dbg:
++                print(f"[ROTATION-DEBUG-MTP] before mean={_x.float().mean().item():.6f} "
++                      f"std={_x.float().std().item():.6f}", flush=True)
++            hidden_states = self.shared_head.prenorm_hadamard_rotation(_x)
++            if _dbg:
++                print(f"[ROTATION-DEBUG-MTP] after  mean={hidden_states.float().mean().item():.6f} "
++                      f"std={hidden_states.float().std().item():.6f}", flush=True)
++            hidden_states = self.shared_head.norm(hidden_states)
++        else:
++            hidden_states, _ = self.shared_head.norm(
++                hidden_states, residual=residual
++            )
++        return hidden_states, hidden_states
++
++
++class MacaGlm5NextMultiTokenPredictor(Glm5NextMultiTokenPredictor):
++    def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        super(Glm5NextMultiTokenPredictor, self).__init__()
++        config = vllm_config.model_config.hf_config
++        self.mtp_start_layer_idx = config.num_hidden_layers
++        self.num_mtp_layers = config.num_nextn_predict_layers
++        self.layers = torch.nn.ModuleDict(
++            {
++                str(idx): MacaGlm5NextMultiTokenPredictorLayer(
++                    vllm_config, f"{prefix}.layers.{idx}"
++                )
++                for idx in range(
++                    self.mtp_start_layer_idx,
++                    self.mtp_start_layer_idx + self.num_mtp_layers,
++                )
++            }
++        )
++        self.embed_tokens = VocabParallelEmbedding(
++            config.vocab_size,
++            config.hidden_size,
++            prefix=maybe_prefix(prefix, "embed_tokens"),
++        )
++        # Plain list for the per-propose lookup: ModuleDict[str(...)] builds a
++        # string and hashes it on every draft step.
++        self._mtp_layers = list(self.layers.values())
++        self._mtp_mla_attns = []
++        for layer in self._mtp_layers:
++            self_attn = layer.mtp_block.self_attn
++            assert isinstance(self_attn, Glm5NextMLAAttention)
++            self._mtp_mla_attns.append(self_attn.mla_attn)
++        self.logits_processor = LogitsProcessor(config.vocab_size)
++
++
++# GLM-5.3 checkpoints serialize the text tower as
++# ``model.language_model.layers.N.xxx`` (HF layout), while vLLM mounts the base
++# tower at ``language_model.model.`` and the MTP draft at ``model.``.
++# ``compression_config.ignore`` keeps the checkpoint spelling and vLLM matches
++# it by exact string equality (``should_ignore_layer``), so the draft's
++# ``model.layers.45.self_attn.kv_b_proj`` never matches and falls back to the
++# default W8A8 scheme: the bf16 checkpoint weight is truncated into an int8
++# buffer and, since the checkpoint carries no ``weight_scale`` for it, dequant
++# reads a torch.empty scale (~1e29) -> draft logits become noise.
++# Mirror every ignored text-tower module under all three prefixes so each model
++# tree matches its own runtime spelling.
++_TEXT_TOWER_PREFIXES = (
++    "model.language_model.",
++    "language_model.model.",
++    "model.",
++)
++
++
++def _ignore_prefix_aliases(entry: str) -> list[str]:
++    for prefix in _TEXT_TOWER_PREFIXES:
++        if entry.startswith(prefix):
++            rest = entry[len(prefix) :]
++            if not rest.startswith(("layers.", "embed_tokens.")):
++                return [entry]
++            return [f"{p}{rest}" for p in _TEXT_TOWER_PREFIXES]
++    return [entry]
++
++
++def _expand_quant_ignore_aliases(quant_config) -> None:
++    """Rewrite ``ignore`` in place to cover every runtime prefix spelling."""
++    ignore = getattr(quant_config, "ignore", None)
++    if not ignore:
++        return
++    ignore = [str(entry) for entry in ignore]
++    additions: list[str] = []
++    for entry in ignore:
++        for alias in _ignore_prefix_aliases(entry):
++            if alias not in ignore and alias not in additions:
++                additions.append(alias)
++    if additions:
++        quant_config.ignore = ignore + additions
++
++
++class MacaGlm5NextMTP(Glm5NextMTP):
++    def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        super(Glm5NextMTP, self).__init__()
++        self.config = vllm_config.model_config.hf_config
++        self.quant_config = vllm_config.quant_config
++        # Must run before the predictor is built: LinearBase resolves its
++        # quant method (and thus the ignore check) during construction.
++        _expand_quant_ignore_aliases(self.quant_config)
++        self.model = MacaGlm5NextMultiTokenPredictor(
++            vllm_config=vllm_config, prefix=maybe_prefix(prefix, "model")
++        )
++        self.set_moe_parameters()
++
++    def load_weights(self, weights):
++        # The GLM-5.3 checkpoint stores the MTP language-model head at the
++        # top-level ``lm_head.weight`` key (shared with the base model), not
++        # under the spec layer.  The inherited Glm5NextMTP.load_weights only
++        # accepts spec-layer keys (it skips anything get_spec_layer_idx...
++        # returns None for), so without this remap shared_head.head stays at
++        # its torch.empty initial value and draft logits are garbage.
++        spec_layer = self.config.num_hidden_layers
++        head_target = f"model.layers.{spec_layer}.shared_head.head.weight"
++
++        def _remap_head(iterable):
++            for name, w in iterable:
++                if name == "lm_head.weight":
++                    yield head_target, w
++                else:
++                    yield name, w
++
++        loaded = super().load_weights(_remap_head(weights))
++        self._probe_mtp_weights(loaded)
++        return loaded
++
++    def _probe_mtp_weights(self, loaded_params: set) -> None:
++        """Post-load diagnostic (VLLM_METAX_MTP_WEIGHT_PROBE).
++
++        Prints which layer-45 params actually loaded vs. which stay at
++        torch.empty. Non-sharded params (layernorms, eh_proj) are replicated
++        across TP ranks, so unloaded ones produce identical inf output on
++        every rank -- the symptom we are chasing.
++        """
++        if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
++            return
++
++        # Proves the ignore aliases landed: the draft's runtime prefix
++        # ``model.layers.45.*`` must be present, not just the HF spelling.
++        ignore = getattr(self.quant_config, "ignore", None) or []
++        spec = f"layers.{self.config.num_hidden_layers}."
++        hits = [x for x in ignore if spec in str(x) and "self_attn" in str(x)]
++        runtime_hits = [x for x in hits if str(x).startswith("model.layers.")]
++        print(
++            f"[MTP-WEIGHT] ignore spec-layer entries: {len(hits)} "
++            f"(runtime-prefixed: {len(runtime_hits)}) {runtime_hits}",
++            flush=True,
++        )
++
++        for layer_idx, layer in self.model.layers.items():
++            print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
++            kv_b = layer.mtp_block.self_attn.kv_b_proj
++            print(
++                f"[MTP-WEIGHT] kv_b_proj quant_method="
++                f"{type(getattr(kv_b, 'quant_method', None)).__name__} "
++                f"prefix={getattr(kv_b, 'prefix', '?')!r}",
++                flush=True,
++            )
++            probe_targets = [
++                ("eh_proj", layer.eh_proj.weight),
++                ("enorm", layer.enorm.weight),
++                ("hnorm", layer.hnorm.weight),
++                ("mtp_block.input_layernorm",
++                 layer.mtp_block.input_layernorm.weight),
++                ("mtp_block.post_attention_layernorm",
++                 layer.mtp_block.post_attention_layernorm.weight),
++                ("shared_head.norm", layer.shared_head.norm.weight),
++                ("shared_head.head", layer.shared_head.head.weight),
++                ("mtp_block.self_attn.fused_qkv_a_proj",
++                 layer.mtp_block.self_attn.fused_qkv_a_proj.weight),
++                ("mtp_block.self_attn.kv_b_proj",
++                 layer.mtp_block.self_attn.kv_b_proj.weight),
++            ]
++            # W4A8 MoE: spot-check the first routed expert's gate weight.
++            # moe.experts may be a MoERunner (not len()-able), so guard it.
++            try:
++                moe = layer.mtp_block.mlp
++                if hasattr(moe, "experts"):
++                    experts = moe.experts
++                    # experts is nn.ModuleList in FusedMoE, MoERunner otherwise.
++                    if isinstance(experts, torch.nn.ModuleList) and len(experts) > 0:
++                        exp0 = experts[0]
++                        for pname in ("gate_proj", "up_proj", "down_proj"):
++                            if hasattr(exp0, pname):
++                                probe_targets.append(
++                                    (f"mtp_block.mlp.exp0.{pname}",
++                                     getattr(exp0, pname).weight)
++                                )
++            except Exception as exc:
++                print(f"[MTP-WEIGHT] moe probe skipped: {exc}", flush=True)
++            moe_gate = getattr(getattr(layer.mtp_block, "mlp", None), "gate", None)
++            if moe_gate is not None:
++                probe_targets.append(("mtp_block.mlp.gate", moe_gate.weight))
++            indexer = getattr(layer.mtp_block.self_attn, "indexer", None)
++            if indexer is not None:
++                probe_targets.append(
++                    ("mtp_block.self_attn.indexer.wq_b", indexer.wq_b.weight)
++                )
++            for tag, w in probe_targets:
++                wf = w.float()
++                finite = bool(torch.isfinite(wf).all().item())
++                absmax = wf.abs().max().item()
++                status = "OK" if (finite and absmax < 1e3) else "GARBAGE"
++                print(
++                    f"[MTP-WEIGHT] {tag:35s} dtype={str(w.dtype):12s} "
++                    f"mean={wf.mean().item():.4e} std={wf.std().item():.4e} "
++                    f"absmax={absmax:.4e} finite={finite} -> {status}",
++                    flush=True,
++                )
++            # Which layer params were NOT loaded?
++            all_names = [n for n, _ in layer.named_parameters()]
++            loaded_layer = [
++                n for n in all_names
++                if any(n in lp or lp.endswith(n) for lp in loaded_params)
++            ]
++            missing = [n for n in all_names if n not in loaded_layer]
++            print(
++                f"[MTP-WEIGHT] loaded {len(loaded_layer)}/{len(all_names)} "
++                f"params; missing={missing[:20]}",
++                flush=True,
++            )
++
++
++__all__ = [
++    "MacaGlm5NextMTP",
++    "MacaGlm5NextMultiTokenPredictor",
++    "MacaGlm5NextMultiTokenPredictorLayer",
++]
