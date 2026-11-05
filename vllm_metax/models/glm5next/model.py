@@ -81,16 +81,41 @@ def _probe_base_mla_layers(layers, loaded_params: set[str]) -> None:
     """
     if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
         return
+    # Unconditional banner: proves this code path actually runs. If you don't
+    # see it after setting VLLM_METAX_MTP_WEIGHT_PROBE=1, the patched file was
+    # not copied into /opt/conda/.../site-packages/vllm_metax/ (or a stale
+    # __pycache__ is being imported).
+    print(
+        f"[BASE-WEIGHT] probe start: layers_type={type(layers).__name__} "
+        f"len={len(layers) if hasattr(layers, '__len__') else '?'} "
+        f"loaded_params={len(loaded_params)}",
+        flush=True,
+    )
     # Pick representative MLA base layers: first_k_dense_replace=3, plus a
     # middle one and the last MLA layer.
     probe_indices = [3, 11, 43]
     for idx in probe_indices:
-        layer = layers.get(str(idx)) if hasattr(layers, "get") else None
-        if layer is None:
+        # ``self.layers`` is an nn.ModuleList (from make_layers), NOT a dict.
+        layer = None
+        if hasattr(layers, "get"):
+            layer = layers.get(str(idx)) if layers.get(str(idx)) else layers.get(idx)
+        else:
+            try:
+                layer = layers[idx]
+            except Exception as e:
+                print(f"[BASE-WEIGHT] layer {idx} inaccessible: {e}", flush=True)
+                continue
+        if layer is None or isinstance(layer, PPMissingLayer):
+            print(f"[BASE-WEIGHT] layer {idx} missing on this PP rank", flush=True)
             continue
         attn = getattr(layer, "self_attn", None)
-        if attn is None or getattr(attn, "layer_kind", "mla") != "mla":
-            continue  # KDA layer, skip
+        if not isinstance(attn, MacaGlm5NextMLAAttention):
+            print(
+                f"[BASE-WEIGHT] === layer {idx}: not MLA "
+                f"({type(attn).__name__}), skip ===",
+                flush=True,
+            )
+            continue
         print(f"[BASE-WEIGHT] === base MLA layer {idx} ===", flush=True)
 
         def _show(module, tag):
@@ -111,12 +136,25 @@ def _probe_base_mla_layers(layers, loaded_params: set[str]) -> None:
                     f"finite={bool(torch.isfinite(wf).all().item())}",
                     flush=True,
                 )
+            # For quantized layers: an uninitialised (torch.empty) scale means
+            # the ckpt had no weight_scale and the layer was "empty-quantized".
+            for sname in ("weight_scale", "input_scale", "scale"):
+                s = getattr(module, sname, None)
+                if isinstance(s, torch.Tensor):
+                    sf = s.float()
+                    print(
+                        f"[BASE-WEIGHT]   -> {sname}={str(s.dtype):10s} "
+                        f"std={sf.std().item():.4e} "
+                        f"absmax={sf.abs().max().item():.4e} "
+                        f"finite={bool(torch.isfinite(sf).all().item())}",
+                        flush=True,
+                    )
 
-        _show(attn.kv_b_proj, "kv_b_proj")
-        _show(attn.fused_qkv_a_proj, "fused_qkv_a_proj")
-        _show(attn.q_b_proj if hasattr(attn, "q_b_proj") else attn.q_proj,
-              "q_b_proj")
-        _show(attn.o_proj, "o_proj")
+        _show(getattr(attn, "kv_b_proj", None), "kv_b_proj")
+        _show(getattr(attn, "fused_qkv_a_proj", None), "fused_qkv_a_proj")
+        q_b = getattr(attn, "q_b_proj", None) or getattr(attn, "q_proj", None)
+        _show(q_b, "q_b_proj")
+        _show(getattr(attn, "o_proj", None), "o_proj")
         idxr = getattr(attn, "indexer", None)
         if idxr is not None:
             _show(getattr(idxr, "wq_b", None), "indexer.wq_b")
@@ -413,6 +451,16 @@ class MacaGlm5NextModel(Glm5NextModel):
         assert config.num_attention_heads % world_size == 0, (
             "num_attention_heads must be divisible by world_size"
         )
+
+        # Used by the diagnostics below to prove the patched vllm_metax module
+        # is actually the one being imported at runtime.
+        if os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
+            print(
+                f"[BASE-WEIGHT] MacaGlm5NextModel.__init__ "
+                f"start_layer={self.start_layer} end_layer={self.end_layer} "
+                f"num_layers={config.num_hidden_layers}",
+                flush=True,
+            )
 
     def forward(
         self,
