@@ -1,0 +1,418 @@
+Loading safetensors checkpoint shards:   0% Completed | 0/48 [00:00<?, ?it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   2% Completed | 1/48 [00:00<00:07,  6.04it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   4% Completed | 2/48 [00:00<00:07,  6.49it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   6% Completed | 3/48 [00:00<00:06,  6.89it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   8% Completed | 4/48 [00:02<00:31,  1.39it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  10% Completed | 5/48 [00:04<00:54,  1.28s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  12% Completed | 6/48 [00:06<01:06,  1.57s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  15% Completed | 7/48 [00:08<01:08,  1.68s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  17% Completed | 8/48 [00:10<01:08,  1.70s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  19% Completed | 9/48 [00:11<01:05,  1.68s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  21% Completed | 10/48 [00:13<01:05,  1.71s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  23% Completed | 11/48 [00:15<01:05,  1.78s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  25% Completed | 12/48 [00:17<01:06,  1.84s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  27% Completed | 13/48 [00:18<00:57,  1.63s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  29% Completed | 14/48 [00:20<01:01,  1.81s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  31% Completed | 15/48 [00:23<01:05,  1.97s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  33% Completed | 16/48 [00:25<01:05,  2.05s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  35% Completed | 17/48 [00:27<01:04,  2.07s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  38% Completed | 18/48 [00:28<00:55,  1.84s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  40% Completed | 19/48 [00:31<01:01,  2.11s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  42% Completed | 20/48 [00:33<00:59,  2.14s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  44% Completed | 21/48 [00:35<00:56,  2.10s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  46% Completed | 22/48 [00:38<00:58,  2.26s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  48% Completed | 23/48 [00:40<00:53,  2.13s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  50% Completed | 24/48 [00:42<00:49,  2.08s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  52% Completed | 25/48 [00:43<00:40,  1.77s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  54% Completed | 26/48 [00:44<00:36,  1.66s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  56% Completed | 27/48 [00:46<00:36,  1.72s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  58% Completed | 28/48 [00:48<00:36,  1.81s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  60% Completed | 29/48 [00:50<00:35,  1.88s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  62% Completed | 30/48 [00:51<00:30,  1.68s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  65% Completed | 31/48 [00:53<00:27,  1.64s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  67% Completed | 32/48 [00:55<00:28,  1.75s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  69% Completed | 33/48 [00:57<00:26,  1.74s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  71% Completed | 34/48 [00:59<00:25,  1.82s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  73% Completed | 35/48 [01:00<00:21,  1.65s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  75% Completed | 36/48 [01:02<00:20,  1.71s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  77% Completed | 37/48 [01:04<00:19,  1.77s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  79% Completed | 38/48 [01:05<00:15,  1.58s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  81% Completed | 39/48 [01:06<00:13,  1.55s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  83% Completed | 40/48 [01:08<00:12,  1.55s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  85% Completed | 41/48 [01:09<00:09,  1.37s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  88% Completed | 42/48 [01:10<00:07,  1.29s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  90% Completed | 43/48 [01:11<00:06,  1.26s/it]
+(Worker_TP5 pid=263309) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP5 pid=263309) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP5 pid=263309) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=9.5307e-05 std=1.8980e-02 absmax=1.4941e-01 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  92% Completed | 44/48 [01:12<00:04,  1.23s/it]
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=-1.4124e-05 std=3.4471e-02 absmax=1.3203e+00 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP5 pid=263309) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP5 pid=263309) INFO 11-05 13:37:16 [model_runner.py:428] Model loading took 21.16 GiB memory and 76.681947 seconds
+(Worker_TP5 pid=263309) INFO 11-05 13:37:16 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:16 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:16 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  94% Completed | 45/48 [01:13<00:03,  1.14s/it]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  96% Completed | 46/48 [01:13<00:01,  1.17it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  98% Completed | 47/48 [01:14<00:00,  1.35it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [01:14<00:00,  1.81it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [01:14<00:00,  1.55s/it]
+(Worker_TP0 pid=263035) 
+(Worker_TP0 pid=263035) INFO 11-05 13:37:17 [default_loader.py:430] Loading weights took 74.37 seconds
+(Worker_TP0 pid=263035) INFO 11-05 13:37:17 [int8.py:289] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0 pid=263035) INFO 11-05 13:37:18 [weight_utils.py:895] Filesystem type for checkpoints: AUTOFS. Checkpoint size: 160.79 GiB. Available RAM: 1638.37 GiB.
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   0% Completed | 0/48 [00:00<?, ?it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:   8% Completed | 4/48 [00:00<00:01, 30.83it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  17% Completed | 8/48 [00:00<00:03, 10.41it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  21% Completed | 10/48 [00:00<00:04,  9.21it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  25% Completed | 12/48 [00:01<00:04,  8.52it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  29% Completed | 14/48 [00:01<00:04,  8.09it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  31% Completed | 15/48 [00:01<00:04,  7.92it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  33% Completed | 16/48 [00:01<00:04,  7.78it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  35% Completed | 17/48 [00:01<00:04,  7.65it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  38% Completed | 18/48 [00:02<00:03,  7.55it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  40% Completed | 19/48 [00:02<00:03,  7.48it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  42% Completed | 20/48 [00:02<00:03,  7.43it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  44% Completed | 21/48 [00:02<00:03,  7.40it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  46% Completed | 22/48 [00:02<00:03,  7.39it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  48% Completed | 23/48 [00:02<00:03,  7.81it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  52% Completed | 25/48 [00:02<00:02,  9.35it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  56% Completed | 27/48 [00:03<00:02, 10.31it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  60% Completed | 29/48 [00:03<00:01, 10.92it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  65% Completed | 31/48 [00:03<00:01, 11.35it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  69% Completed | 33/48 [00:03<00:01, 11.53it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  73% Completed | 35/48 [00:03<00:01, 11.12it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  77% Completed | 37/48 [00:03<00:01, 10.97it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  81% Completed | 39/48 [00:04<00:00, 11.35it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  85% Completed | 41/48 [00:04<00:00, 11.58it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  90% Completed | 43/48 [00:04<00:00, 11.71it/s]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  94% Completed | 45/48 [00:04<00:00, 11.82it/s]
+(Worker_TP3 pid=263191) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP3 pid=263191) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP3 pid=263191) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards:  98% Completed | 47/48 [00:05<00:00,  6.10it/s]
+(Worker_TP3 pid=263191) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=8.1340e-05 std=1.9508e-02 absmax=1.4648e-01 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=3.0436e-05 std=3.2366e-02 absmax=4.8633e-01 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP3 pid=263191) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP0 pid=263035) 
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [00:05<00:00,  9.05it/s]
+(Worker_TP0 pid=263035) 
+(Worker_TP0 pid=263035) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP0 pid=263035) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP0 pid=263035) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=6.1953e-05 std=1.9888e-02 absmax=2.1582e-01 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=1.2603e-05 std=3.3054e-02 absmax=3.0078e-01 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP0 pid=263035) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP0 pid=263035) INFO 11-05 13:37:23 [default_loader.py:430] Loading weights took 5.37 seconds
+(Worker_TP0 pid=263035) WARNING 11-05 13:37:23 [speculator.py:235] Draft model MacaGlm5NextMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP4 pid=263250) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP4 pid=263250) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP4 pid=263250) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=8.7552e-05 std=1.9456e-02 absmax=1.5527e-01 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=-3.7989e-05 std=3.2950e-02 absmax=4.7852e-01 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP4 pid=263250) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP1 pid=263078) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP1 pid=263078) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP1 pid=263078) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=7.8065e-05 std=1.9612e-02 absmax=1.7480e-01 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=1.8043e-05 std=3.3103e-02 absmax=1.4453e+00 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP1 pid=263078) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP7 pid=263427) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP7 pid=263427) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP7 pid=263427) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=9.6520e-05 std=1.6830e-02 absmax=1.4355e-01 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=2.9635e-05 std=3.6070e-02 absmax=5.4688e-01 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP7 pid=263427) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP3 pid=263191) INFO 11-05 13:37:24 [model_runner.py:428] Model loading took 21.16 GiB memory and 84.172215 seconds
+(Worker_TP3 pid=263191) INFO 11-05 13:37:24 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:24 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:24 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:24 [model_runner.py:428] Model loading took 21.16 GiB memory and 84.303610 seconds
+(Worker_TP4 pid=263250) INFO 11-05 13:37:24 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:24 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:24 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:24 [model_runner.py:428] Model loading took 21.16 GiB memory and 84.479235 seconds
+(Worker_TP6 pid=263368) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP6 pid=263368) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP0 pid=263035) INFO 11-05 13:37:24 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:24 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:24 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP6 pid=263368) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=1.2160e-04 std=1.8318e-02 absmax=1.5918e-01 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=-2.3508e-05 std=3.3921e-02 absmax=3.2617e-01 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP6 pid=263368) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP1 pid=263078) INFO 11-05 13:37:24 [model_runner.py:428] Model loading took 21.16 GiB memory and 84.685117 seconds
+(Worker_TP7 pid=263427) INFO 11-05 13:37:24 [model_runner.py:428] Model loading took 21.16 GiB memory and 84.734110 seconds
+(Worker_TP1 pid=263078) INFO 11-05 13:37:24 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:24 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:24 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:24 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:24 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:24 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP2 pid=263132) [MTP-WEIGHT] === layer 45 ===
+(Worker_TP2 pid=263132) [MTP-WEIGHT] kv_b_proj quant_method=UnquantizedLinearMethod prefix='model.layers.45.self_attn.kv_b_proj'
+(Worker_TP2 pid=263132) [MTP-WEIGHT] eh_proj                             dtype=torch.bfloat16 mean=1.8039e-07 std=5.9968e-03 absmax=9.9609e-02 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] enorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] hnorm                               dtype=torch.bfloat16 mean=1.0000e+00 std=0.0000e+00 absmax=1.0000e+00 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.input_layernorm           dtype=torch.bfloat16 mean=2.1832e-01 std=1.3546e-02 absmax=2.5586e-01 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.post_attention_layernorm  dtype=torch.bfloat16 mean=4.8541e-01 std=2.7794e-02 absmax=5.7031e-01 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] shared_head.norm                    dtype=torch.bfloat16 mean=1.7114e+00 std=2.1996e-01 absmax=2.2031e+00 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] shared_head.head                    dtype=torch.bfloat16 mean=7.7839e-05 std=1.9525e-02 absmax=1.7773e-01 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.self_attn.fused_qkv_a_proj dtype=torch.int8   mean=1.8890e-02 std=3.2936e+01 absmax=1.2800e+02 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.self_attn.kv_b_proj       dtype=torch.bfloat16 mean=5.0809e-06 std=3.8524e-02 absmax=1.9219e+00 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.mlp.gate                  dtype=torch.bfloat16 mean=2.7155e-06 std=3.5702e-02 absmax=2.3633e-01 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] mtp_block.self_attn.indexer.wq_b    dtype=torch.bfloat16 mean=-3.3031e-04 std=3.8891e-01 absmax=3.6094e+00 finite=True -> OK
+(Worker_TP2 pid=263132) [MTP-WEIGHT] loaded 34/34 params; missing=[]
+(Worker_TP6 pid=263368) INFO 11-05 13:37:25 [model_runner.py:428] Model loading took 21.16 GiB memory and 85.163676 seconds
+(Worker_TP6 pid=263368) INFO 11-05 13:37:25 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:25 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:25 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:25 [model_runner.py:428] Model loading took 21.16 GiB memory and 85.532195 seconds
+(Worker_TP2 pid=263132) INFO 11-05 13:37:25 [interface.py:635] Setting kv cache block size to 64 for DEEPSEEK_V32_INDEXER backend.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:25 [interface.py:933] Setting attention block size to 640 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:25 [interface.py:957] Padding mamba page size by 19.40% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=262765) INFO 11-05 13:37:25 [torch_utils.py:287] Reducing Torch threads from 14 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=262765) INFO 11-05 13:37:25 [utils.py:320] Using LBHNC KV cache layout.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:28 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 32242 tokens, and profiled with 1 video items of the maximum feature size.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:36 [fused_moe.py:1464] User defined config folder: /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096
+(Worker_TP0 pid=263035) WARNING 11-05 13:37:36 [fused_moe.py:1495] Using default MoE config. Performance might be sub-optimal! Config file not found at /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096/H=4096,E=288,N=32,device_name=MXC500,dtype=int4_w4a8.json, /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/E=288,N=32,device_name=MXC500,dtype=int4_w4a8.json
+(Worker_TP0 pid=263035) INFO 11-05 13:37:38 [gpu_worker.py:640] Available KV cache memory: 22.6 GiB
+(EngineCore pid=262765) INFO 11-05 13:37:38 [kv_cache_utils.py:2395] GPU KV cache size: 699,452 tokens, Maximum concurrency for 4,096 tokens per request: 170.76x
+(Worker_TP2 pid=263132) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:38 [kernel_warmup.py:172] JIT kernel warmup starting.
+(Worker_TP0 pid=263035) 
+JIT kernel warmup (121 compile keys):   0%|          | 0/9 [00:00<?, ?kernel/s]
+JIT kernel warmup (121 compile keys):  22%|██▏       | 2/9 [00:01<00:04,  1.73kernel/s, MhcPreBigFuseTileLangKernel (4 keys)]
+JIT kernel warmup (121 compile keys):  33%|███▎      | 3/9 [00:01<00:02,  2.47kernel/s, MhcPostTileLangKernel (1 keys)]      
+JIT kernel warmup (121 compile keys):  44%|████▍     | 4/9 [00:01<00:01,  2.58kernel/s, MhcFusedTileLangKernel (2 keys)]
+JIT kernel warmup (121 compile keys):  67%|██████▋   | 6/9 [00:01<00:00,  3.73kernel/s, PrepareUniformDecodeKernel (27 keys)]
+JIT kernel warmup (121 compile keys):  78%|███████▊  | 7/9 [00:02<00:00,  2.51kernel/s, BuildPrefillChunkMetadataKernel (72 keys)]
+JIT kernel warmup (121 compile keys): 100%|██████████| 9/9 [00:02<00:00,  3.90kernel/s, ConvertReqIndexToGlobalIndexKernel (4 keys)]
+JIT kernel warmup (121 compile keys): 100%|██████████| 9/9 [00:02<00:00,  3.12kernel/s, ConvertReqIndexToGlobalIndexKernel (4 keys)]
+(Worker_TP0 pid=263035) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.41s.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.43s.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.43s.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP0 pid=263035) INFO 11-05 13:37:42 [kernel_warmup.py:255] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP2 pid=263132) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP5 pid=263309) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.49s.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.49s.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.49s.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.49s.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP6 pid=263368) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP5 pid=263309) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP1 pid=263078) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP3 pid=263191) INFO 11-05 13:37:42 [kernel_warmup.py:185] JIT kernel warmup finished in 3.55s.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:42 [ll_bf16.py:30] cuteDSL (CUTLASS Python) not available, ll_bf16_gemm disabled
+(Worker_TP0 pid=263035) WARNING:vllm_metax.v1.attention.backends.mla.flashmla_sparse:Padding num_heads from 8 to 64 for BF16 sparse decode kernel
+(Worker_TP6 pid=263368) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107141632` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780788736` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107059712` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780792832` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (59.27/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107059712` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=33122961920` (30.85 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (55.92/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107047424` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=29524244992` (27.5 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107051520` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780805120` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107047424` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780772352` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107035136` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780768256` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:45 [gpu_worker.py:888] Free memory on device (58.02/63.59 GiB) on startup. Desired GPU memory utilization is (0.8, 50.88 GiB). Actual usage is 27.5 GiB for consumed memory (weights + non-torch), 0.77 GiB for peak activation, and 0.0 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=24107149824` (22.45 GiB) to fit into requested memory, or `--kv-cache-memory=31780792832` (29.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 22.6 GiB.
+(Worker_TP6 pid=263368) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP5 pid=263309) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP3 pid=263191) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP7 pid=263427) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP4 pid=263250) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP2 pid=263132) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1 pid=263078) INFO 11-05 13:37:45 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0 pid=263035) INFO 11-05 13:37:46 [torch_utils.py:287] Reducing Torch threads from 14 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=262765) INFO 11-05 13:37:46 [core.py:379] init engine (profile, create kv cache, warmup model) took 20.33 s
+(EngineCore pid=262765) INFO 11-05 13:37:48 [kv_cache_utils.py:748] kv cache group sizes [640, 4, 640, 640, 640]
+(EngineCore pid=262765) INFO 11-05 13:37:48 [kv_cache_utils.py:749] kv lcm block sizes 640
+(EngineCore pid=262765) WARNING 11-05 13:37:50 [vllm.py:1547] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=262765) INFO 11-05 13:37:50 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=262765) WARNING 11-05 13:37:50 [vllm.py:2135] max_num_scheduled_tokens is set to 2048 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(EngineCore pid=262765) INFO 11-05 13:37:50 [vllm.py:1780] Cudagraph is disabled under eager mode
+(EngineCore pid=262765) INFO 11-05 13:37:50 [envs.py:136] vllm-metax would try to sets VLLM_TUNED_CONFIG_FOLDER default to /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096. Reason: set FusedMoE tuned config dir by hidden_size=4096
+(EngineCore pid=262765) WARNING 11-05 13:37:50 [envs.py:145] Detected VLLM_TUNED_CONFIG_FOLDER was manually set to /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096.
+(EngineCore pid=262765) WARNING 11-05 13:37:50 [envs.py:159] Forced override is enabled. Overriding VLLM_TUNED_CONFIG_FOLDER to /opt/conda/lib/python3.10/site-packages/vllm_metax/model_executor/layers/fused_moe/configs/H=4096.
+(EngineCore pid=262765) INFO 11-05 13:37:50 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(APIServer pid=262394) INFO 11-05 13:37:50 [entry.py:135] Supported tasks: ['generate']
+(APIServer pid=262394) INFO 11-05 13:37:51 [factories.py:76] Scale-out endpoints are disabled. Set --enable-scale-out to enable them.
+(APIServer pid=262394) INFO 11-05 13:37:53 [hf.py:642] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=262394) WARNING 11-05 13:37:53 [model.py:1772] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=262394) INFO 11-05 13:37:53 [entry.py:139] Starting vLLM server on http://0.0.0.0:8000
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:61] Available routes are:
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /load, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /version, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /health, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /metrics, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /tokenize, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /detokenize, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/models, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /ping, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /ping, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /invocations, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/responses, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/completions, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/messages, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /generative_scoring, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=262394) INFO 11-05 13:37:53 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=262394) INFO:     Started server process [262394]
+(APIServer pid=262394) INFO:     Waiting for application startup.
+(APIServer pid=262394) INFO:     Application startup complete.
