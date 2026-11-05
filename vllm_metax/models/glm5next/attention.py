@@ -463,11 +463,12 @@ class MacaGlm5NextMLAAttention(Glm5NextMLAAttention):
         #-------------metax modification
 
         # kv_b_proj / indexer are BF16 in the checkpoint (no weight_scale) and
-        # are excluded via compression_config.ignore. The spec (MTP) draft
-        # model declares hf_to_vllm_mapper so that ignore gets rewritten to
-        # its runtime prefix at load time; without it the W8A8 lookup
-        # quantizes them, truncating bf16 weights into int8 and leaving
-        # weight_scale at torch.empty (~1e29 activations).
+        # are excluded via compression_config.ignore. That list uses the
+        # checkpoint (HF) spelling ``model.language_model.layers.N.xxx``, so
+        # MacaGlm5NextMTP expands it to every runtime prefix spelling before
+        # the draft layers are built; without that the W8A8 lookup quantizes
+        # them, truncating bf16 weights into int8 and leaving weight_scale at
+        # torch.empty (~1e29 activations).
 
         self.hidden_size = hidden_size
         self.qk_nope_head_dim = qk_nope_head_dim

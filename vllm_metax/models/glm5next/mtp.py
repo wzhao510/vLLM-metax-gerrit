@@ -14,7 +14,7 @@ from vllm.model_executor.layers.logits_processor import LogitsProcessor
 from vllm.model_executor.layers.vocab_parallel_embedding import (
     VocabParallelEmbedding,
 )
-from vllm.model_executor.models.utils import WeightsMapper, maybe_prefix
+from vllm.model_executor.models.utils import maybe_prefix
 from vllm.models.glm5next.nvidia.model import Glm5NextMLAAttention
 from vllm.models.glm5next.nvidia.mtp import (
     Glm5NextMTP,
@@ -226,22 +226,57 @@ class MacaGlm5NextMultiTokenPredictor(Glm5NextMultiTokenPredictor):
         self.logits_processor = LogitsProcessor(config.vocab_size)
 
 
-class MacaGlm5NextMTP(Glm5NextMTP):
-    # config.json's compression_config.ignore uses the HF prefix
-    # ``model.language_model.layers.45.xxx``, while this draft model's runtime
-    # prefixes are ``model.layers.45.xxx``. Declaring the mapper makes
-    # configure_quant_config rewrite the ignore list at load time, so
-    # should_ignore_layer() matches and kv_b_proj / indexer.wq_b stay BF16
-    # instead of being truncated into int8. The base model gets the same
-    # rewrite from Glm4vForConditionalGeneration's hf_to_vllm_mapper.
-    hf_to_vllm_mapper = WeightsMapper(
-        orig_to_new_prefix={"model.language_model.": "model."}
-    )
+# GLM-5.3 checkpoints serialize the text tower as
+# ``model.language_model.layers.N.xxx`` (HF layout), while vLLM mounts the base
+# tower at ``language_model.model.`` and the MTP draft at ``model.``.
+# ``compression_config.ignore`` keeps the checkpoint spelling and vLLM matches
+# it by exact string equality (``should_ignore_layer``), so the draft's
+# ``model.layers.45.self_attn.kv_b_proj`` never matches and falls back to the
+# default W8A8 scheme: the bf16 checkpoint weight is truncated into an int8
+# buffer and, since the checkpoint carries no ``weight_scale`` for it, dequant
+# reads a torch.empty scale (~1e29) -> draft logits become noise.
+# Mirror every ignored text-tower module under all three prefixes so each model
+# tree matches its own runtime spelling.
+_TEXT_TOWER_PREFIXES = (
+    "model.language_model.",
+    "language_model.model.",
+    "model.",
+)
 
+
+def _ignore_prefix_aliases(entry: str) -> list[str]:
+    for prefix in _TEXT_TOWER_PREFIXES:
+        if entry.startswith(prefix):
+            rest = entry[len(prefix) :]
+            if not rest.startswith(("layers.", "embed_tokens.")):
+                return [entry]
+            return [f"{p}{rest}" for p in _TEXT_TOWER_PREFIXES]
+    return [entry]
+
+
+def _expand_quant_ignore_aliases(quant_config) -> None:
+    """Rewrite ``ignore`` in place to cover every runtime prefix spelling."""
+    ignore = getattr(quant_config, "ignore", None)
+    if not ignore:
+        return
+    ignore = [str(entry) for entry in ignore]
+    additions: list[str] = []
+    for entry in ignore:
+        for alias in _ignore_prefix_aliases(entry):
+            if alias not in ignore and alias not in additions:
+                additions.append(alias)
+    if additions:
+        quant_config.ignore = ignore + additions
+
+
+class MacaGlm5NextMTP(Glm5NextMTP):
     def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
         super(Glm5NextMTP, self).__init__()
         self.config = vllm_config.model_config.hf_config
         self.quant_config = vllm_config.quant_config
+        # Must run before the predictor is built: LinearBase resolves its
+        # quant method (and thus the ignore check) during construction.
+        _expand_quant_ignore_aliases(self.quant_config)
         self.model = MacaGlm5NextMultiTokenPredictor(
             vllm_config=vllm_config, prefix=maybe_prefix(prefix, "model")
         )
@@ -279,13 +314,17 @@ class MacaGlm5NextMTP(Glm5NextMTP):
         if not os.getenv("VLLM_METAX_MTP_WEIGHT_PROBE"):
             return
 
-        # Proves hf_to_vllm_mapper actually rewrote compression_config.ignore
-        # for the draft model: the entries should now use the runtime prefix
-        # ``model.layers.45.*`` (not the HF ``model.language_model.layers.45.*``).
+        # Proves the ignore aliases landed: the draft's runtime prefix
+        # ``model.layers.45.*`` must be present, not just the HF spelling.
         ignore = getattr(self.quant_config, "ignore", None) or []
-        hits = [x for x in ignore if f"layers.{self.config.num_hidden_layers}" in str(x)
-                and "self_attn" in str(x)]
-        print(f"[MTP-WEIGHT] ignore spec-layer entries: {hits}", flush=True)
+        spec = f"layers.{self.config.num_hidden_layers}."
+        hits = [x for x in ignore if spec in str(x) and "self_attn" in str(x)]
+        runtime_hits = [x for x in hits if str(x).startswith("model.layers.")]
+        print(
+            f"[MTP-WEIGHT] ignore spec-layer entries: {len(hits)} "
+            f"(runtime-prefixed: {len(runtime_hits)}) {runtime_hits}",
+            flush=True,
+        )
 
         for layer_idx, layer in self.model.layers.items():
             print(f"[MTP-WEIGHT] === layer {layer_idx} ===", flush=True)
