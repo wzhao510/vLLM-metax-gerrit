@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>[#PAE-16147] [VLLM] 为 GLM-5.3-Flash接入 QuaRot Online Rotation</title>
+    <meta http-equiv="Content-Type" Content="application/vnd.ms-word; charset=UTF-8">
+        <style type="text/css">
+
+.tableBorder, .grid
+{
+    background-color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableBorder td, .grid td
+{
+    vertical-align: top;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+.noPadding
+{
+    padding: 0 !important;
+}
+
+h3 .subText
+{
+    font-size: 60%;
+    font-weight: normal;
+}
+
+.tabLabel
+{
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-bottom:none;
+    padding: 2px;
+    display: inline;
+}
+
+td.blank
+{
+    padding: 0;
+    margin: 0;
+}
+
+.blank td
+{
+    border: none;
+}
+
+#descriptionArea
+{
+    margin: 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+hr
+{
+    border-top:1px solid #aaa;
+}
+
+hr.fullcontent
+{
+  height: 15px;
+  padding: 10px 0;
+  background: #fff url('https://jira.metax-tech.com/images/icons/hr.gif') no-repeat scroll center;
+}
+
+</style>
+
+</head>
+<body>
+
+<table class="tableBorder" cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td bgcolor="#f0f0f0" width="100%" colspan="2" valign="top">
+                            <b><a id="parent_issue_summary" href="https://jira.metax-tech.com/browse/PAE-16111">AI0021-B-o: LLM量化-2610</a></b>
+                <span style="font-size: 9px">(<a id="parent_issue_key" href="https://jira.metax-tech.com/browse/PAE-16111">PAE-16111</a>)</span>
+                <h3 class="formtitle"><img src="https://jira.metax-tech.com/images/icons/link_out_bot.gif" width="16" height="16" />
+                        [PAE-16147]&nbsp;<a href="https://jira.metax-tech.com/browse/PAE-16147">[VLLM] 为 GLM-5.3-Flash接入 QuaRot Online Rotation</a>
+            <span class="subText">
+               Created: 08/Oct/26                   &nbsp;Updated: 10/Oct/26
+
+                                            </span>
+            </h3>
+        </td>
+    </tr>
+    <tr>
+        <td width="20%"><b>Status:</b></td>
+        <td width="80%">In Progress</td>
+    </tr>
+    <tr>
+        <td width="20%"><b>Project:</b></td>
+        <td width="80%"><a href="https://jira.metax-tech.com/secure/BrowseProject.jspa?id=10311">PDE AI Execution</a></td>
+    </tr>
+
+        <tr>
+            <td><b>Component/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+
+        <tr>
+            <td><b>Affects Version/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+
+        <tr>
+            <td><b>Fix Version/s:</b></td>
+            <td>
+                            None
+                </td>
+    </tr>
+    
+    </table>
+
+<br />
+<table class="grid" cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td bgcolor="#f0f0f0" valign="top" width="20%">
+            <b>Type:</b>
+        </td>
+        <td bgcolor="#ffffff" valign="top"  width="30%" >
+            Sub-task
+        </td>
+
+                    <td bgcolor="#f0f0f0">
+                <b>Priority:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" nowrap>
+                Normal
+            </td>
+            </tr>
+    <tr>
+                        <td bgcolor="#f0f0f0" valign="top" width="20%">
+                <b>Reporter:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top"  width="30%" >
+                                            <a class="user-hover" rel="m01672" id="word_reporter_m01672" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=m01672">Tao Jiang (m01672)</a>
+                            </td>
+        
+                    <td bgcolor="#f0f0f0" width="20%">
+                <b>Assignee:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" nowrap  width="30%" >
+                                            <a class="user-hover" rel="i26440" id="word_assignee_i26440" href="https://jira.metax-tech.com/secure/ViewProfile.jspa?name=i26440">Zhenghao Wang (i26440)</a>
+                            </td>
+            </tr>
+    	<tr>
+		<td bgcolor="#f0f0f0" width="20%">
+			<b>Resolution:</b>
+		</td>
+		<td bgcolor="#ffffff" valign="top" width="30%" nowrap>
+            				Unresolved
+                    </td>
+                    <td bgcolor="#f0f0f0" width="20%">
+                <b>Votes:</b>
+            </td>
+            <td bgcolor="#ffffff" valign="top" width="30%" nowrap>
+                0
+            </td>
+        
+    </tr>
+    
+        <tr>
+        <td bgcolor="#f0f0f0" width="20%">
+            <b>Labels:</b>
+        </td>
+        <td id="labels-201938-value" class="value" bgcolor="#ffffff" valign="top" colspan="3" nowrap>
+                            None
+                    </td>
+    </tr>
+    
+    	<tr>
+        		<td bgcolor="#f0f0f0" width="20%"><b>Remaining Estimate:</b></td>
+        <td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+    </tr>
+    <tr>
+                <td bgcolor="#f0f0f0" width="20%"><b>Time Spent:</b></td>
+		<td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+	</tr>
+    <tr>
+                <td bgcolor="#f0f0f0" width="20%"><b>Original Estimate:</b></td>
+		<td bgcolor="#ffffff" valign="top" nowrap width="80%" colspan="3">
+                            Not Specified
+            		</td>
+    </tr>
+    
+    </table>
+
+
+
+    <br />
+
+    	<table class="grid" cellpadding="0" cellspacing="0" border="0" width="100%">
+            
+
+        
+    
+
+
+
+</table>
+
+    <br/>
+
+    <table cellpadding="2" cellspacing="0" border="0" width="100%" align="center">
+    <tr>
+        <td bgcolor="#bbbbbb" width="1%" nowrap align="center">
+            &nbsp;<font color="#ffffff"><b>Description</b></font>&nbsp;
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td id="descriptionArea">
+            <h2><a name="%E8%83%8C%E6%99%AF"></a>背景</h2>
+
+<p>GLM-5.3-Flash 的 QuaRot W4A8 模型需要在主干 Final Norm 前、MTP SharedHead 的 norm 前分别执行 online inverse rotation，使进入 norm 的 hidden state 回到原始坐标系。</p>
+
+<p>本单提出 GLM-5.3-Flash 的模型侧接入需求：在主干 Final Norm 和 MTP SharedHead 两个位置，根据运行时 module prefix 匹配 <tt>online_rotation.modules</tt> 配置，按需挂载 rotation，并在对应的 <tt>forward</tt> 位置调用。具体接口可随通用能力的最终实现调整，接入逻辑不依赖具体模型 class 名。</p>
+
+<h2><a name="%E6%A8%A1%E5%9E%8B%E9%85%8D%E7%BD%AE"></a>模型配置</h2>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+{
+  <span class="code-quote">"model_type"</span>: <span class="code-quote">"glm5_next"</span>,
+  <span class="code-quote">"online_rotation"</span>: {
+    <span class="code-quote">"modules"</span>: {
+      <span class="code-quote">"model.language_model.prenorm_hadamard_rotation"</span>: {
+        <span class="code-quote">"type"</span>: <span class="code-quote">"composite_hadamard"</span>,
+        <span class="code-quote">"hidden_size"</span>: 4096,
+        <span class="code-quote">"K"</span>: 1,
+        <span class="code-quote">"inverse"</span>: <span class="code-keyword">true</span>
+      },
+      <span class="code-quote">"model.language_model.layers.45.shared_head.prenorm_hadamard_rotation"</span>: {
+        <span class="code-quote">"type"</span>: <span class="code-quote">"composite_hadamard"</span>,
+        <span class="code-quote">"hidden_size"</span>: 4096,
+        <span class="code-quote">"K"</span>: 1,
+        <span class="code-quote">"inverse"</span>: <span class="code-keyword">true</span>
+      }
+    }
+  }
+}
+</pre>
+</div></div>
+
+<p>两个 module 均使用 <tt>K=1</tt>、<tt>hidden_size=4096</tt> 的 Composite Hadamard inverse rotation。上述完整路径是本模型的配置匹配 key；模型侧通过 prefix 拼接路径、查询配置并创建对应 rotation module。</p>
+
+<h2><a name="%E6%8C%82%E8%BD%BD%E4%B8%8EForward%E4%BD%8D%E7%BD%AE"></a>挂载与 Forward 位置</h2>
+
+<div class='table-wrap'>
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> 配置匹配的 module path </th>
+<th class='confluenceTh'> 接入位置 </th>
+<th class='confluenceTh'> <tt>forward</tt> 调用位置 </th>
+</tr>
+<tr>
+<td class='confluenceTd'> <tt>model.language_model.prenorm_hadamard_rotation</tt> </td>
+<td class='confluenceTd'> 主干 Final Norm 所在模块 </td>
+<td class='confluenceTd'> 主干最终 residual sum 之后、Final Norm 之前 </td>
+</tr>
+<tr>
+<td class='confluenceTd'> <tt>model.language_model.layers.45.shared_head.prenorm_hadamard_rotation</tt> </td>
+<td class='confluenceTd'> MTP SharedHead 模块 </td>
+<td class='confluenceTd'> MTP residual add 之后、<tt>shared_head.norm</tt> 之前 </td>
+</tr>
+</tbody></table>
+</div>
+
+
+<p>主干路径：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+hidden_states + residual
+        ↓
+model.language_model.prenorm_hadamard_rotation
+        ↓
+Final Norm
+</pre>
+</div></div>
+
+<p>MTP SharedHead 路径：</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+MTP hidden_states + residual
+        ↓
+model.language_model.layers.45.shared_head.prenorm_hadamard_rotation
+        ↓
+shared_head.norm
+</pre>
+</div></div>
+
+<p>模型代码无需写死 <tt>layers.45</tt> 或判断具体 class 名：通过 module prefix 拼出的路径匹配到配置项时启用 rotation。主干和 MTP 的 <tt>forward</tt> 插入点仍分别按上表确定。</p>
+
+<h2><a name="%E6%9C%9F%E6%9C%9B%E8%A1%8C%E4%B8%BA"></a>期望行为</h2>
+
+<ul>
+	<li>对应 module path 存在配置时，在该执行位置创建并调用 inverse rotation；</li>
+	<li>配置不存在时，保持原有 <tt>forward</tt> 路径；</li>
+	<li>rotation 权重加载由通用 Online Rotation 方案处理。</li>
+</ul>
+
+            <br/>
+        </td>
+    </tr>
+    </table>
+
+Generated at Tue Oct 13 11:19:29 CST 2026 by Zhenghao Wang (i26440) using Jira 8.20.8#820008-sha1:881997c1ee10089dd24f9500963434332e60bc5b.
+
+</body>
+</html>
