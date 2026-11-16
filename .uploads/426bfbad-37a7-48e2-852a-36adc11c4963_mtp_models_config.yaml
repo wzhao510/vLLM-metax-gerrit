@@ -1,0 +1,86 @@
+# models_config.yaml
+models:
+  - name: "Qwen3-Next-80B"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-Next-80B-A3B-Instruct/"
+    tp: 4
+    max_model_len: 4096
+    max_num_seqs: 64
+    speculative_config: '{"method":"qwen3_next_mtp","num_speculative_tokens":1, "model": "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-Next-80B-A3B-Instruct/"}'
+    prompt: "请你介绍一下中国的首都？"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.70
+
+  - name: "DeepSeek-V4-flash-W8A8"
+    model_path: "/mxstorage/pde_ai/models/model_quant_opt/DeepSeek/DeepSeek-V4-Flash_FlexSMQ-AWQ_W8A8/vllm_quant_model/"
+    tp: 8
+    max_model_len: 4096
+    max_num_seqs: 8
+    speculative_config: '{"method":"deepseek_mtp","num_speculative_tokens":1}'
+    prompt: "请你介绍一下中国的首都？"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.70
+
+  - name: "GLM-4.6-W8A8"
+    # model_path: "/mxstorage/pde_ai/models/llm/ChatGLM/GLM-4.6-W8A8/"
+    model_path: "/mxstorage/pde_ai/models/model_quant_opt/GLM/GLM-4_6-W8A8-MTP_W8A8/vllm_quant_model/"
+    tp: 8
+    max_model_len: 4096
+    max_num_seqs: 8
+    speculative_config: '{"method":"glm4_moe_mtp","num_speculative_tokens":1}'
+    prompt: "请你介绍一下中国的首都？"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.70
+
+  - name: "Qwen3.5-122B-A10B-W8A8"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3.5-122B-A10B-W8A8/"
+    tp: 4
+    max_model_len: 4096
+    max_num_seqs: 8
+    speculative_config: '{"method":"qwen3_5_mtp","num_speculative_tokens":1}'
+    prompt: "请你介绍一下中国的首都？"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.70
+
+  - name: "Qwen3-32B-Eagle"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-32B/"
+    tp: 2
+    gpu_memory_utilization: 0.85
+    max_model_len: 16384
+    max_num_seqs: 64
+    speculative_config: '{"method": "eagle3", "model": "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-14B_eagle3/", "num_speculative_tokens": 1}'
+    prompt: "请详细介绍一下中国的首都，字数不少于300字。"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.20
+
+  - name: "Qwen3-14B-Ngram"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-14B"
+    tp: 2
+    gpu_memory_utilization: 0.85
+    max_model_len: 16384
+    max_num_seqs: 64
+    speculative_config: '{"method": "ngram", "prompt_lookup_max": 4, "num_speculative_tokens": 1}'
+    prompt: "请详细介绍一下中国的首都，字数不少于300字。"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.20 
+
+  - name: "Qwen3-14B-Suffix"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-14B"
+    tp: 2
+    gpu_memory_utilization: 0.85
+    max_model_len: 16384
+    max_num_seqs: 64
+    speculative_config: '{"method": "suffix", "num_speculative_tokens": 1}'
+    prompt: "请详细介绍一下中国的首都，字数不少于300字。"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.20
+
+  - name: "Qwen3-32B-Draft"
+    model_path: "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-32B"
+    tp: 4
+    gpu_memory_utilization: 0.85
+    max_model_len: 16384
+    max_num_seqs: 64
+    speculative_config: '{"method": "draft_model", "model": "/mxstorage/pde_ai/models/llm/Qwen/Qwen3-8B", "num_speculative_tokens": 1}'
+    prompt: "请详细介绍一下中国的首都，字数不少于300字。"
+    expected_keyword: "北京"
+    min_acceptance_rate: 0.60
