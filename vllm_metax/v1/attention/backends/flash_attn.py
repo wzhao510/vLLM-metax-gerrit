@@ -125,13 +125,17 @@ class MacaFlashAttentionBackend(AttentionBackend):
     def get_supported_kernel_block_sizes(
         kv_cache_spec: KVCacheSpec | None = None,
     ) -> list[int | MultipleOf]:
-        # NOTE(metax): Exact sizes, not MultipleOf: e.g. 24 is unsupported.
-        if kv_cache_spec is not None and is_power_of_2(kv_cache_spec.block_size):
-            return [kv_cache_spec.block_size]
-        return [1, 2, 4, 8, 16, 32, 64, 128, 256]
+        # NOTE(metax): Mirror upstream's MultipleOf(16) so hybrid-model block
+        # alignment computes a 16-aligned value; the backend's own
+        # supports_block_size then further restricts the final value to a
+        # power of two.
+        return [MultipleOf(16)]
 
     @classmethod
     def supports_block_size(cls, block_size: int | None) -> bool:
+        # MetaX FlashAttention requires a power-of-two block size. Minimum
+        # practical kernel block is 16; smaller sizes are not exercised by
+        # real workloads and the upstream aligner never selects them.
         return block_size is None or is_power_of_2(block_size)
 
     forward_includes_kv_cache_update: bool = False
