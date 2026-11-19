@@ -223,50 +223,6 @@ class MacaPlatformBase(Platform):
         return True
 
     @classmethod
-    def update_block_size_for_backend(cls, vllm_config: "VllmConfig") -> None:
-        """Run the upstream hybrid-block aligner, then round up to a power of two.
-
-        MetaX FlashAttention only accepts power-of-two KV block sizes.  The
-        upstream aligner (``_align_hybrid_block_size``) is now invoked via the
-        FLASH_ATTN backend's ``MultipleOf(16)`` kernel-block hint, but the
-        rounded result is only guaranteed to be a multiple of 16 — e.g. 1056
-        for the Qwen3.5-122B-A10B hybrid model.  Round the final block_size up
-        to the next power of two and keep the mamba padding in sync.
-        """
-        from vllm.config.cache import CacheConfig
-
-        from vllm.platforms.interface import Platform as _UpstreamPlatform
-        from vllm_metax.utils.math_util import is_power_of_2
-
-        pre = vllm_config.cache_config.block_size
-        _UpstreamPlatform.update_block_size_for_backend(vllm_config)
-        post = vllm_config.cache_config.block_size
-
-        if is_power_of_2(post):
-            return
-
-        # Round up to the next power of two.
-        new_block = 1
-        while new_block < post:
-            new_block <<= 1
-
-        logger.info(
-            "FLASH_ATTN requires a power-of-two block size; "
-            "rounding aligned KV cache block size from %d to %d.",
-            post,
-            new_block,
-        )
-        vllm_config.cache_config.block_size = new_block
-
-        # ``mamba_page_size_padded`` was computed against ``post``.  Re-pad it
-        # to the new attention page so hybrid-manager per-token sizes stay
-        # unified downstream.
-        padded = vllm_config.cache_config.mamba_page_size_padded
-        if padded is not None and post != 0:
-            ratio = new_block / post
-            vllm_config.cache_config.mamba_page_size_padded = int(padded * ratio)
-
-    @classmethod
     def is_device_capability_family(
         cls,
         capability: int,
